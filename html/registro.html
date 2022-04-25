@@ -1,88 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de usuario</title>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <style>
-        html,body{
-            width: 100%;
-            height: 100%;
-        }
-        body{
-            /*
-                Oscurecer el fondo
-            */
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/fondo.png");
-            background-repeat: no-repeat;
-            background-size: cover;
-            height: 100%;
-            background-position: center;
-        }
-        #logo{
-            width: 280px;
-            height: 80px;
-            margin-top: 1%;
-            margin-bottom: 1%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de usuario</title>
+  <script src="../js/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/registro.css">
 </head>
+
 <body>
-    <div class="d-flex align-items-center">
-        <div class="container">
-            <div class="row d-flex justify-content-center align-items-center">
-                <img src="../img/Logo_Notek.png" alt="Logo_Notek" id="logo">
-            </div>
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-              <div class="card bg-dark text-white" style="border-radius: 15px;">
-                <div class="card-body p-5">
+  <div class="d-flex align-items-center">
+    <div class="container">
+      <div class="row d-flex justify-content-center align-items-center">
+        <img src="../img/Logo_Notek.png" alt="Logo_Notek" id="logo">
+      </div>
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card bg-dark text-white" style="border-radius: 15px;">
+            <div class="card-body p-5">
 
-                  <h2 class="text-uppercase text-center mb-5">Crear una cuenta</h2>
-                  
-                  <form>
+              <h2 class="text-uppercase text-center mb-5">Crear una cuenta</h2>
 
-                    <div class="form-outline mb-4">
-                    <p class="form-label">ID de la cuenta</p>
-                      <input type="text" id="idRegistro" class="form-control form-control-lg" />
-                    </div>
-    
-                    <div class="form-outline mb-4">
-                        <p class="form-label">Nombre</p>
-                          <input type="text" id="nombreRegistro" class="form-control form-control-lg" />
-                    </div>
+              <form>
 
-                    <div class="form-outline mb-4">
-                        <p class="form-label">Apellidos</p>
-                          <input type="text" id="apellidosRegistro" class="form-control form-control-lg" />
-                    </div>
-
-                    <div class="form-outline mb-4">
-                        <p class="form-label">Correo electrónico</p>
-                          <input type="text" id="correoRegistro" class="form-control form-control-lg" />
-                    </div>
-
-                    <div class="form-outline mb-4">
-                        <p class="form-label">Contraseña</p>
-                          <input type="text" id="contraseniaRegistro" class="form-control form-control-lg" />
-                    </div>
-
-                    <div class="d-flex justify-content-center">
-                      <button type="button" class="btn btn-light btn-block btn-lg text-body" id="botonRegistro">Registrarse</button>
-                    </div>
-    
-                    <p class="text-center text-muted mt-5 mb-0">¿Ya tienes una cuenta? <a href="./iniciarSesion.html" class="fw-bold text-info"><u>Inicia sesión</u></a></p>
-    
-                  </form>
-    
+                <div class="form-outline mb-4">
+                  <p class="form-label">ID de la cuenta</p>
+                  <input type="text" id="idRegistro" class="form-control form-control-lg" />
                 </div>
-              </div>
+
+                <div class="form-outline mb-4">
+                  <p class="form-label">Nombre</p>
+                  <input type="text" id="nombreRegistro" class="form-control form-control-lg" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <p class="form-label">Apellidos</p>
+                  <input type="text" id="apellidosRegistro" class="form-control form-control-lg" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <p class="form-label">Correo electrónico</p>
+                  <input type="text" id="correoRegistro" class="form-control form-control-lg" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <p class="form-label">Contraseña</p>
+                  <input type="text" id="contraseniaRegistro" class="form-control form-control-lg" />
+                </div>
+
+                <div class="d-flex justify-content-center">
+                  <button type="button" class="btn btn-light btn-block btn-lg text-body"
+                    id="botonRegistro">Registrarse</button>
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">¿Ya tienes una cuenta? <a href="./iniciarSesion.html"
+                    class="fw-bold text-info"><u>Inicia sesión</u></a></p>
+
+              </form>
+
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 </body>
+
 </html>
