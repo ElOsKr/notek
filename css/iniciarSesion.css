@@ -8,11 +8,8 @@
     width: 100%;
     background-position: center;
     background-attachment: fixed;
-    margin:0;
+    margin: 0;
 }
-
-
-
 
 .logoImagen {
     width: 90%;
@@ -24,8 +21,7 @@
 }
 
 #cajaPrincipal {
-    margin-top: 10%;
-    margin-bottom: 10%;
+    margin-top: 100px;
     width: 100%;
     height: 100%;
     justify-content: center;
@@ -35,7 +31,6 @@
 #cajaInicio {
     text-align: center;
 }
-
 
 .centrarBoton {
     display: flex;
