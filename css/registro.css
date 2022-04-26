@@ -22,7 +22,6 @@ body {
     margin-top: 1%;
     margin-bottom: 1%;
 }
-
 /*Estilos para el scroll de navegacion*/
 body::-webkit-scrollbar {
     background-color: rgb(57, 59, 68, 0.3);
