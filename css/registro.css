@@ -6,7 +6,7 @@ body {
 
 body {
     /*
-        Oscurecer el fondo
+    Oscurecer el fondo
     */
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../img/fondo.png");
     background-repeat: no-repeat;
@@ -22,6 +22,7 @@ body {
     margin-top: 1%;
     margin-bottom: 1%;
 }
+
 /*Estilos para el scroll de navegacion*/
 body::-webkit-scrollbar {
     background-color: rgb(57, 59, 68, 0.3);

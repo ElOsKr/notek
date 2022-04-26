@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
 import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword,signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
 import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,21 +23,60 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+//Se exporta esta funcion hacia el iniciarSesion.js
 export const iniciarSesion = (correo, contrasena) => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
+    console.log(correo, contrasena);
+    signInWithEmailAndPassword(auth, correo, contrasena)
         .then((userCredential) => {
-            // Signed in
+            // Inició sesion
             const user = userCredential.user;
-            setTimeout(location.replace("../index.html"), 500);
-            console.log("Iniciando Sesion");
-            // ...
+
+            setTimeout(location.replace("../html/inicioApp.html"), 500);
+            console.log("Iniciando Sesion con " + user);
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            //setTimeout(location.replace("../index.html"), 500);
-            console.log("No se pudo");
+            //Muestra el mensaje de error de credenciales
+            Swal.fire({
+                icon: "error",
+                title: "Introduzca sus credenciales correctamente",
+                text: "Los credenciales introducidos no existen",
+                showClass: {
+                    popup: 'animate__animated animate__fadeInTopRight'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOut'
+                }
+            });
         });
-    console.log(correo, contrasena);
+}
+
+//Funcion que se encarga de saber en todo momento si hay algun usuario conectado en la app
+export function mantenerSesion() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/firebase.User
+            const uid = user.email;
+            console.log(uid);
+        } else {
+            // User is signed out
+            location.href = "../index.html";
+        }
+    });
+}
+
+//Funcion que cierra la sesion del usuario cuando sale de la app
+export function cerrarSesion() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+        //Si se cierra Sesion correctamente ni hace falta cerrar la pagina y redirigir 
+        //al usuario al inicio, (de eso se encarga la function mantenerSesion())
+        console.log("Se cerro sesion correctamente");
+    }).catch((error) => {
+        console.log("No se pudo deslogear de la pagina");
+    });
 }
