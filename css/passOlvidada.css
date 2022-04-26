@@ -20,6 +20,10 @@ body {
     margin-top: 100px;
 }
 
+.oculto{
+    display: none;
+}
+
 #logo {
     width: 280px;
     height: 80px;
