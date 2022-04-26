@@ -1,8 +1,11 @@
+import { resetContrasena } from "./firebase.js"
 document.addEventListener("readystatechange", cargarEventos, false);
-
+const correo=document.getElementById("idRegistro");
+const boton = document.getElementById("botonCodigoPass");
 function cargarEventos() {
-
-    if (document.readyState == "interactive") {
-        //document.getElementsByTagName("button")[0].addEventListener("click", crear, false);
-    }
+    boton.addEventListener("click",(e)=>{
+        e.preventDefault();
+        resetContrasena(correo.value);
+    });
 }
+
