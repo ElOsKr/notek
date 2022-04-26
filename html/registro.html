@@ -2,61 +2,61 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de usuario</title>
-    <script src="../js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/registro.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de usuario</title>
+  <script src="../js/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/registro.css">
 </head>
 
 <body>
-    <div class="d-flex align-items-center">
-        <div class="container">
-            <div class="row d-flex justify-content-center align-items-center">
-                <img src="../img/Logo_Notek.png" alt="Logo_Notek" id="logo">
-            </div>
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-              <div class="card bg-dark text-white mb-2" style="border-radius: 15px;">
-                <div class="card-body p-5">
+  <div class="d-flex align-items-center">
+    <div class="container">
+      <div class="d-flex justify-content-center align-items-center mb-2 mt-2">
+        <a href="../index.html"><img src="../img/Logo_Notek.png" alt="Logo_Notek" id="logo"></a>
+      </div>
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card bg-dark text-white mb-2" style="border-radius: 15px;">
+            <div class="card-body p-5">
 
               <h2 class="text-uppercase text-center mb-5">Crear una cuenta</h2>
 
               <form>
 
-                <div class="form-outline mb-4">
+                <div class="form-outline mb-2">
                   <p class="form-label">ID de la cuenta</p>
-                  <input type="text" id="idRegistro" class="form-control form-control-lg" />
+                  <input type="text" id="idRegistro" class="form-control form-control-sm" />
                 </div>
 
-                <div class="form-outline mb-4">
+                <div class="form-outline mb-2">
                   <p class="form-label">Nombre</p>
-                  <input type="text" id="nombreRegistro" class="form-control form-control-lg" />
+                  <input type="text" id="nombreRegistro" class="form-control form-control-sm" />
                 </div>
 
-                <div class="form-outline mb-4">
+                <div class="form-outline mb-2">
                   <p class="form-label">Apellidos</p>
-                  <input type="text" id="apellidosRegistro" class="form-control form-control-lg" />
+                  <input type="text" id="apellidosRegistro" class="form-control form-control-sm" />
                 </div>
 
-                <div class="form-outline mb-4">
+                <div class="form-outline mb-2">
                   <p class="form-label">Correo electrónico</p>
-                  <input type="text" id="correoRegistro" class="form-control form-control-lg" />
+                  <input type="text" id="correoRegistro" class="form-control form-control-sm" />
                 </div>
 
-                <div class="form-outline mb-4">
+                <div class="form-outline mb-2">
                   <p class="form-label">Contraseña</p>
-                  <input type="text" id="contraseniaRegistro" class="form-control form-control-lg" />
+                  <input type="text" id="contraseniaRegistro" class="form-control form-control-sm" />
                 </div>
 
-                <div class="d-flex justify-content-center">
-                  <button type="button" class="form-control w-auto btn btn-outline-light btn-lg"
-                    id="botonRegistro">Registrarse</button>
+                <div class="d-flex justify-content-center mt-3">
+                  <button id="botonRegistro" class="form-control w-auto btn btn-outline-light me-3">
+                    Registrarse
+                  </button>
                 </div>
-
-                <p class="text-center text-muted mt-5 mb-0">¿Ya tienes una cuenta? <a href="./iniciarSesion.html"
+                <p class="text-center text-muted mt-3 mb-0">¿Ya tienes una cuenta? <a href="./iniciarSesion.html"
                     class="fw-bold text-info"><u>Inicia sesión</u></a></p>
               </form>
             </div>
