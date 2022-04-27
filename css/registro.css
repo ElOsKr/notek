@@ -23,11 +23,17 @@ body {
     margin-bottom: 1%;
 }
 
+/*Estilos por defecto de los mensajes de error*/
+.errores {
+    color: red;
+    display: none;
+    margin: 5px 0px 0px;
+}
+
 /*Estilos para el scroll de navegacion*/
 body::-webkit-scrollbar {
     background-color: rgb(57, 59, 68, 0.3);
     width: 8px;
-
 }
 
 body::-webkit-scrollbar-thumb {

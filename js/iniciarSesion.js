@@ -13,7 +13,7 @@ function cargarEventos() {
 }
 
 //Plantilla de alerta 
-function ponerInformacionAlerta(icono,titulo,texto) {
+export function ponerInformacionAlerta(icono,titulo,texto) {
     Swal.fire({
         icon: icono,
         title: titulo,

@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
 import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
 import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -61,7 +61,8 @@ export function mantenerSesion() {
             // User is signed in, see docs for a list of available properties
             // https://firebase.google.com/docs/reference/js/firebase.User
             const uid = user.email;
-            console.log(uid);
+            
+            console.log(uid + " - " + user.displayName);
         } else {
             // User is signed out
             location.href = "../index.html";
@@ -116,18 +117,27 @@ export function resetContrasena(correo) {
         });
 }
 
-export function crearUsuario(correo, contrasena) {
+export function crearUsuario(correo, contrasena, nickname) {
     const auth = getAuth();
+    //Esta variable controla si hubo algun problema en la creación del usuario
+    let activador = true;
     createUserWithEmailAndPassword(auth, correo, contrasena)
         .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(user);
-            location.href = "../html/inicioApp.html";
+            // Se inicio Sesion
+            activador = true;
+            //Si se inicio Sesion se añadirá al perfil del Usuario el IDnombre del formulario
+            updateProfile(auth.currentUser, {
+                displayName: nickname
+            }).then(() => {
+                location.href = "../html/inicioApp.html";
+            }).catch((error) => {
+                console.log(error);
+            });
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode);
+            activador = false;
         });
 }
