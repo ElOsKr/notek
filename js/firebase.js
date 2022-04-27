@@ -54,16 +54,13 @@ export const iniciarSesion = (correo, contrasena) => {
 }
 
 //Funcion que se encarga de saber en todo momento si hay algun usuario conectado en la app
-export function mantenerSesion() {
+export function mantenerSesionActiva() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/firebase.User
             const uid = user.email;
-
+            console.log(user);
             console.log(uid + " - " + user.displayName+" - "+user.photoURL);
-
         } else {
             // User is signed out
             location.href = "../index.html";
@@ -128,7 +125,7 @@ export function crearUsuario(correo, contrasena, nickname) {
             // Se inicio Sesion
             activador = true;
             //Si se inicio Sesion se añadirá al perfil del Usuario el IDnombre del formulario
-            const actualizar= actualizarUsuario(auth,nickname);
+            const actualizar = actualizarUsuario(auth, nickname);
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -139,7 +136,7 @@ export function crearUsuario(correo, contrasena, nickname) {
 }
 
 //Se añade nickname y foto por defecto al usuario que se registre
-function actualizarUsuario(auth,nickname) {
+function actualizarUsuario(auth, nickname) {
     return updateProfile(auth.currentUser, {
         displayName: nickname,
         photoURL: "https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0"
