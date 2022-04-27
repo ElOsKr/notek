@@ -61,6 +61,7 @@ export function mantenerSesionActiva() {
             const uid = user.email;
             console.log(user);
             console.log(uid + " - " + user.displayName + " - " + user.photoURL);
+            return user;
         } else {
             // User is signed out
             location.href = "../index.html";
