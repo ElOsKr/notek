@@ -44,7 +44,7 @@ export const iniciarSesion = (correo, contrasena) => {
                 title: "Introduzca sus credenciales correctamente",
                 text: "Los credenciales introducidos no existen",
                 showClass: {
-                    popup: 'animate__animated animate__fadeInTopRight'
+                    popup: 'animate__animated animate__backInDown'
                 },
                 hideClass: {
                     popup: 'animate__animated animate__fadeOut'
@@ -86,6 +86,17 @@ export function resetContrasena(correo) {
     sendPasswordResetEmail(auth, correo)
         .then(() => {
             console.log("Se envio un correo ");
+            Swal.fire({
+                icon: "info",
+                title: "Revise su correo ",
+                text: "Revise su correo y siga los pasos para resetear su contraseña",
+                showClass: {
+                    popup: 'animate__animated animate__backInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOut'
+                }
+            });
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -95,12 +106,28 @@ export function resetContrasena(correo) {
                 title: "Introduzca un correo correcto",
                 text: "El correo no existe",
                 showClass: {
-                    popup: 'animate__animated animate__fadeInTopRight'
+                    popup: 'animate__animated animate__backInDown'
                 },
                 hideClass: {
                     popup: 'animate__animated animate__fadeOut'
                 }
             });
 
+        });
+}
+
+export function crearUsuario(correo, contrasena) {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, correo, contrasena)
+        .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log(user);
+            location.href = "../html/inicioApp.html";
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode);
         });
 }

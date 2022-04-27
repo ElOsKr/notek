@@ -19,7 +19,7 @@ function ponerInformacionAlerta(icono,titulo,texto) {
         title: titulo,
         text: texto,
         showClass: {
-            popup: 'animate__animated animate__fadeInTopRight'
+            popup: 'animate__animated animate__backInDown'
         },
         hideClass: {
             popup: 'animate__animated animate__fadeOut'
