@@ -60,7 +60,7 @@ export function mantenerSesionActiva() {
         if (user) {
             const uid = user.email;
             console.log(user);
-            console.log(uid + " - " + user.displayName+" - "+user.photoURL);
+            console.log(uid + " - " + user.displayName + " - " + user.photoURL);
         } else {
             // User is signed out
             location.href = "../index.html";
@@ -116,31 +116,34 @@ export function resetContrasena(correo) {
 }
 
 //Le ponemos async a la 1º funcion que queremos ejecutar 
-export function crearUsuario(correo, contrasena, nickname) {
+export function crearUsuario(correo, contrasena, nickname, errorParrafo) {
     const auth = getAuth();
-    //Esta variable controla si hubo algun problema en la creación del usuario
-    let activador = true;
-    createUserWithEmailAndPassword(auth, correo, contrasena)
+    return createUserWithEmailAndPassword(auth, correo, contrasena)
         .then((userCredential) => {
             // Se inicio Sesion
-            activador = true;
-            //Si se inicio Sesion se añadirá al perfil del Usuario el IDnombre del formulario
+            console.log("Se creo el usuario");
+            //Borra en el forulario el error
+            errorParrafo.innerText = "";
+            errorParrafo.style.display = "none";
+            //Si se creo el usuario se añadirá al perfil del Usuario el IDnombre del formulario
             const actualizar = actualizarUsuario(auth, nickname);
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            console.log(errorCode);
-            activador = false;
+            //Pone en el forulario el error existente
+            errorParrafo.innerText = "El correo introducido ya existe";
+            errorParrafo.style.display = "block";
         });
 }
 
 //Se añade nickname y foto por defecto al usuario que se registre
-function actualizarUsuario(auth, nickname) {
+function actualizarUsuario(auth, nickname,) {
     return updateProfile(auth.currentUser, {
         displayName: nickname,
         photoURL: "https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0"
     }).then(() => {
         location.href = "../html/inicioApp.html";
+        console.log("Se actualizo el usuario");
     })
 }
