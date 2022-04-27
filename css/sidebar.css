@@ -73,12 +73,12 @@
 }
 
 body.active .page .sidebar {
-    left: -250px;
+    left: -180px;
 }
 
 body.active .page .content {
-    margin-left: 0;
-    width: 100%;
+    margin-left: 70px;
+    max-width: 100%;
 }
 
 .sidebar-header {
@@ -106,6 +106,13 @@ body.active .page .content {
     border-radius: 5px;
     margin: 8px;
     padding: 6px 8px;
+}
+.logo-container-block {
+    height: 73px;
+    border-radius: 5px;
+    margin: 8px;
+    padding: 6px 8px;
+    display: none;
 }
 
 .lista-navegacion {
