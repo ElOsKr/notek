@@ -1,28 +1,30 @@
-import { mantenerSesionActiva, cerrarSesion } from "./firebase.js"
+import { cerrarSesion,getAuth, onAuthStateChanged } from "./firebase.js"
 document.addEventListener("readystatechange", cargarEventos, false);
-
+const correo=document.getElementById("correo");
+const nickname=document.getElementById("nickname");
+const imagen=document.getElementById("imagenUsuario");
 function cargarEventos() {
     const boton = document.getElementById("btn-cerrarSesion");
+   
     //Funcion que detecta si hay un usuario conectado, si no lo hay reedirige al usuario al index.html 
-    mostrarDatos();
+    mantenerSesionActiva(correo,nickname,imagen);
+    
     //Onclick del boton para cerrar Sesion del usuario
     $(boton).click(function () {
         cerrarSesion();
     })
 }
 
- function mostrarDatos() {
-    const correo = document.getElementById("correo");
-    const nickname = document.getElementById("nickname");
-    const imagen = document.getElementById("imagenUsuario");
-    otra(correo,nickname,imagen);
-}
-
-async function otra(correo,nickname,imagen) {
-    const usuario = await mantenerSesionActiva();
-    console.log(usuario);
-    correo.innerHTML += usuario.displayName;
-    nickname.innerHTML += usuario.email;
-    console.log(imagen);
-    imagen.src = usuario.photoURL;
+function mantenerSesionActiva() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            correo.innerHTML += user.displayName;
+            nickname.innerHTML += user.email;
+            imagen.src = user.photoURL;
+        } else {
+            // User is signed out
+            location.href = "../index.html";
+        }
+    });
 }

@@ -53,21 +53,12 @@ export const iniciarSesion = (correo, contrasena) => {
         });
 }
 
-//Funcion que se encarga de saber en todo momento si hay algun usuario conectado en la app
-export function mantenerSesionActiva() {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const uid = user.email;
-            console.log(user);
-            console.log(uid + " - " + user.displayName + " - " + user.photoURL);
-            return user;
-        } else {
-            // User is signed out
-            location.href = "../index.html";
-        }
-    });
+//Asi se puede hacer exportar las librerias de Firebase a los otros archivos que se quieran
+export {
+    getAuth, 
+    onAuthStateChanged
 }
+
 
 //Funcion que cierra la sesion del usuario cuando sale de la app
 export function cerrarSesion() {
