@@ -12,7 +12,11 @@ function cargarEventos() {
     //Onclick del boton para cerrar Sesion del usuario
     $(boton).click(function () {
         cerrarSesion();
-    })
+    });
+
+    $("#btn-Chat").click(function(){
+        buscadorChats();
+    });
 }
 
 function mantenerSesionActiva() {
@@ -27,4 +31,8 @@ function mantenerSesionActiva() {
             location.href = "../index.html";
         }
     });
+}
+
+function buscadorChats() {
+    location.href = "../html/BuscadorChats.html";
 }

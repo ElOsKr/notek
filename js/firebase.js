@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
 import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -28,7 +28,9 @@ const db = getFirestore();
 //Asi se puede hacer exportar las librerias de Firebase a los otros archivos que se quieran
 export {
     getAuth,
-    onAuthStateChanged
+    onAuthStateChanged,
+    getDocs,
+    doc
 }
 
 //Se exporta esta funcion hacia el iniciarSesion.js
@@ -149,3 +151,9 @@ function actualizarUsuario(auth, nickname, nombre, apellidos, correo) {
         console.log("Se actualizo el usuario");
     })
 }
+
+//Funcion que devuelve todos los documentos de la coleccion Usuarios
+export const listaUsuarios = () => getDocs(collection(db, "Usuarios"));
+
+//Funcion que devuelve todos los documentos de la coleccion Usuarios a tiempo Real
+export const listaUsuariosActualizado=(funcion)=>onSnapshot(collection(db,"Usuarios"),funcion);
