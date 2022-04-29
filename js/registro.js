@@ -7,7 +7,7 @@ const nombre = document.getElementsByTagName("input")[1];
 const apellidos = document.getElementsByTagName("input")[2];
 const correo = document.getElementsByTagName("input")[3];
 const contrasena = document.getElementsByTagName("input")[4];
-const correoFallo=document.getElementsByClassName("errores")[3];
+const correoFallo = document.getElementsByClassName("errores")[3];
 
 function cargarEventos() {
     botonRegistro.addEventListener("click", (e) => {
@@ -17,7 +17,7 @@ function cargarEventos() {
         if (arrayFallos.filter(x => x === true).length === 5) {
             e.preventDefault();
             //Con el siguiente metodo valida en Firebase si el correo introducido por el usuario ya existia
-            const resultado=crearUsuario(correo.value, contrasena.value,idRegistro.value,nombre.value,apellidos.value,correoFallo);
+            const resultado = crearUsuario(correo.value, contrasena.value, idRegistro.value, nombre.value, apellidos.value, correoFallo);
         }
     });
 }

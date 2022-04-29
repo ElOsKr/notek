@@ -13,7 +13,7 @@ function cargarEventos() {
 }
 
 //Plantilla de alerta 
-export function ponerInformacionAlerta(icono,titulo,texto) {
+export function ponerInformacionAlerta(icono, titulo, texto) {
     Swal.fire({
         icon: icono,
         title: titulo,
@@ -29,22 +29,22 @@ export function ponerInformacionAlerta(icono,titulo,texto) {
 
 function comprobarCampos(correo, contrasena) {
     if (correo.value == "" && contrasena.value == "") {
-        let icono="warning";
-        let titulo='Introduzca sus credenciales';
-        let texto='Dejó ambos campos vacíos';
-        ponerInformacionAlerta(icono,titulo,texto);
+        let icono = "warning";
+        let titulo = 'Introduzca sus credenciales';
+        let texto = 'Dejó ambos campos vacíos';
+        ponerInformacionAlerta(icono, titulo, texto);
     }
     else if (correo.value == "") {
-        let icono="warning";
-        let titulo='Introduzca su correo';
-        let texto='Dejó el campo Correo vacío';
-        ponerInformacionAlerta(icono,titulo,texto);
+        let icono = "warning";
+        let titulo = 'Introduzca su correo';
+        let texto = 'Dejó el campo Correo vacío';
+        ponerInformacionAlerta(icono, titulo, texto);
     }
     else if (contrasena.value == "") {
-        let icono="warning";
-        let titulo='Introduzca su contraseña';
-        let texto='Dejó el campo Contraseña vacío';
-        ponerInformacionAlerta(icono,titulo,texto);
+        let icono = "warning";
+        let titulo = 'Introduzca su contraseña';
+        let texto = 'Dejó el campo Contraseña vacío';
+        ponerInformacionAlerta(icono, titulo, texto);
     } else {
         iniciarSesion(correo.value, contrasena.value);
     }

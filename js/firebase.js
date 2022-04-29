@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
-import {getFirestore,collection,addDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
 import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -23,11 +23,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 //Conexion a Firestore
-const db=getFirestore();
+const db = getFirestore();
 
 //Asi se puede hacer exportar las librerias de Firebase a los otros archivos que se quieran
 export {
-    getAuth, 
+    getAuth,
     onAuthStateChanged
 }
 
@@ -109,7 +109,7 @@ export function resetContrasena(correo) {
 }
 
 //Le ponemos async a la 1º funcion que queremos ejecutar 
-export function crearUsuario(correo, contrasena, nickname,nombre,apellidos, errorParrafo) {
+export function crearUsuario(correo, contrasena, nickname, nombre, apellidos, errorParrafo) {
     const auth = getAuth();
     return createUserWithEmailAndPassword(auth, correo, contrasena)
         .then((userCredential) => {
@@ -119,7 +119,7 @@ export function crearUsuario(correo, contrasena, nickname,nombre,apellidos, erro
             errorParrafo.innerText = "";
             errorParrafo.style.display = "none";
             //Si se creo el usuario se añadirá al perfil del Usuario el IDnombre del formulario
-            const actualizar = actualizarUsuario(auth, nickname,nombre,apellidos,correo);
+            const actualizar = actualizarUsuario(auth, nickname, nombre, apellidos, correo);
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -131,19 +131,19 @@ export function crearUsuario(correo, contrasena, nickname,nombre,apellidos, erro
 }
 
 //Se añade nickname y foto por defecto al usuario que se registre
-function actualizarUsuario(auth, nickname,nombre,apellidos,correo) {
+function actualizarUsuario(auth, nickname, nombre, apellidos, correo) {
     return updateProfile(auth.currentUser, {
         displayName: nickname,
         photoURL: "https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0"
-    }).then(async() => {
+    }).then(async () => {
         //Se pone async y await para que espere la funcion a que se realice la funcion si no se pone esto no furula
         //Aqui se añade los datos recibidos del Formualrio de Registro al Cloud Firestore, para crear la coleccion de Datos
-        const docRef = await addDoc(collection(db,"Usuarios"),{
-            idUsuario:nickname,
-            nombre:nombre,
-            apellidos:apellidos,
-            correo:correo,
-            imagenUsuario:"https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0"
+        const docRef = await addDoc(collection(db, "Usuarios"), {
+            idUsuario: nickname,
+            nombre: nombre,
+            apellidos: apellidos,
+            correo: correo,
+            imagenUsuario: "https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0"
         });
         location.href = "../html/inicioApp.html";
         console.log("Se actualizo el usuario");
