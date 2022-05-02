@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chats</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/chats.css">
+</head>
+
+<body>
+    <div class="container my-4 p-0 col-10">
+        <div class="row p-0">
+            <div class="col cajaTotal p-0">
+                <div class="configuracion mb-2">
+                    <img class="imagenPerfil p-2" alt="miimagen"
+                        srcset="https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0">
+                    <span class="ajustesUsuario float-end">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="cajaBuscarChat mb-4 px-4">
+                    <input placeholder="Buscar Chat" class="w-100 px-3" type="text">
+                </div>
+                <div class="cajaListaChatsActivos text-center  pt-0 w-100">
+                    
+                </div>
+            </div>
+            <div class="col cajaDerecha col-sm-8 p-0">
+                <div class="cabeceraUsuario">
+                    <img class="imagenPerfil" alt="miimagen"
+                        srcset="https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0">
+                    <div class="nombreCabecera">
+                        <h5 class="pt-3 mb-0 text-white">David Manrique Cordero</h5>
+                    </div>
+                </div>
+                <div class="cajaChat mt-1">
+                    <div class="d-flex justify-content-start m-1">
+                        <span class="mensajeIzquierda">
+                            Hola buenas tardes
+                            <div class="hora">
+                                13:26
+                            </div>
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-end m-1">
+                        <span class="mensajeDerecha">
+                            Hola buenas noches
+                            <div class="hora">
+                                13:28
+                            </div>
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-start  m-1">
+                        <span class="mensajeIzquierda">
+                            Hola buenas tardes
+                            <div class="hora">
+                                13:26
+                            </div>
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-end  m-1">
+                        <span class="mensajeDerecha">
+                            Hola buenas noches
+                            <div class="hora">
+                                13:28
+                            </div>
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-start  m-1">
+                        <span class="mensajeIzquierda">
+                            Hola buenas tardes
+                            <div class="hora">
+                                13:26
+                            </div>
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-end  m-1">
+                        <span class="mensajeDerecha">
+                            Hola buenas noches Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit est totam
+                            nemo. Molestiae ipsam alias sapiente vel aliquam odit voluptatem, exercitationem eveniet
+                            maiores, pariatur voluptas perspiciatis ea esse officia atque?
+                            <div class="hora">
+                                13:28
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+                <form id="formulario" autocomplete="off" class="px-1 pb-1">
+                    <input type="text" class="form-control" placeholder="Enviar mensaje" id="inputChat" />
+                    <div class="input-group-append">
+                        <button class="btn botonEnviar" type="submit">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../js/chats.js" type="module"></script>
+</body>
+
+</html>

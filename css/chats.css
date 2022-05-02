@@ -1,0 +1,170 @@
+body {
+    background-color: #222831;
+}
+
+.container {
+    border-radius: 9px;
+    margin: 0 auto;
+}
+
+.cajaTotal {
+    background-color: #59616e;
+}
+
+/*Estilos para las imagenes de los usuarios*/
+.imagenPerfil {
+    width: 50px;
+    height: 50px;
+    border-radius: 35px;
+}
+
+.row {
+    display: flex;
+    margin: 0 auto;
+}
+
+.cajaListaChatsActivos {
+    display: inline-block;
+    margin-left: -5px;
+    padding-left: 5px;
+    width: 100%;
+}
+
+
+.divChat:hover {
+    background-color: #00ADB5;
+}
+
+.ultimoMensaje {
+    width: 85%;
+}
+
+.texto {
+    margin: 0 10px;
+    padding: 6px 2px;
+    color: white;
+}
+
+.ajustesUsuario {
+    border-radius: 7px;
+    padding: 10px 15px;
+}
+
+svg {
+    margin-top: 10px;
+    font-size: 25px;
+    margin-left: 14px;
+    color: white;
+}
+
+svg:hover {
+    color: aqua;
+    cursor: pointer;
+}
+
+.cajaBusqueda {
+    background-color: #393E46;
+    padding: 10px 13px;
+}
+
+/*Caja donde se van a colocar los mensajes*/
+.cajaChat {
+    height: 78vh;
+    overflow-y: scroll;
+    padding: .1vw;
+}
+
+/*Estilos para los mensajes que mande el usuario activo*/
+.mensajeDerecha {
+    padding: 0.6vw;
+    margin-top: 0.3vw;
+    text-align: right;
+    border-radius: .5vw 0vw .5vw .5vw;
+    background: #59616e;
+    color: white;
+}
+
+/*Mensajes que mandara el usuario ajeno*/
+.mensajeIzquierda {
+    padding: 0.6vw;
+    margin-top: 0.3vw;
+    text-align: left;
+    border-radius: 0vw .5vw .5vw .5vw;
+    background: #393E46;
+    color: white;
+}
+
+/*Estilos para la hora del mensaje*/
+.hora {
+    font-size: 10px;
+    margin-top: -1px;
+}
+
+/*Estilos para la barra del chat*/
+.cajaChat::-webkit-scrollbar {
+    width: 10px;
+}
+
+.cajaChat::-webkit-scrollbar-thumb {
+    background: #222831;
+    border-radius: 20px;
+}
+
+.cabeceraUsuario {
+    background: hsl(218, 10%, 49%);
+    padding: 10px 15px;
+    border-radius: 0px 0px 12px 12px;
+    display: inline-flex;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.cajaDerecha {
+    background-color: #34b3b9;
+}
+
+.cajaBuscarChat>input {
+    border-radius: 14px;
+    border: 0px;
+}
+
+.tiempo {
+    margin-right: 0;
+    float: right;
+}
+
+.nombreCabecera {
+    margin-left: 12px;
+    width: 70%;
+    float: right;
+}
+
+#formulario {
+    display: inline-flex;
+    width: 100%;
+}
+
+.botonEnviar {
+    background-color: #222831;
+    color: #00FFF5;
+    border: #34b3b9 1px solid;
+}
+
+.botonEnviar:hover {
+    color: white;
+}
+
+/*No se como ponerlo arriba el h6... */
+@media (max-width: 499px) {
+    .nombreCabecera {
+        display: inline-flex;
+    }
+}
+
+.divChat {
+    display: block;
+}
+
+hr{
+    margin: 0;
+}

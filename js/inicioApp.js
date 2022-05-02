@@ -14,7 +14,7 @@ function cargarEventos() {
         cerrarSesion();
     });
 
-    $("#btn-Chat").click(function(){
+    $("#btn-Chat").click(function () {
         buscadorChats();
     });
 }
@@ -34,5 +34,5 @@ function mantenerSesionActiva() {
 }
 
 function buscadorChats() {
-    location.href = "../html/BuscadorChats.html";
+    location.href = "../html/buscadorChats.html";
 }

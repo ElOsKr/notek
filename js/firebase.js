@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
-import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
 import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -30,7 +30,10 @@ export {
     getAuth,
     onAuthStateChanged,
     getDocs,
-    doc
+    doc,
+    db,
+    onSnapshot,
+    collection
 }
 
 //Se exporta esta funcion hacia el iniciarSesion.js
@@ -156,4 +159,28 @@ function actualizarUsuario(auth, nickname, nombre, apellidos, correo) {
 export const listaUsuarios = () => getDocs(collection(db, "Usuarios"));
 
 //Funcion que devuelve todos los documentos de la coleccion Usuarios a tiempo Real
-export const listaUsuariosActualizado=(funcion)=>onSnapshot(collection(db,"Usuarios"),funcion);
+export const listaUsuariosActualizado = (funcion) => onSnapshot(collection(db, "Usuarios"), funcion);
+
+//Se le pasa como parametro el id del boton que contiene el id del documento del usuario correspondiente
+export async function crearChat(referenciaUsuario, usuarioActual) {
+    const fechaActual = new Date();
+    console.log(usuarioActual.uid);
+    const fechaCreacionChat = fechaActual.toLocaleDateString() + " " + fechaActual.getHours() + ":" + (fechaActual.getMinutes() < 10 ? '0' : '') + fechaActual.getMinutes();
+    //Se le pasa el id del usuario y se crea la subcolleccion Chats dentro de ese documento
+    const chatAjeno = await addDoc(collection(db, "Usuarios/" + referenciaUsuario[0] + "/Chats"), {
+        idNombre: usuarioActual.displayName,
+        fechaChat: fechaCreacionChat,
+        usuarios: [referenciaUsuario[1], usuarioActual.displayName],
+        imagenUsuario: usuarioActual.photoURL
+    });
+
+    //Y se crea otra subcoleccion dentro del propio usuario
+    const chatPropio = await addDoc(collection(db, "Usuarios/" + localStorage.getItem("id") + "/Chats"), {
+        idNombre: referenciaUsuario[1],
+        fechaChat: fechaCreacionChat,
+        usuarios: [referenciaUsuario[1], usuarioActual.displayName],
+        imagenUsuario: referenciaUsuario[4]
+    });
+    //Y redirige al Usuario a la pestaña donde estaran los chats
+    location.href = "chats.html";
+}
