@@ -15,6 +15,19 @@
             $q->execute($datos);
             return $q;
         }
+
+        public function listarEventos(){
+            $array=[];
+            $sql='select * from calendario.fechas';
+            foreach ($this->conn->query($sql) as $row){
+                array_push($array,$row['title'],$row['start'],$row['end'],$row['color']);
+            }
+            return $array;
+        }
+
+
+
+
     }
 
     $conexion=new conexion();
@@ -31,7 +44,10 @@
 
     }
 
-
+    if(isset($_GET['r'])){
+        $eventos=$conexion->listarEventos();
+        echo (json_encode($eventos));
+    }
 
 
 
