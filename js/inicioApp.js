@@ -23,9 +23,10 @@ function mantenerSesionActiva() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            correo.innerHTML += user.displayName;
-            nickname.innerHTML += user.email;
+            correo.innerHTML += user.email;
+            nickname.innerHTML += user.displayName;
             imagen.src = user.photoURL;
+            localStorage.setItem("id",user.email);
         } else {
             // User is signed out
             location.href = "../index.html";
