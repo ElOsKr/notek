@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
       center: "title",
       right: "dayGridMonth timeGridWeek timeGridDay listWeek",
     },
-    events:'index.html/calendario.php?r=1',
+    events:'calendario.php',
     buttonText:{
       today:'Hoy',
       month:'Mes',

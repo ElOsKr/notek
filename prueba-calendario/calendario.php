@@ -10,7 +10,7 @@
 
         public function agregarFechas($titulo,$fechaIni,$fechaFin,$color){
             $datos=array(':titulo'=>$titulo,':fechaIni'=>$fechaIni,':fechaFin'=>$fechaFin,':color'=>$color);
-            $sql='insert into calendario.fechas values (:titulo,:fechaIni,:fechaFin,:color)';
+            $sql='insert into calendario.fechas (title,start,end,color) values (:titulo,:fechaIni,:fechaFin,:color)';
             $q=$this->conn->prepare($sql);
             $q->execute($datos);
             return $q;
@@ -18,9 +18,10 @@
 
         public function listarEventos(){
             $array=[];
-            $sql='select * from calendario.fechas';
-            foreach ($this->conn->query($sql) as $row){
-                array_push($array,$row['title'],$row['start'],$row['end'],$row['color']);
+            $sentencia=$this->conn->prepare("select * from calendario.fechas");
+            $sentencia->execute();
+            while($result = $sentencia->fetch(PDO::FETCH_ASSOC)){
+                array_push($array,$result);
             }
             return $array;
         }
@@ -44,11 +45,12 @@
 
     }
 
-    if(isset($_GET['r'])){
+    function listar(){
+        $conexion=new conexion();
         $eventos=$conexion->listarEventos();
-        echo (json_encode($eventos));
+        echo (json_encode($eventos, JSON_UNESCAPED_UNICODE));
+        die;
     }
 
-
-
+    listar();
 ?>
