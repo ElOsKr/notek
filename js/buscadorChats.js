@@ -98,8 +98,6 @@ function iniciarChat(listaBotonesIniciarChat) {
 
 //Se le pasa como parametro el id del boton que contiene el id del documento del usuario correspondiente
 async function crearChat(referenciaUsuario, usuarioActual) {
-    const fechaActual = new Date();
-    const fechaCreacionChat = fechaActual.toLocaleDateString() + " " + fechaActual.getHours() + ":" + (fechaActual.getMinutes() < 10 ? '0' : '') + fechaActual.getMinutes();
     let idChat = "";
     localStorage.setItem("idChat", usuarioActual.email + " " + referenciaUsuario[0]);
     localStorage.setItem("idChatInverso", referenciaUsuario[0] + " " + usuarioActual.email);
@@ -116,11 +114,10 @@ async function crearChat(referenciaUsuario, usuarioActual) {
         idChat = usuarioActual.email + " " + referenciaUsuario[0];
     }
 
-
     //Se le pasa el id del usuario y se crea la subcolleccion Chats dentro de ese documento
     const chatAjeno = {
         idNombre: usuarioActual.displayName,
-        fechaChat: fechaCreacionChat,
+        fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
         imagenUsuario: referenciaUsuario[3]
     };
@@ -130,7 +127,7 @@ async function crearChat(referenciaUsuario, usuarioActual) {
 
     const chatPropio = {
         idNombre: referenciaUsuario[1],
-        fechaChat: fechaCreacionChat,
+        fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
         imagenUsuario: referenciaUsuario[3]
     };
@@ -140,7 +137,7 @@ async function crearChat(referenciaUsuario, usuarioActual) {
 
     const chatIndependiente = {
         idNombre: idChat,
-        fechaChat: fechaCreacionChat,
+        fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
         imagenUsuario: referenciaUsuario[3]
     };

@@ -1,6 +1,6 @@
 import {
     db, getAuth, onSnapshot, getDocs, getDoc, doc, mandarMensaje,
-    collection, onAuthStateChanged, query, orderBy, listaChatsBuscado, ultimoChatBuscado, limit
+    collection, onAuthStateChanged, query, orderBy, listaChatsBuscado, ultimoChatBuscado, limit, updateDoc
 } from "./firebase.js"
 
 document.addEventListener("readystatechange", cargarEventos, false);
@@ -38,6 +38,8 @@ function listaChatsActualizados() {
     onSnapshot(consulta, (chats) => {
         chats.forEach((doc) => {
             const usuario = doc.data();
+            let fecha = new Date(usuario.fechaChat);
+            let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
             listaChats.innerHTML += `
             <div data-id="${doc.id}" class="divChat w-100 p-3" style="display:inline-flex;">
                     <img data-id="${doc.id}" class="imagenPerfil"
@@ -46,7 +48,7 @@ function listaChatsActualizados() {
                     <div class="texto" data-id="${doc.id}">
                         <h6 class="text-md-start" data-id="${doc.id}">${usuario.idNombre}</h6>
                         <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">${localStorage.getItem("ultimoMensaje")}</p>
-                        <span class="tiempo text-white text-md-end " data-id="${doc.id}">${usuario.fechaChat}</span>
+                        <span class="tiempo text-white text-md-end " data-id="${doc.id}">${formatearFecha}</span>
                     </div>
             </div>
             <hr>
@@ -67,6 +69,8 @@ function listaChatsBuscados() {
             const chat = doc.data();
             if (chat.idNombre.toLowerCase().indexOf(textoUsuario) !== -1) {
                 const idNombre = chat.idNombre.split(" ");
+                let fecha = new Date(chat.fechaChat)
+                let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
                 listaChats.innerHTML += `
                 <div data-id="${doc.id}" class="divChat w-100 p-3" style="display:inline-flex;">
                         <img data-id="${doc.id}" class="imagenPerfil"
@@ -74,9 +78,8 @@ function listaChatsBuscados() {
                             alt="imagenChat" />
                         <div class="texto" data-id="${doc.id}">
                             <h6 class="text-md-start" data-id="${doc.id}">${idNombre}</h6>
-                            <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">Hey soy oskitar hihi y
-                                    soy gay hihihhihihi</p>
-                            <span class="tiempo text-white text-md-end " data-id="${doc.id}">${chat.fechaChat}</span>
+                            <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">${localStorage.getItem("ultimoMensaje")}</p>
+                            <span class="tiempo text-white text-md-end " data-id="${doc.id}">${formatearFecha}</span>
                         </div>
                 </div>
                 <hr>
@@ -141,13 +144,15 @@ function cargarMensajesChat() {
         if (mensajes.size > 0) {
             mensajes.forEach((doc) => {
                 const mensaje = doc.data();
+                let fecha = new Date(mensaje.fecha);
+                let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
                 if (mensaje.autor != localStorage.getItem("id")) {
                     cajaChat.innerHTML += `
                     <div class="d-flex justify-content-start m-1">
                             <span class="mensajeIzquierda">
                                 ${mensaje.mensaje}
                                 <div class="hora">
-                                    ${mensaje.fecha}
+                                    ${formatearFecha}
                                 </div>
                             </span>
                     </div>
@@ -159,7 +164,7 @@ function cargarMensajesChat() {
                         <span class="mensajeDerecha">
                             ${mensaje.mensaje}
                             <div class="hora">
-                                ${mensaje.fecha}
+                                ${formatearFecha}
                             </div>
                         </span>
                     </div>
@@ -183,9 +188,7 @@ function enviarMensaje() {
     if (inputEnviar.value != "") {
         mandarMensaje(inputEnviar.value);
         ultimoMensajeUsuario();
-        listaChatsActualizados()
         inputEnviar.value = "";
-        
     }
 }
 
@@ -218,7 +221,7 @@ function ultimoMensajeUsuario() {
     onSnapshot(consulta, (mensaje) => {
         mensaje.forEach((doc) => {
             console.log(doc.data().mensaje);
-            localStorage.setItem("ultimoMensaje",doc.data().mensaje);
+            localStorage.setItem("ultimoMensaje", doc.data().mensaje);
         });
     });
 }
