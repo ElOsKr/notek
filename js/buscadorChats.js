@@ -103,11 +103,19 @@ async function crearChat(referenciaUsuario, usuarioActual) {
     let idChat = "";
     localStorage.setItem("idChat", usuarioActual.email + " " + referenciaUsuario[0]);
     localStorage.setItem("idChatInverso", referenciaUsuario[0] + " " + usuarioActual.email);
-    if (saberExistenciaChat()) {
+
+    const referenciaChat = doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats", localStorage.getItem("idChatInverso"));
+    const chat = await getDoc(referenciaChat);
+    //Si existe el chat retorna true
+    if (chat.exists()) {
+        console.log("Existe el chat");
+        console.log(localStorage.getItem("idChat"));
         idChat = referenciaUsuario[0] + " " + usuarioActual.email;
     } else {
+        console.log("No Existe el chat");
         idChat = usuarioActual.email + " " + referenciaUsuario[0];
     }
+
 
     //Se le pasa el id del usuario y se crea la subcolleccion Chats dentro de ese documento
     const chatAjeno = {

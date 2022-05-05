@@ -27,7 +27,6 @@ function cargarEventos() {
     botonEnviar.addEventListener("click", enviarMensaje);
 
     cargarMensajesChat();
-
 }
 
 //Muestra todos los chats que coinciden con la subcoleccion de Chats del usuario
@@ -46,8 +45,7 @@ function listaChatsActualizados() {
                         alt="imagenChat"/>
                     <div class="texto" data-id="${doc.id}">
                         <h6 class="text-md-start" data-id="${doc.id}">${usuario.idNombre}</h6>
-                        <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">Hey soy oskitar hihi y
-                                soy cringe hihihhihihi</p>
+                        <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">${localStorage.getItem("ultimoMensaje")}</p>
                         <span class="tiempo text-white text-md-end " data-id="${doc.id}">${usuario.fechaChat}</span>
                     </div>
             </div>
@@ -184,7 +182,10 @@ function cargarMensajesChat() {
 function enviarMensaje() {
     if (inputEnviar.value != "") {
         mandarMensaje(inputEnviar.value);
+        ultimoMensajeUsuario();
+        listaChatsActualizados()
         inputEnviar.value = "";
+        
     }
 }
 
@@ -212,11 +213,12 @@ function buscarChat() {
 
 function ultimoMensajeUsuario() {
     const referenciaMensajes = collection(db, "Chats", localStorage.getItem("idChat"), "Mensajes");
-    const consulta = query(referenciaMensajes, orderBy("fecha"), limit(1));
+    const consulta = query(referenciaMensajes, orderBy("fecha", "desc"), limit(1));
     //Consulta que siempre esta mirando si el Usuario tiene chats disponibles
     onSnapshot(consulta, (mensaje) => {
         mensaje.forEach((doc) => {
             console.log(doc.data().mensaje);
+            localStorage.setItem("ultimoMensaje",doc.data().mensaje);
         });
     });
 }
