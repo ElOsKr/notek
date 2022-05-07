@@ -119,7 +119,8 @@ async function crearChat(referenciaUsuario, usuarioActual) {
         idNombre: usuarioActual.displayName,
         fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3]
+        imagenUsuario: referenciaUsuario[3],
+        ultimoMensaje: ""
     };
 
     //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos, creando una subcoleccion
@@ -129,7 +130,8 @@ async function crearChat(referenciaUsuario, usuarioActual) {
         idNombre: referenciaUsuario[1],
         fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3]
+        imagenUsuario: referenciaUsuario[3],
+        ultimoMensaje: ""
     };
 
     //Se crea una subcoleccion de Chats 
@@ -139,7 +141,8 @@ async function crearChat(referenciaUsuario, usuarioActual) {
         idNombre: idChat,
         fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3]
+        imagenUsuario: referenciaUsuario[3],
+        ultimoMensaje: ""
     };
 
     //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos, creando una subcoleccion

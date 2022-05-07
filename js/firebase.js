@@ -177,48 +177,48 @@ export const listaChatsBuscado = (funcion) => onSnapshot(collection(db, "Usuario
 export const ultimoChatBuscado = (funcion) => onSnapshot(doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats/" + localStorage.getItem("idChat")), funcion);
 
 export async function mandarMensaje(mensajeMandado) {
+    console.log(mensajeMandado);
     let idChat = "";
     let idChatInverso = localStorage.getItem("idChat").split(" ");
-    console.log(idChatInverso);
     localStorage.setItem("idChatInverso", idChatInverso[1] + " " + idChatInverso[0]);
-    console.log(idChatInverso[0]);
-    console.log(idChatInverso[1])
     const referenciaChat = doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats", localStorage.getItem("idChatInverso"));
     const chat = await getDoc(referenciaChat);
     //Si existe el chat retorna true
     if (chat.exists()) {
         console.log("Existe el chat");
-        console.log(localStorage.getItem("idChat"));
         idChat = localStorage.getItem("idChatInverso");
         const referenciaChatExistente = doc(db, "Usuarios/" + idChatInverso[0] + "/Chats", idChat);
 
         await updateDoc(referenciaChatExistente, {
-            fechaChat: Date.now()
+            fechaChat: Date.now(),
+            ultimoMensaje: mensajeMandado
         });
 
         const referenciaChatExistenteAjeno = doc(db, "Usuarios/" + idChatInverso[1] + "/Chats", idChat);
 
-        await updateDoc(referenciaChatExistente, {
-            fechaChat: Date.now()
+        await updateDoc(referenciaChatExistenteAjeno, {
+            fechaChat: Date.now(),
+            ultimoMensaje: mensajeMandado
         });
+
     } else {
         console.log("No Existe el chat");
         idChat = localStorage.getItem("idChat");
         const referenciaChatNoExistente = doc(db, "Usuarios/" + idChatInverso[0] + "/Chats", idChat);
         await updateDoc(referenciaChatNoExistente, {
-            fechaChat: Date.now()
+            fechaChat: Date.now(),
+            ultimoMensaje: mensajeMandado
         });
         const referenciaChatNoExistenteAjeno = doc(db, "Usuarios/" + idChatInverso[1] + "/Chats", idChat);
-        await updateDoc(referenciaChatNoExistente, {
-            fechaChat: Date.now()
+        await updateDoc(referenciaChatNoExistenteAjeno, {
+            fechaChat: Date.now(),
+            ultimoMensaje: mensajeMandado
         });
     }
-
     //Se le pasa el id del usuario y se crea la subcolleccion Mensajes dentro de ese documento
     const mensaje = await addDoc(collection(db, "Chats/" + idChat + "/Mensajes"), {
         autor: localStorage.getItem("id"),
         fecha: Date.now(),
         mensaje: mensajeMandado
     });
-
 }
