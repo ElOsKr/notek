@@ -24,6 +24,14 @@
             return $q;
         }
 
+        public function drop($fechaIni,$fechaFin,$id){
+            $datos=array(':fechaIni'=>$fechaIni,':fechaFin'=>$fechaFin,':id'=>$id);
+            $sql='update calendario.fechas set start=:fechaIni, end=:fechaFin where id=:id';
+            $q=$this->conn->prepare($sql);
+            $q->execute($datos);
+            return $q;
+        }
+
         public function eliminarFechas($id){
             $datos=array(':id'=>$id);
             $sql='delete from calendario.fechas where id=:id';
@@ -62,6 +70,16 @@
             }
         }
     }
+
+    if(isset($_POST['d'])){
+        $datos=json_decode($_POST['d']);
+        if($conexion->drop($datos[0],$datos[1],$datos[2])){
+            echo json_encode(1);
+        }else{
+            echo json_encode(0);
+        }
+    }
+
 
     if(isset($_POST['b'])){
         $datos=json_decode($_POST['b']);

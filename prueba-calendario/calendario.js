@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
       right: "dayGridMonth timeGridWeek timeGridDay listWeek",
     },
     events:'calendario2.php',
+    editable: true,
     buttonText:{
       today:'Hoy',
       month:'Mes',
@@ -44,6 +45,28 @@ document.addEventListener('DOMContentLoaded', function () {
       $('#errorFechaIni').css('display','none');
       $('#errorFechaFin').css('display','none');
       myModal.show();
+    },
+    eventDrop: function(datos){
+      var idEvento=datos.event.id;
+      var fechaInicio=datos.event.startStr.split("+",1).toString()
+      var fechaFin=datos.event.endStr.split("+",1).toString();
+      var datos=[fechaInicio,fechaFin,idEvento];
+      var cadenaDatos=JSON.stringify(datos);
+      var cadena='d='+cadenaDatos;
+      const xhttp = new XMLHttpRequest();
+      xhttp.onload = function() {
+        if(this.readyState==4 && this.status==200){
+          var comprobar=JSON.parse(this.responseText);
+          if(comprobar==1){
+            calendar.refetchEvents();
+          }else{
+            alert("Error");
+          }
+        }
+      }
+      xhttp.open("POST", "calendario.php");
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send(cadena);
     }
   });
   calendar.render();
