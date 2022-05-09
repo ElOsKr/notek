@@ -16,6 +16,22 @@
             return $q;
         }
 
+        public function modificarFechas($titulo,$fechaIni,$fechaFin,$color,$id){
+            $datos=array(':titulo'=>$titulo,':fechaIni'=>$fechaIni,':fechaFin'=>$fechaFin,':color'=>$color,':id'=>$id);
+            $sql='update calendario.fechas set title=:titulo, start=:fechaIni, end=:fechaFin, color=:color where id=:id';
+            $q=$this->conn->prepare($sql);
+            $q->execute($datos);
+            return $q;
+        }
+
+        public function eliminarFechas($id){
+            $datos=array(':id'=>$id);
+            $sql='delete from calendario.fechas where id=:id';
+            $q=$this->conn->prepare($sql);
+            $q->execute($datos);
+            return $q;
+        }
+
         public function listarEventos(){
             $array=[];
             $sentencia=$this->conn->prepare("select * from calendario.fechas");
@@ -25,32 +41,35 @@
             }
             return $array;
         }
-
-
-
-
     }
 
     $conexion=new conexion();
 
-
     if(isset($_POST['x'])){
         $datos=json_decode($_POST['x']);
 
-        if($conexion->agregarFechas($datos[0],$datos[1],$datos[2],$datos[3])){
+        if($datos[4]==""){
+            if($conexion->agregarFechas($datos[0],$datos[1],$datos[2],$datos[3])){
+                echo json_encode(1);
+            }else{
+                echo json_encode(0);
+            }            
+        }else{
+            if($conexion->modificarFechas($datos[0],$datos[1],$datos[2],$datos[3],$datos[4])){
+                echo json_encode(1);
+            }else{
+                echo json_encode(0);
+            }
+        }
+    }
+
+    if(isset($_POST['b'])){
+        $datos=json_decode($_POST['b']);
+        if($conexion->eliminarFechas($datos)){
             echo json_encode(1);
         }else{
             echo json_encode(0);
         }
-
     }
 
-    function listar(){
-        $conexion=new conexion();
-        $eventos=$conexion->listarEventos();
-        echo (json_encode($eventos, JSON_UNESCAPED_UNICODE));
-        die;
-    }
-
-    listar();
 ?>
