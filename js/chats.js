@@ -1,6 +1,6 @@
 import {
-    db, getAuth, onSnapshot, getDocs, getDoc, doc, mandarMensaje,
-    collection, onAuthStateChanged, query, orderBy, listaChatsBuscado, ultimoChatBuscado, limit, updateDoc
+    db, onSnapshot, mandarMensaje, cargarImagenPerfilActual,
+    collection, query, orderBy, listaChatsBuscado, ultimoChatBuscado
 } from "./firebase.js"
 
 document.addEventListener("readystatechange", cargarEventos, false);
@@ -12,15 +12,13 @@ const cabeceraUsuarioChat = document.getElementsByClassName("cabeceraUsuario")[0
 const cajaChat = document.getElementsByClassName("cajaChat")[0];
 const inputEnviar = document.getElementById("inputChat");
 const botonEnviar = document.getElementsByClassName("botonEnviar")[0];
-const ultimoMensaje = document.getElementsByClassName("ultimoMensaje")[0];
 const atras = document.getElementsByClassName("volverAtras")[0];
 const verPerfilPropio = document.getElementsByClassName("verPerfil")[0];
 
 function cargarEventos() {
-    //listaChatsActualizados();
 
     //Cargar imagen del usuario logeado
-    cargarImagenPerfilActual();
+    cargarImagenPerfilActual(imagenPerfilActual);
 
     //Cargar datos del chat seleccionado en la parte derecha
     cabeceraChat();
@@ -34,7 +32,7 @@ function cargarEventos() {
 
     atras.addEventListener("click", volverAtras);
 
-    //verPerfilPropio.addEventListener("click",verPerfil);
+    verPerfilPropio.addEventListener("click",verPerfil);
 }
 
 function volverAtras() {
@@ -42,7 +40,7 @@ function volverAtras() {
 }
 
 function verPerfil() {
-    location.href = "Perfil.html";
+    location.href = "perfil.html";
 }
 
 //Funcion que se encarga de realizar la consulta, y recoge los datos recuperados en un array
@@ -81,7 +79,7 @@ function listaChatsActualizados(chats) {
                         <div class="texto" data-id="${chat.id}">
                             <h6 class="text-md-start" data-id="${chat.id}">${chat.idNombre}</h6>
                             <p class="text-white ultimoMensaje text-md-start" data-id="${chat.id}">${chat.ultimoMensaje == "" ? '' : chat.ultimoMensaje}</p>
-                            <span class="tiempo text-white text-md-end " data-id="${chat.id}">${formatearFecha}</span>
+                            <span class="tiempo text-white text-md-end float-end" data-id="${chat.id}">${formatearFecha}</span>
                         </div>
                 </div>
                 <hr>
@@ -225,15 +223,7 @@ function enviarMensaje() {
     }
 }
 
-//Carga la imagen del usuario logeado
-function cargarImagenPerfilActual() {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            imagenPerfilActual.src = user.photoURL;
-        }
-    });
-}
+
 
 
 //Si esta vacio de ejecuta la lista de Chats que tenga ya el usuario

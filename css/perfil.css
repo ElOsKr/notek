@@ -1,0 +1,41 @@
+.iconoEditar {
+    height: 40px;
+    width: 40px;
+}
+
+body {
+    background-color: #222831;
+}
+
+.caja-Izquierda {
+    background-color: #00ADB5;
+}
+
+.caja-Derecha {
+    background-color: #393E46;
+}
+
+svg:hover {
+    color: #00FFF5;
+    cursor: pointer;
+}
+
+.imagenPerfilActual {
+    width: 150px;
+    height: 150px;
+}
+
+.hacerHover:hover {
+    cursor: pointer;
+}
+
+.subirImagen>input {
+    display: none;
+}
+
+/*Estilos por defecto de los mensajes de error*/
+.errores {
+    color: red;
+    display: none;
+    margin: 5px 0px 0px;
+}

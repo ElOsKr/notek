@@ -136,6 +136,13 @@ svg:hover {
     background-color: #34b3b9;
 }
 
+@media (max-width: 768px) {
+    .cajaDerecha {
+        width: 50%;
+    }
+}
+
+
 .cajaBuscarChat>input {
     border-radius: 14px;
     border: 0px;

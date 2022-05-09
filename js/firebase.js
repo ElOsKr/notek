@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebas
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
 import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, setDoc, getDoc, query, orderBy, limit, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
-import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-storage.js";
+import { getStorage, ref, getDownloadURL, uploadBytes } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -39,7 +39,10 @@ export {
     orderBy,
     limit,
     getDoc,
-    updateDoc
+    updateDoc,
+    getStorage, ref,
+    getDownloadURL, uploadBytes,
+    updateProfile
 }
 
 //Se exporta esta funcion hacia el iniciarSesion.js
@@ -175,6 +178,39 @@ export const listaChatsBuscado = (funcion) => onSnapshot(collection(db, "Usuario
 
 //Te devuelve un documento, el ultimo chat seleccionado por el usuario
 export const ultimoChatBuscado = (funcion) => onSnapshot(doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats/" + localStorage.getItem("idChat")), funcion);
+
+//Carga la imagen del usuario logeado
+export function cargarImagenPerfilActual(imagenPerfilActual) {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            imagenPerfilActual.src = user.photoURL;
+
+        }
+        else {
+            location.href = "../html/iniciarSesion.html";
+        }
+    });
+}
+
+//Carga la imagen del usuario logeado
+export function cargarDatosPerfil(imagenPerfilActual, parrafoNickname, campoCorreo, campoNombre, campoApellidos, campoNickname) {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            imagenPerfilActual.src = user.photoURL;
+            parrafoNickname.innerHTML += user.displayName;
+            campoCorreo.value = user.email;
+            campoApellidos.value = localStorage.getItem("apellidos");
+            campoNombre.value = localStorage.getItem("nombre");
+            campoNickname.value = user.displayName;
+        }
+        else {
+            location.href = "../html/iniciarSesion.html";
+        }
+    });
+}
+
 
 export async function mandarMensaje(mensajeMandado) {
     console.log(mensajeMandado);

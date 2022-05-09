@@ -3,6 +3,7 @@ document.addEventListener("readystatechange", cargarEventos, false);
 const correo = document.getElementById("correo");
 const nickname = document.getElementById("nickname");
 const imagen = document.getElementById("imagenUsuario");
+
 function cargarEventos() {
     const boton = document.getElementById("btn-cerrarSesion");
 
@@ -26,7 +27,7 @@ function mantenerSesionActiva() {
             correo.innerHTML += user.email;
             nickname.innerHTML += user.displayName;
             imagen.src = user.photoURL;
-            localStorage.setItem("id",user.email);
+            localStorage.setItem("id", user.email);
             localStorage.setItem("idChat", "");
             localStorage.setItem("idChatInverso", "");
         } else {
