@@ -98,23 +98,29 @@ function iniciarChat(listaBotonesIniciarChat) {
 
 //Se le pasa como parametro el id del boton que contiene el id del documento del usuario correspondiente
 async function crearChat(referenciaUsuario, usuarioActual) {
-    const fechaActual = new Date();
-    const fechaCreacionChat = fechaActual.toLocaleDateString() + " " + fechaActual.getHours() + ":" + (fechaActual.getMinutes() < 10 ? '0' : '') + fechaActual.getMinutes();
     let idChat = "";
     localStorage.setItem("idChat", usuarioActual.email + " " + referenciaUsuario[0]);
     localStorage.setItem("idChatInverso", referenciaUsuario[0] + " " + usuarioActual.email);
-    if (saberExistenciaChat()) {
+
+    const referenciaChat = doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats", localStorage.getItem("idChatInverso"));
+    const chat = await getDoc(referenciaChat);
+    //Si existe el chat retorna true
+    if (chat.exists()) {
+        console.log("Existe el chat");
+        console.log(localStorage.getItem("idChat"));
         idChat = referenciaUsuario[0] + " " + usuarioActual.email;
     } else {
+        console.log("No Existe el chat");
         idChat = usuarioActual.email + " " + referenciaUsuario[0];
     }
 
     //Se le pasa el id del usuario y se crea la subcolleccion Chats dentro de ese documento
     const chatAjeno = {
         idNombre: usuarioActual.displayName,
-        fechaChat: fechaCreacionChat,
+        fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3]
+        imagenUsuario: referenciaUsuario[3],
+        ultimoMensaje: ""
     };
 
     //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos, creando una subcoleccion
@@ -122,9 +128,10 @@ async function crearChat(referenciaUsuario, usuarioActual) {
 
     const chatPropio = {
         idNombre: referenciaUsuario[1],
-        fechaChat: fechaCreacionChat,
+        fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3]
+        imagenUsuario: referenciaUsuario[3],
+        ultimoMensaje: ""
     };
 
     //Se crea una subcoleccion de Chats 
@@ -132,9 +139,10 @@ async function crearChat(referenciaUsuario, usuarioActual) {
 
     const chatIndependiente = {
         idNombre: idChat,
-        fechaChat: fechaCreacionChat,
+        fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3]
+        imagenUsuario: referenciaUsuario[3],
+        ultimoMensaje: ""
     };
 
     //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos, creando una subcoleccion

@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-analytics.js";
-import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, setDoc, getDoc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, setDoc, getDoc, query, orderBy, limit, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js";
 import { } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-storage.js";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -38,7 +38,8 @@ export {
     query,
     orderBy,
     limit,
-    getDoc
+    getDoc,
+    updateDoc
 }
 
 //Se exporta esta funcion hacia el iniciarSesion.js
@@ -176,12 +177,48 @@ export const listaChatsBuscado = (funcion) => onSnapshot(collection(db, "Usuario
 export const ultimoChatBuscado = (funcion) => onSnapshot(doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats/" + localStorage.getItem("idChat")), funcion);
 
 export async function mandarMensaje(mensajeMandado) {
-    const fechaActual = new Date();
-    const fechaMensaje = fechaActual.toLocaleDateString() + " " + fechaActual.getHours() + ":" + (fechaActual.getMinutes() < 10 ? '0' : '') + fechaActual.getMinutes();
+    console.log(mensajeMandado);
+    let idChat = "";
+    let idChatInverso = localStorage.getItem("idChat").split(" ");
+    localStorage.setItem("idChatInverso", idChatInverso[1] + " " + idChatInverso[0]);
+    const referenciaChat = doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats", localStorage.getItem("idChatInverso"));
+    const chat = await getDoc(referenciaChat);
+    //Si existe el chat retorna true
+    if (chat.exists()) {
+        console.log("Existe el chat");
+        idChat = localStorage.getItem("idChatInverso");
+        const referenciaChatExistente = doc(db, "Usuarios/" + idChatInverso[0] + "/Chats", idChat);
+
+        await updateDoc(referenciaChatExistente, {
+            fechaChat: Date.now(),
+            ultimoMensaje: mensajeMandado
+        });
+
+        const referenciaChatExistenteAjeno = doc(db, "Usuarios/" + idChatInverso[1] + "/Chats", idChat);
+
+        await updateDoc(referenciaChatExistenteAjeno, {
+            fechaChat: Date.now(),
+            ultimoMensaje: mensajeMandado
+        });
+
+    } else {
+        console.log("No Existe el chat");
+        idChat = localStorage.getItem("idChat");
+        const referenciaChatNoExistente = doc(db, "Usuarios/" + idChatInverso[0] + "/Chats", idChat);
+        await updateDoc(referenciaChatNoExistente, {
+            fechaChat: Date.now(),
+            ultimoMensaje: mensajeMandado
+        });
+        const referenciaChatNoExistenteAjeno = doc(db, "Usuarios/" + idChatInverso[1] + "/Chats", idChat);
+        await updateDoc(referenciaChatNoExistenteAjeno, {
+            fechaChat: Date.now(),
+            ultimoMensaje: mensajeMandado
+        });
+    }
     //Se le pasa el id del usuario y se crea la subcolleccion Mensajes dentro de ese documento
-    const mensaje = await addDoc(collection(db, "Chats/" + localStorage.getItem("idChat") + "/Mensajes"), {
+    const mensaje = await addDoc(collection(db, "Chats/" + idChat + "/Mensajes"), {
         autor: localStorage.getItem("id"),
-        fecha: fechaMensaje,
+        fecha: Date.now(),
         mensaje: mensajeMandado
     });
 }

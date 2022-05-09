@@ -1,6 +1,6 @@
 import {
     db, getAuth, onSnapshot, getDocs, getDoc, doc, mandarMensaje,
-    collection, onAuthStateChanged, query, orderBy, listaChatsBuscado, ultimoChatBuscado, limit
+    collection, onAuthStateChanged, query, orderBy, listaChatsBuscado, ultimoChatBuscado, limit, updateDoc
 } from "./firebase.js"
 
 document.addEventListener("readystatechange", cargarEventos, false);
@@ -13,9 +13,11 @@ const cajaChat = document.getElementsByClassName("cajaChat")[0];
 const inputEnviar = document.getElementById("inputChat");
 const botonEnviar = document.getElementsByClassName("botonEnviar")[0];
 const ultimoMensaje = document.getElementsByClassName("ultimoMensaje")[0];
+const atras = document.getElementsByClassName("volverAtras")[0];
+const verPerfilPropio = document.getElementsByClassName("verPerfil")[0];
 
 function cargarEventos() {
-    listaChatsActualizados();
+    //listaChatsActualizados();
 
     //Cargar imagen del usuario logeado
     cargarImagenPerfilActual();
@@ -28,35 +30,67 @@ function cargarEventos() {
 
     cargarMensajesChat();
 
+    actualizaBienChats();
+
+    atras.addEventListener("click", volverAtras);
+
+    //verPerfilPropio.addEventListener("click",verPerfil);
 }
 
-//Muestra todos los chats que coinciden con la subcoleccion de Chats del usuario
-function listaChatsActualizados() {
-    listaChats.innerHTML = "";
+function volverAtras() {
+    location.href = "buscadorChats.html";
+}
+
+function verPerfil() {
+    location.href = "Perfil.html";
+}
+
+//Funcion que se encarga de realizar la consulta, y recoge los datos recuperados en un array
+function actualizaBienChats() {
     const referenciaChats = collection(db, "Usuarios", localStorage.getItem("id"), "Chats");
     const consulta = query(referenciaChats, orderBy("fechaChat", "desc"));
-    //Consulta que siempre esta mirando si el Usuario tiene chats disponibles
-    onSnapshot(consulta, (chats) => {
-        chats.forEach((doc) => {
-            const usuario = doc.data();
-            listaChats.innerHTML += `
-            <div data-id="${doc.id}" class="divChat w-100 p-3" style="display:inline-flex;">
-                    <img data-id="${doc.id}" class="imagenPerfil"
-                        srcset="${usuario.imagenUsuario}"
-                        alt="imagenChat"/>
-                    <div class="texto" data-id="${doc.id}">
-                        <h6 class="text-md-start" data-id="${doc.id}">${usuario.idNombre}</h6>
-                        <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">Hey soy oskitar hihi y
-                                soy cringe hihihhihihi</p>
-                        <span class="tiempo text-white text-md-end " data-id="${doc.id}">${usuario.fechaChat}</span>
-                    </div>
-            </div>
-            <hr>
-            `
+    const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
+        const chats = [];
+        querySnapshot.forEach((doc) => {
+            chats.push({
+                id: doc.id,
+                idNombre: doc.data().idNombre,
+                fechaChat: doc.data().fechaChat,
+                imagenUsuario: doc.data().imagenUsuario,
+                usuarios: doc.data().usuarios,
+                ultimoMensaje: doc.data().ultimoMensaje
+            })
         });
-        const listaDivsIniciarChat = listaChats.querySelectorAll(".divChat");
-        seleccionarChat(listaDivsIniciarChat);
+        listaChatsActualizados(chats);
     });
+}
+
+//Se hizo de esta forma ya que si solo llamaba a los datos de la base de datos se repetian los resultados en la pantalla,
+//Pero internamente se hacia correctamente, (apuntarlo en la documentacion como un problemon solucionado)
+//Funcion que se encarga de poder plasmar en la pantalla los resultados obtenidos por la coleccion del chat
+function listaChatsActualizados(chats) {
+    let html = "";
+    chats.forEach(chat => {
+        let fecha = new Date(chat.fechaChat);
+        let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
+        html += `
+                <div data-id="${chat.id}" class="divChat w-100 p-3" style="display:inline-flex;">
+                        <img data-id="${chat.id}" class="imagenPerfil"
+                            srcset="${chat.imagenUsuario}"
+                            alt="imagenChat"/>
+                        <div class="texto" data-id="${chat.id}">
+                            <h6 class="text-md-start" data-id="${chat.id}">${chat.idNombre}</h6>
+                            <p class="text-white ultimoMensaje text-md-start" data-id="${chat.id}">${chat.ultimoMensaje == "" ? '' : chat.ultimoMensaje}</p>
+                            <span class="tiempo text-white text-md-end " data-id="${chat.id}">${formatearFecha}</span>
+                        </div>
+                </div>
+                <hr>
+                `;
+
+    });
+    listaChats.innerHTML = html;
+    const listaDivsIniciarChat = listaChats.querySelectorAll(".divChat");
+    seleccionarChat(listaDivsIniciarChat);
 }
 
 //Funcion que mostrará todas los chats que concidan con la busqueda
@@ -69,6 +103,8 @@ function listaChatsBuscados() {
             const chat = doc.data();
             if (chat.idNombre.toLowerCase().indexOf(textoUsuario) !== -1) {
                 const idNombre = chat.idNombre.split(" ");
+                let fecha = new Date(chat.fechaChat)
+                let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
                 listaChats.innerHTML += `
                 <div data-id="${doc.id}" class="divChat w-100 p-3" style="display:inline-flex;">
                         <img data-id="${doc.id}" class="imagenPerfil"
@@ -76,9 +112,8 @@ function listaChatsBuscados() {
                             alt="imagenChat" />
                         <div class="texto" data-id="${doc.id}">
                             <h6 class="text-md-start" data-id="${doc.id}">${idNombre}</h6>
-                            <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">Hey soy oskitar hihi y
-                                    soy gay hihihhihihi</p>
-                            <span class="tiempo text-white text-md-end " data-id="${doc.id}">${chat.fechaChat}</span>
+                            <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">${(chat.ultimoMensaje == "" ? '' : chat.ultimoMensaje)}</p>
+                            <span class="tiempo text-white text-md-end " data-id="${doc.id}">${formatearFecha}</span>
                         </div>
                 </div>
                 <hr>
@@ -143,13 +178,15 @@ function cargarMensajesChat() {
         if (mensajes.size > 0) {
             mensajes.forEach((doc) => {
                 const mensaje = doc.data();
+                let fecha = new Date(mensaje.fecha);
+                let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
                 if (mensaje.autor != localStorage.getItem("id")) {
                     cajaChat.innerHTML += `
                     <div class="d-flex justify-content-start m-1">
                             <span class="mensajeIzquierda">
                                 ${mensaje.mensaje}
                                 <div class="hora">
-                                    ${mensaje.fecha}
+                                    ${formatearFecha}
                                 </div>
                             </span>
                     </div>
@@ -161,7 +198,7 @@ function cargarMensajesChat() {
                         <span class="mensajeDerecha">
                             ${mensaje.mensaje}
                             <div class="hora">
-                                ${mensaje.fecha}
+                                ${formatearFecha}
                             </div>
                         </span>
                     </div>
@@ -202,21 +239,10 @@ function cargarImagenPerfilActual() {
 //Si esta vacio de ejecuta la lista de Chats que tenga ya el usuario
 function buscarChat() {
     if (input_BuscarChat.value == "") {
-        listaChatsActualizados();
+        actualizaBienChats();
     }
     //Si no esta vacio se imprimirá una lista de usuarios con los que coincida la busqueda 
     else if (input_BuscarChat.value != "") {
         listaChatsBuscados();
     }
-}
-
-function ultimoMensajeUsuario() {
-    const referenciaMensajes = collection(db, "Chats", localStorage.getItem("idChat"), "Mensajes");
-    const consulta = query(referenciaMensajes, orderBy("fecha"), limit(1));
-    //Consulta que siempre esta mirando si el Usuario tiene chats disponibles
-    onSnapshot(consulta, (mensaje) => {
-        mensaje.forEach((doc) => {
-            console.log(doc.data().mensaje);
-        });
-    });
 }

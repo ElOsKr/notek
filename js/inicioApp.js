@@ -27,6 +27,8 @@ function mantenerSesionActiva() {
             nickname.innerHTML += user.displayName;
             imagen.src = user.photoURL;
             localStorage.setItem("id",user.email);
+            localStorage.setItem("idChat", "");
+            localStorage.setItem("idChatInverso", "");
         } else {
             // User is signed out
             location.href = "../index.html";
