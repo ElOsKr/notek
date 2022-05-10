@@ -1,5 +1,5 @@
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -17,6 +17,16 @@
     cursor: pointer;
 }
 
+html body{
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+.page{
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+}
 /*estilos del sidebar*/
 .page .sidebar {
     background: #222831;
@@ -160,3 +170,10 @@ body.active .page .content {
     color: rgb(255, 255, 255, 0.8);
     font-weight: 500;
 }
+
+#contenidoIframe{
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+}
+
