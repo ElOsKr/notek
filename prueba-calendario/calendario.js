@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
       center: "title",
       right: "dayGridMonth timeGridWeek timeGridDay listWeek",
     },
+    themeSystem: 'bootstrap5',
     events:'calendario2.php',
     editable: true,
     buttonText:{
