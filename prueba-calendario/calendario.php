@@ -8,17 +8,17 @@
             $this->conn=new PDO($dsn,'root','');
         }
 
-        public function agregarFechas($titulo,$fechaIni,$fechaFin,$color){
-            $datos=array(':titulo'=>$titulo,':fechaIni'=>$fechaIni,':fechaFin'=>$fechaFin,':color'=>$color);
-            $sql='insert into calendario.fechas (title,start,end,color) values (:titulo,:fechaIni,:fechaFin,:color)';
+        public function agregarFechas($titulo,$fechaIni,$fechaFin,$color,$descripcion){
+            $datos=array(':titulo'=>$titulo,':fechaIni'=>$fechaIni,':fechaFin'=>$fechaFin,':color'=>$color,':descripcion'=>$descripcion);
+            $sql='insert into calendario.fechas (title,start,end,color,description) values (:titulo,:fechaIni,:fechaFin,:color,:descripcion)';
             $q=$this->conn->prepare($sql);
             $q->execute($datos);
             return $q;
         }
 
-        public function modificarFechas($titulo,$fechaIni,$fechaFin,$color,$id){
-            $datos=array(':titulo'=>$titulo,':fechaIni'=>$fechaIni,':fechaFin'=>$fechaFin,':color'=>$color,':id'=>$id);
-            $sql='update calendario.fechas set title=:titulo, start=:fechaIni, end=:fechaFin, color=:color where id=:id';
+        public function modificarFechas($titulo,$fechaIni,$fechaFin,$color,$descripcion,$id){
+            $datos=array(':titulo'=>$titulo,':fechaIni'=>$fechaIni,':fechaFin'=>$fechaFin,':color'=>$color,':descripcion'=>$descripcion,':id'=>$id);
+            $sql='update calendario.fechas set title=:titulo, start=:fechaIni, end=:fechaFin, color=:color , description=:descripcion where id=:id';
             $q=$this->conn->prepare($sql);
             $q->execute($datos);
             return $q;
@@ -56,14 +56,14 @@
     if(isset($_POST['x'])){
         $datos=json_decode($_POST['x']);
 
-        if($datos[4]==""){
-            if($conexion->agregarFechas($datos[0],$datos[1],$datos[2],$datos[3])){
+        if($datos[5]==""){
+            if($conexion->agregarFechas($datos[0],$datos[1],$datos[2],$datos[3],$datos[4])){
                 echo json_encode(1);
             }else{
                 echo json_encode(0);
             }            
         }else{
-            if($conexion->modificarFechas($datos[0],$datos[1],$datos[2],$datos[3],$datos[4])){
+            if($conexion->modificarFechas($datos[0],$datos[1],$datos[2],$datos[3],$datos[4],$datos[5])){
                 echo json_encode(1);
             }else{
                 echo json_encode(0);

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("checkInicio").addEventListener("click",checkInicioE);
   document.getElementById("checkFin").addEventListener("click",checkFinE);
+  document.getElementById("checkDesc").addEventListener("click",checkDesc);
   var myModal = new bootstrap.Modal(document.getElementById('modalCalendario'))
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -27,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
       $("#fechaFin").val(datos.dateStr);
       $("#fechaInicioT").val(datos.dateStr+"T00:00");
       $("#fechaFinT").val(datos.dateStr+"T00:00");
-      $("colorEvento").val("");
+      $("#colorEvento").val("");
+      $("#descripcion").val("");
       $('#errorEvento').css('display','none');
       $('#errorNombre').css('display','none');
       $('#errorFechaIni').css('display','none');
@@ -38,10 +40,16 @@ document.addEventListener('DOMContentLoaded', function () {
       $('#idEvento').val(datos.event.id)
       $('#nombreEvento').val(datos.event.title);
       $("#fechaInicio").val(datos.event.startStr.split("T",1));
-      $("#fechaFin").val(datos.event.endStr.split("T",1));
+      if(datos.event.endStr==""){
+        $("#fechaFin").val(datos.event.startStr.split("T",1));
+        $("#fechaFinT").val(datos.event.startStr.split("+",1));
+      }else{
+        $("#fechaFin").val(datos.event.endStr.split("T",1));
+        $("#fechaFinT").val(datos.event.endStr.split("+",1));
+      }
       $("#fechaInicioT").val(datos.event.startStr.split("+",1));
-      $("#fechaFinT").val(datos.event.endStr.split("+",1));
       $("#colorEvento").val(datos.event.backgroundColor);
+      $("#descripcion").val(datos.event.extendedProps.description);
       $('#errorEvento').css('display','none');
       $('#errorNombre').css('display','none');
       $('#errorFechaIni').css('display','none');
@@ -86,9 +94,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     var colorEvento=$('#colorEvento').val();
     var idEvento=$('#idEvento').val();
+    var descEvento=$('#descripcion').val();
     var bandera=validarEvento();
     if(bandera==true){
-      var datos=[tituloEvento,fechaInicio,fechaFin,colorEvento,idEvento];
+      var datos=[tituloEvento,fechaInicio,fechaFin,colorEvento,descEvento,idEvento];
       var cadenaDatos=JSON.stringify(datos);
       var cadena='x='+cadenaDatos;
       const xhttp = new XMLHttpRequest();
@@ -213,6 +222,14 @@ function checkFinE(){
   }else{
     $("#fechaFinT").css("display","none");
     $("#fechaFin").css("display","block");
+  }
+}
+
+function checkDesc(){
+  if($("#checkDesc").prop("checked")){
+    $("#descripcion").css("display","block");
+  }else{
+    $("#descripcion").css("display","none");
   }
 }
 

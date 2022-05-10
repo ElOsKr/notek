@@ -29,33 +29,31 @@
     <div class="modal fade" id="modalCalendario" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalCalendarioLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="modalCalendarioTitulo">Evento</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             <div class="modal-body">
               <input type="hidden" id="idEvento">
               <div id="errorEvento" class="oculto text-danger"></div>
               <h4>Nombre</h4>
               <input type="Text" id="nombreEvento" class="form-control">
               <div id="errorNombre" class="oculto text-danger"></div>
-              <h4 class="mt-4">Fecha de inicio</h4>
+              <h4 class="mt-2">Fecha de inicio</h4>
               <input type="date" id="fechaInicio" class="form-control">
               <input type="datetime-local" id="fechaInicioT" class="oculto form-control">
               Seleccionar hora <input type="checkbox" id="checkInicio">
               <div id="errorFechaIni" class="oculto text-danger"></div>
-              <h4 class="mt-4">Fecha de fin</h4>
+              <h4 class="mt-2">Fecha de fin</h4>
               <input type="date" id="fechaFin" class="form-control">
               <input type="datetime-local" id="fechaFinT" class="oculto form-control">
               Seleccionar hora <input type="checkbox" id="checkFin">
               <div id="errorFechaFin" class="oculto text-danger"></div>
-              <h4 class="mt-4">Color</h4>
-              <input type="color" id="colorEvento" class="form-control mt-3">
+              <h4 class="mt-2">Color</h4>
+              <input type="color" id="colorEvento" class="form-control mt-1">
+              Descripción <input type="checkbox" id="checkDesc" class="mt-2">
+              <textarea class="oculto form-control" id="descripcion" cols="10" rows="2" style="resize:none;"></textarea>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" id="aniadirFechas">Registrar</button>
-              <button type="button" class="btn btn-danger" id="borrarFechas">Borrar</button>
+              <button type="button" class="btn btn-secondary col-3" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary col-3" id="aniadirFechas">Registrar</button>
+              <button type="button" class="btn btn-danger col-3" id="borrarFechas">Borrar</button>
             </div>
           </div>
         </div>
