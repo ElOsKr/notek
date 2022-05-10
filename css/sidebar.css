@@ -45,34 +45,25 @@ html body{
     margin-left: 250px;
     transition: all 0.3s ease;
 }
-/*estilos del navbar*/
-.navigationBar {
-    background-color: #393E46;
-    height: 50px;
-    display: flex;
-    padding: 38px 0px;
-    align-items: center;
-    box-shadow: 0 4px 2px -2px #c5c6c7;
-}
+
 /*boton para activar el sidebar*/
 .btn-sidebar {
+    position: fixed;
+    margin-top: 20px;
     font-size: 16px;
-    color: #64676d;
-    margin-left: -20px;
-    z-index: 999;
+    color: #ffffff;
+    margin-left: 210px;
+    z-index: 999!important;
     border-radius: 50px;
-    background-color: #e6e6e6;
+    background-color: #000000;
     transition: all 0.3s ease;
     outline: none !important;
     box-shadow: none !important;
 }
 
-.btn-sidebar.active {
-    margin-left: 10px;
-}
 
 .btn-sidebar:hover {
-    color: black;
+    color: rgb(153, 153, 153);
 }
 
 .page .content .container {

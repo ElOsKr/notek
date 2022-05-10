@@ -13,7 +13,6 @@ function sidebar() {
             {transform: 'rotate(180deg)'}
         ],{duration:300})
         document.getElementById("flecha-ocultar").style.transform="rotate(180deg)"
-        $("#logoImagen-navbar").fadeIn(300);
         $(".logo-container-block").css("display","block");
         $(".logo-container").css("display","none");
         $(".lista-navegacion").children().children().children().children(".col-9").css("display","none");
