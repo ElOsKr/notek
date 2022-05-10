@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
       $("#fechaInicioT").val(datos.dateStr+"T00:00");
       $("#fechaFinT").val(datos.dateStr+"T00:00");
       $("colorEvento").val("");
+      $('#errorEvento').css('display','none');
       $('#errorNombre').css('display','none');
       $('#errorFechaIni').css('display','none');
       $('#errorFechaFin').css('display','none');
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
       $("#fechaInicioT").val(datos.event.startStr.split("+",1));
       $("#fechaFinT").val(datos.event.endStr.split("+",1));
       $("#colorEvento").val(datos.event.backgroundColor);
+      $('#errorEvento').css('display','none');
       $('#errorNombre').css('display','none');
       $('#errorFechaIni').css('display','none');
       $('#errorFechaFin').css('display','none');
@@ -109,7 +111,8 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("borrarFechas").addEventListener("click",function(){
     var idEvento=$('#idEvento').val();
     if(idEvento==""){
-      $('errorEvento').html="No existe ningun evento";
+      $('#errorEvento').css('display','block');
+      $('#errorEvento').html("No existe ningun evento");
     }else{
       var cadenaDatos=JSON.stringify(idEvento);
       var cadena='b='+cadenaDatos;
