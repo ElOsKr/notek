@@ -36,11 +36,11 @@ function cargarEventos() {
 }
 
 function volverAtras() {
-    location.href = "buscadorChats.html";
+    location.href = "buscadorChats.php";
 }
 
 function verPerfil() {
-    location.href = "perfil.html";
+    location.href = "perfil.php";
 }
 
 //Funcion que se encarga de realizar la consulta, y recoge los datos recuperados en un array

@@ -4,7 +4,7 @@
 }
 
 body {
-    background-color: #222831;
+    background-color: #393E46;
 }
 
 .caja-Izquierda {
@@ -12,7 +12,7 @@ body {
 }
 
 .caja-Derecha {
-    background-color: #393E46;
+    background-color: #222831;
 }
 
 svg:hover {

@@ -9,8 +9,8 @@ function cargarEventos() {
 }
 
 function redirectSesion(){
-    location.href="./html/iniciarSesion.html"
+    location.href="./html/iniciarSesion.php"
 }
 function redirectRegistro(){
-    location.href="./html/registro.html"
+    location.href="./html/registro.php"
 }

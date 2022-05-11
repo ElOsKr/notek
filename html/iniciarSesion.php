@@ -20,7 +20,7 @@
     <div id="cajaPrincipal" class="row">
         <!--Esta caja es la contiene al contenido del formulario-->
         <div id="cajaInicio" class="col-7 col-sm-6 col-md-5 col-lg-4 col-xl-3">
-            <a href="../index.html"><img src="../img/Logo_Notek.png" alt="NotekLogo" class="logoImagen"></a>
+            <a href="../index.php"><img src="../img/Logo_Notek.png" alt="NotekLogo" class="logoImagen"></a>
             <div class="row bg-dark">
                 <h2 class="text-white pt-3 pb-5 col-12">Iniciar Sesión</h2>
                 <form class="col">
@@ -42,9 +42,9 @@
                                 <input type="button" id="boton" value="Iniciar Sesión"
                                     class="form-control w-auto btn btn-outline-light" />
                             </div>
-                            <p class="text-center text-muted mt-3 mb-0">¿No tienes una cuenta? <a href="./registro.html"
+                            <p class="text-center text-muted mt-3 mb-0">¿No tienes una cuenta? <a href="./registro.php"
                                     class="fw-bold text-info"><u>Regístrate</u></a></p>
-                            <p class="text-center mt-3 mb-0"><a href="./passOlvidada.html"
+                            <p class="text-center mt-3 mb-0"><a href="./passOlvidada.php"
                                     class="fw-bold text-info"><u>¿Olvidaste la contraseña?</u></a></p>
                         </div>
                     </div>

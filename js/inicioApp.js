@@ -39,5 +39,5 @@ function mantenerSesionActiva() {
 }
 
 function buscadorChats() {
-    location.href = "../html/buscadorChats.html";
+    location.href = "../html/buscadorChats.php";
 }

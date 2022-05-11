@@ -57,7 +57,7 @@
                     Registrarse
                   </button>
                 </div>
-                <p class="text-center text-muted mt-3 mb-0">¿Ya tienes una cuenta? <a href="./iniciarSesion.html"
+                <p class="text-center text-muted mt-3 mb-0">¿Ya tienes una cuenta? <a href="./iniciarSesion.php"
                     class="fw-bold text-info"><u>Inicia sesión</u></a></p>
               </form>
             </div>

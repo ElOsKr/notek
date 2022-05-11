@@ -26,8 +26,8 @@
                 <input type="text" class="form-control my-3" id="tituloAnuncio" placeholder="Introduzca un titulo">
                 <h3 class="mt-4 mb-3">Contenido</h3>
                 <textarea class="form-control my-2" rows="7" id="contenidoAnuncio"></textarea>
-                <h3 class="mt-4 mb-3">Subir fichero</h3>
-                <input type="file" accept="*" id="archivoSubido">
+                <h3 class="mt-4 mb-3">Archivo adicional</h3>
+                <input type="file" id="seleccionarArchivo" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf, .zip, .rar">
                 <div class="col-sm mt-3 text-center">
                     <button type="button" class="btn btn-success" id="btnCrearAnuncio">Crear anuncio</button>
                 </div>

@@ -63,14 +63,14 @@ body {
     padding: 10px 15px;
 }
 
-svg {
+.iconos {
     margin-top: 10px;
     font-size: 25px;
     margin-left: 14px;
     color: white;
 }
 
-svg:hover {
+.iconos:hover {
     color: aqua;
     cursor: pointer;
 }
@@ -162,6 +162,7 @@ svg:hover {
 #formulario {
     display: inline-flex;
     width: 100%;
+    max-width: 100%;
 }
 
 .botonEnviar {

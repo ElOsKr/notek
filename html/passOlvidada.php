@@ -19,7 +19,7 @@
     <div class="d-flex align-items-center">
         <div class="container cajaPrincipal">
             <div class="d-flex justify-content-center align-items-center mb-2">
-                <a href="../index.html"><img src="../img/Logo_Notek.png" alt="Logo_Notek" id="logo"></a>
+                <a href="../index.php"><img src="../img/Logo_Notek.png" alt="Logo_Notek" id="logo"></a>
             </div>
             <div class="row justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
@@ -37,7 +37,7 @@
                                     </button>
                                 </div>
                                 <p class="text-center text-muted mt-3 mb-0">¿Ya tienes una cuenta? <a
-                                        href="./iniciarSesion.html" class="fw-bold text-info"><u>Inicia sesión</u></a>
+                                        href="./iniciarSesion.php" class="fw-bold text-info"><u>Inicia sesión</u></a>
                                 </p>
                             </form>
                         </div>

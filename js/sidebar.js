@@ -34,7 +34,7 @@ function sidebar() {
 
 function irBuscadorChats() {
     $( "#enlaceBuscadorChats").click(function() {
-        alert($("#iframe").attr("src","./buscadorChats.html"))
+       $("#iframe").attr("src","./buscadorChats.php");
        
       });
 }

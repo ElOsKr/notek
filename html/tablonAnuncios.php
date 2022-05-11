@@ -8,6 +8,7 @@
     <title>Tablon de anuncios</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/tablonAnuncios.css">
+    <script src="../js/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -17,12 +18,12 @@
                 <h1 class="text-center text-white">Tablon de Anuncios</h1>
             </div>
         </div>
-        <div class="row text-center text-white cajaIntroducirAnuncio">
+        <div class="row  text-white cajaIntroducirAnuncio">
             <div class="col-md-6 my-3">
                 <div class="card cajasContenido">
                     <div class="card-body">
-                        <div class="w-100">
-                            <img class="rounded-circle imagenAutor"
+                        <div class="w-100 text-center">
+                            <img class="rounded-circle imagenAutor text-center"
                                 src="https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/ImagenesPerfilUsuario%2Fjean12%40gmail.com%2Fjean12%40gmail.com?alt=media&token=e039ec6d-1790-4794-9979-23463a972780"
                                 alt="imagenAutor">
                             <h3 class="text-center py-3 mt-1 w-100">JeanCris99</h3>
@@ -36,7 +37,6 @@
                             <a href="#" class="float-start mt-2">Enlace descargar archivo auxiliar</a>
                             <h6 class="mt-2 float-end">10/5/2022 22:18</h6>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -125,7 +125,7 @@
             </div>
         </div>
     </div>
-    <a href="crearAnuncio.html" class="btn-flotante text-white rounded-circle">+</a>
+    <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle">+</a>
     <script type="module" src="../js/tablonAnuncios.js"></script>
 </body>
 

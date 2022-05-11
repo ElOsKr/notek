@@ -136,5 +136,5 @@ async function crearChat(referenciaUsuario, usuarioActual) {
     //Se le pasa el id del chat que tiene que abrir en chats.html automaticamente
     await localStorage.setItem("idChat", idChat);
     //Y redirige al Usuario a la pestaña donde estaran los chats
-    location.href = "chats.html";
+    location.href = "chats.php";
 }

@@ -1,6 +1,6 @@
 import {
     db, onSnapshot,
-    collection, query, orderBy
+    collection, query, orderBy, getAuth, onAuthStateChanged
 } from "./firebase.js"
 
 document.addEventListener("readystatechange", cargarEventos, false);
@@ -10,6 +10,7 @@ const cajaIntroducirContenido = document.getElementsByClassName("cajaIntroducirC
 
 function cargarEventos() {
     actualizaBienanuncioss();
+    mantenerSesionActiva();
 }
 
 function actualizaBienanuncioss() {
@@ -24,7 +25,8 @@ function actualizaBienanuncioss() {
                 fechaPublicado: doc.data().fechaPublicado,
                 imagenUsuario: doc.data().imagenUsuario,
                 titulo: doc.data().titulo,
-                contenido: doc.data().contenido
+                contenido: doc.data().contenido,
+                archivoSeleccionado: doc.data().archivoSeleccionado
             })
         });
         console.log(anuncios);
@@ -35,13 +37,18 @@ function actualizaBienanuncioss() {
 function listaAnunciosActualizados(anuncios) {
     let html = "";
     anuncios.forEach(anuncios => {
+        let link = "";
         let fecha = new Date(anuncios.fechaPublicado);
         let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
+        console.log(anuncios.archivoSeleccionado)
+        if (anuncios.archivoSeleccionado != "") {
+            link = `<a  href="${anuncios.archivoSeleccionado}" download class="float-start mt-5 text-white">Enlace descargar archivo auxiliar</a>`;
+        }
         html += `
                 <div class="col-md-6 my-3">
                     <div class="card cajasContenido">
                         <div class="card-body ">
-                            <div class="w-100 ">
+                            <div class="w-100 text-center">
                                 <img class="rounded-circle imagenAutor"
                                     src="${anuncios.imagenUsuario}"
                                     alt="imagenAutor">
@@ -54,7 +61,7 @@ function listaAnunciosActualizados(anuncios) {
                                 <p class="card-text">
                                 ${anuncios.contenido}
                                 </p>
-                                <a href="#" class="float-start mt-5 text-white">Enlace descargar archivo auxiliar</a>
+                                ${link}
                                 <h6 class="mt-5 text-white float-end">${formatearFecha}</h6>
                             </div>
                         </div>
@@ -63,4 +70,19 @@ function listaAnunciosActualizados(anuncios) {
                 `;
     });
     cajaIntroducirAnuncio.innerHTML = html;
+}
+
+function mantenerSesionActiva() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            localStorage.setItem("id", user.email);
+            localStorage.setItem("idChat", "");
+            localStorage.setItem("idChatInverso", "");
+            localStorage.setItem("imagenPerfil", "");
+        } else {
+            // User is signed out
+            location.href = "../index.html";
+        }
+    });
 }

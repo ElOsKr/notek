@@ -55,7 +55,7 @@ export const iniciarSesion = (correo, contrasena) => {
             // Inició sesion
             const user = userCredential.user;
 
-            setTimeout(location.replace("../html/inicioApp.html"), 500);
+            setTimeout(location.replace("../html/inicioApp.php"), 500);
             console.log("Iniciando Sesion con " + user);
         })
         .catch((error) => {
@@ -163,8 +163,7 @@ function actualizarUsuario(auth, nickname, nombre, apellidos, correo) {
         //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
         await setDoc(doc(db, "Usuarios", correo), docRef);
 
-        location.href = "../html/inicioApp.html";
-        console.log("Se actualizo el usuario");
+        location.href = "../html/tablonAnuncios.php";
     })
 }
 
@@ -192,7 +191,7 @@ export function cargarImagenPerfilActual(imagenPerfilActual) {
             imagenPerfilActual.src = user.photoURL;
         }
         else {
-            location.href = "../html/iniciarSesion.html";
+            location.href = "../html/iniciarSesion.php";
         }
     });
 }
