@@ -1,7 +1,8 @@
 document.addEventListener("readystatechange", cargarEventos, false);
 
 function cargarEventos() {
-    document.getElementById("btn-sidebar").addEventListener("click", sidebar)
+    document.getElementById("btn-sidebar").addEventListener("click", sidebar);
+    irBuscadorChats();
 }
 
 function sidebar() {
@@ -29,4 +30,11 @@ function sidebar() {
         $(".lista-navegacion").children().children().children().children(".col-9").css("display","block");
         $(".lista-navegacion").children().children().children().children(".col-2").css("margin-left","0%");
     }
+}
+
+function irBuscadorChats() {
+    $( "#enlaceBuscadorChats").click(function() {
+        alert($("#iframe").attr("src","./buscadorChats.html"))
+       
+      });
 }
