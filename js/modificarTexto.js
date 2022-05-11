@@ -1,7 +1,7 @@
 document.addEventListener("readystatechange", cargarEventos, false);
 
 function cargarEventos() {
-    tinymce.init({
-        selector: 'textarea#default-editor'
-      });
+  tinymce.init({
+    selector: 'textarea#default-editor'
+  });
 }

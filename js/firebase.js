@@ -42,7 +42,8 @@ export {
     updateDoc,
     getStorage, ref,
     getDownloadURL, uploadBytes,
-    updateProfile
+    updateProfile,
+    addDoc
 }
 
 //Se exporta esta funcion hacia el iniciarSesion.js
@@ -167,11 +168,15 @@ function actualizarUsuario(auth, nickname, nombre, apellidos, correo) {
     })
 }
 
+/*----------------------------------------------------------BuscadorUsuarios------------------------------------------------*/
+
 //Funcion que devuelve todos los documentos de la coleccion Usuarios
 export const listaUsuarios = () => getDocs(collection(db, "Usuarios"));
 
 //Funcion que devuelve todos los documentos de la coleccion Usuarios a tiempo Real
 export const listaUsuariosActualizado = (funcion) => onSnapshot(collection(db, "Usuarios"), funcion);
+
+/*----------------------------------------------------------CHATS------------------------------------------------*/
 
 //Te devuelve una lista de chats del usuario logeado
 export const listaChatsBuscado = (funcion) => onSnapshot(collection(db, "Usuarios/" + localStorage.getItem("id") + "/Chats"), funcion);
@@ -185,32 +190,12 @@ export function cargarImagenPerfilActual(imagenPerfilActual) {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             imagenPerfilActual.src = user.photoURL;
-
         }
         else {
             location.href = "../html/iniciarSesion.html";
         }
     });
 }
-
-//Carga la imagen del usuario logeado
-export function cargarDatosPerfil(imagenPerfilActual, parrafoNickname, campoCorreo, campoNombre, campoApellidos, campoNickname) {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            imagenPerfilActual.src = user.photoURL;
-            parrafoNickname.innerHTML += user.displayName;
-            campoCorreo.value = user.email;
-            campoApellidos.value = localStorage.getItem("apellidos");
-            campoNombre.value = localStorage.getItem("nombre");
-            campoNickname.value = user.displayName;
-        }
-        else {
-            location.href = "../html/iniciarSesion.html";
-        }
-    });
-}
-
 
 export async function mandarMensaje(mensajeMandado) {
     console.log(mensajeMandado);
@@ -258,3 +243,6 @@ export async function mandarMensaje(mensajeMandado) {
         mensaje: mensajeMandado
     });
 }
+
+/*-----------------------------------------ANUNCIOS------------------------------------------------*/
+export const listaAnunciosActualizado = (funcion) => onSnapshot(collection(db, "Anuncios"), funcion);

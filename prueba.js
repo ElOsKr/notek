@@ -3,11 +3,18 @@ import { doc, setDoc, db } from "/js/firebase.js";
 document.addEventListener("readystatechange", cargarEventos, false);
 
 function cargarEventos() {
-    // Add a new document in collection "cities"
-    setDoc(doc(db, "ciudades", "LA"), {
-        name: "Los Angeles",
-        state: "CA",
-        country: "USA"
-    });
-    console.log("Hola")
+    document.getElementById("descargar").addEventListener("click", descargar)
+}
+
+function descargar() {
+    let link = document.getElementById("a");
+    link.download = 'hello.txt';
+
+    let blob = new Blob(['Hello, world!'], { type: 'text/plain' });
+
+    link.href = URL.createObjectURL(blob);
+
+    link.click();
+
+    URL.revokeObjectURL(link.href);
 }

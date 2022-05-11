@@ -30,6 +30,7 @@ function mantenerSesionActiva() {
             localStorage.setItem("id", user.email);
             localStorage.setItem("idChat", "");
             localStorage.setItem("idChatInverso", "");
+            localStorage.setItem("imagenPerfil", "");
         } else {
             // User is signed out
             location.href = "../index.html";

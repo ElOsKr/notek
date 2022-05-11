@@ -68,20 +68,6 @@ function comprobarResultadosBusqueda() {
     }
 }
 
-async function saberExistenciaChat() {
-    const referenciaChat = doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats", localStorage.getItem("idChatInverso"));
-    const chat = await getDoc(referenciaChat);
-    //Si existe el chat retorna true
-    if (chat.exists()) {
-        console.log("Existe el chat");
-        console.log(localStorage.getItem("idChat"));
-        return true;
-    } else {
-        console.log("No Existe el chat");
-        return false;
-    }
-}
-
 function iniciarChat(listaBotonesIniciarChat) {
     //Coger datos del usuario activo
     const auth = getAuth();

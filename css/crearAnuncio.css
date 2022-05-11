@@ -1,0 +1,29 @@
+body {
+    background-color: #393E46;
+}
+
+#contenidoAnuncio {}
+
+#contenidoAnuncio::-webkit-scrollbar {
+    width: 10px;
+    background: white;
+}
+
+#contenidoAnuncio::-webkit-scrollbar-thumb {
+    background: #59616e;
+    border-radius: 20px;
+}
+
+/*Ocultar el logo del plugin*/
+.tox-statusbar__branding {
+    display: none !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #59616e;
+    border-radius: 20px;
+}
