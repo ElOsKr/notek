@@ -30,10 +30,8 @@ function guardarApuntes(){
         alert("Error");
       }
     }
+  }
   xhttp.open("POST", "comprobarApuntes.php");
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send(cadena);    
-}
-
-
+  xhttp.send(cadena);   
 }
