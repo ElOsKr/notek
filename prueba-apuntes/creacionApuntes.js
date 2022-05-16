@@ -23,8 +23,8 @@ function guardarApuntes(){
   xhttp.onload = function() {
     if(this.readyState==4 && this.status==200){
       var comprobar=JSON.parse(this.responseText);
-      if(!Number.isNaN(comprobar)){
-        $("#idApuntes").val(comprobar[2])
+      if(isNaN(comprobar)==false){
+        document.getElementById("idApuntes").value=comprobar
         alert("Todo bien pa")
       }else if(comprobar=="error"){
         alert("Error");

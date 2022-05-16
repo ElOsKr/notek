@@ -20,7 +20,7 @@
             $sentencia=$this->conn->prepare("select * from apuntes.apuntes order by id desc limit 1");
             $sentencia->execute();
             $result = $sentencia->fetch(PDO::FETCH_ASSOC);
-            return $result;
+            return $result['id'];
         }
 
 
