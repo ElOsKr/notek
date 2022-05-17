@@ -23,6 +23,14 @@
             return $result['id'];
         }
 
+        public function obtenerInfo($id){
+            $datos=array(':id'=>$id);
+            $sentencia=$this->conn->prepare("select title,content from apuntes.apuntes where id=:id");
+            $sentencia->execute($datos);
+            $result = $sentencia->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+
 
         public function modificarApuntes($titulo,$contenido,$id){
             $datos=array(':titulo'=>$titulo,':contenido'=>$contenido,':id'=>$id);
@@ -85,6 +93,15 @@
                 echo json_encode("error");
             }
         }
+    }
+
+    if(isset($_POST['o'])){
+        $id=json_decode($_POST['o']);
+        $cone=new conexion2();
+        $info=$cone->obtenerInfo($id);
+        $datos=[1,$info];
+        echo json_encode($datos);
+        die();
     }
 
 ?>
