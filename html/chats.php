@@ -48,7 +48,7 @@
                         </div>
                         <div class="cajaChat mt-1">
                         </div>
-                        <div id="formulario" autocomplete="off" class="px-1 pb-1">
+                        <div id="formulario" autocomplete="off" class="px-1 pt-1">
                             <input type="text" class="form-control" placeholder="Enviar mensaje" id="inputChat" />
                             <div class="input-group-append">
                                 <button class="btn botonEnviar" type="submit">Enviar</button>

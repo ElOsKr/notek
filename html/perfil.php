@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="../css/sidebar.css">
     <script src="../js/jquery-3.6.0.min.js"></script>
     <style>
-        .page{
+        .page {
             position: relative;
         }
     </style>

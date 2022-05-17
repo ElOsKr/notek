@@ -107,9 +107,9 @@ async function actualizarCampos() {
     console.log("URL: " + urlImagen);
     const usuarioRef = doc(db, "Usuarios", localStorage.getItem("id"));
     return updateDoc(usuarioRef, {
-        idUsuario: campoNickname.value,
-        nombre: campoNombre.value,
-        apellidos: campoApellidos.value,
+        idUsuario: $.trim(campoNickname.value),
+        nombre: $.trim(campoNombre.value),
+        apellidos: $.trim(campoApellidos.value),
         imagenUsuario: urlImagen
     });
 
@@ -166,7 +166,7 @@ function actualizar(auth) {
             });
             //Actualizo la foto actual
             await updateProfile(auth.currentUser, {
-                displayName: campoNickname.value,
+                displayName: $.trim(campoNickname.value),
                 photoURL: urlImagen
             }).then(async () => {
                 //Actualizo los campos de Firebase Firestore
@@ -178,21 +178,21 @@ function actualizar(auth) {
 
 function validarCampos() {
     let arrayErrores = [];
-    if (campoNickname.value == "") {
+    if ($.trim(campoNickname.value) == "") {
         arrayErrores.push(false);
         mostrarErrores(0, "Introduzca un nickname");
         cambiarEstilosCajas();
     } else
         arrayErrores.push(true);
 
-    if (campoNombre.value == "") {
+    if ($.trim(campoNombre.value) == "") {
         arrayErrores.push(false);
         mostrarErrores(1, "Introduzca un nombre");
         cambiarEstilosCajas();
     } else
         arrayErrores.push(true);
 
-    if (campoApellidos.value == "") {
+    if ($.trim(campoApellidos.value) == "") {
         arrayErrores.push(false);
         mostrarErrores(2, "Introduzca unos apellidos");
         botonConfirmar.classList.add("mb-1");

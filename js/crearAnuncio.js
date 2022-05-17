@@ -8,8 +8,45 @@ const storage = getStorage();
 
 function cargarEventos() {
     cargarTextarea();
-    btnCrearAnuncio.addEventListener("click", subirAnuncio);
+    btnCrearAnuncio.addEventListener("click", validarCampos);
+}
 
+function validarCampos() {
+    let contenidoAnuncio = tinymce.get("contenidoAnuncio").getContent({ format: "text" });
+
+    if ($.trim(tituloAnuncio.value) == "") {
+        mostrarErrores(0, "Introduzca algún título");
+    }
+    else if($.trim(tituloAnuncio.value).length > 30) {
+        mostrarErrores(0, "No introduzca más de 30 caracteres")
+    }
+    else{
+        quitarErrores(0);
+    }
+
+    //Lo valido quitando los espacios en blanco
+    if ($.trim(contenidoAnuncio) == "") {
+        mostrarErrores(1, "Introduzca algún contenido")
+    }
+    else {
+        quitarErrores(1);
+    }
+
+    if ($.trim(tituloAnuncio.value) != "" && $.trim(tituloAnuncio.value).length <= 30 && $.trim(contenidoAnuncio) != "") {
+        subirAnuncio();
+    }
+}
+
+function quitarErrores(indice) {
+    let error = document.getElementsByClassName("errores")[indice];
+    error.innerText = "";
+    error.style.display = "none";
+}
+
+function mostrarErrores(indice, advertencia) {
+    let error = document.getElementsByClassName("errores")[indice];
+    error.innerText = advertencia;
+    error.style.display = "block";
 }
 
 function subirAnuncio() {
@@ -27,10 +64,11 @@ function subirAnuncio() {
                 const anuncio = await addDoc(collection(db, "Anuncios"), {
                     idUsuario: user.displayName,
                     imagenUsuario: user.photoURL,
-                    titulo: tituloAnuncio.value,
+                    titulo: $.trim(tituloAnuncio.value),
                     contenido: contenidoTextarea,
                     fechaPublicado: Date.now(),
-                    archivoSeleccionado: ""
+                    archivoSeleccionado: "",
+                    tipoArchivo: ""
                 });
                 //Si se creo todo correctamente te redirige
                 if (anuncio != null) {
@@ -47,6 +85,7 @@ function subirAnuncio() {
 
 function subirArchivo(user, contenidoTextarea) {
     let archivo = seleccionarArchivo.files[0];
+    //Aqui se crea un id para que el archivo no se sobreescriba en el Storage de firebase
     const storageRef = ref(storage, 'Anuncios/' + Date.now() + "-" + archivo.name);
     //Se sube a Firebase 
     return uploadBytes(storageRef, archivo).then(() => {
@@ -56,11 +95,13 @@ function subirArchivo(user, contenidoTextarea) {
                 const anuncio = await addDoc(collection(db, "Anuncios"), {
                     idUsuario: user.displayName,
                     imagenUsuario: user.photoURL,
-                    titulo: tituloAnuncio.value,
+                    titulo: $.trim(tituloAnuncio.value),
                     contenido: contenidoTextarea,
                     fechaPublicado: Date.now(),
-                    archivoSeleccionado: url
+                    archivoSeleccionado: url,
+                    tipoArchivo: archivo.name.substring(archivo.name.length - 3)
                 });
+                //Cuando se cargue el anuncio redirigira al usuario al inicio
                 if (anuncio != null) {
                     console.log(anuncio);
                     location.href = "../html/tablonAnuncios.php";

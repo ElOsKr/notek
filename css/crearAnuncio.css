@@ -2,7 +2,6 @@ body {
     background-color: #393E46;
 }
 
-#contenidoAnuncio {}
 
 #contenidoAnuncio::-webkit-scrollbar {
     width: 10px;
@@ -26,4 +25,11 @@ body {
 ::-webkit-scrollbar-thumb {
     background: #59616e;
     border-radius: 20px;
+}
+
+/*Estilos por defecto de los mensajes de error*/
+.errores {
+    color: red;
+    display: none;
+    margin: 5px 0px 0px;
 }
