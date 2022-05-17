@@ -2,6 +2,8 @@ document.addEventListener("readystatechange", cargarEventos, false);
 const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 function cargarEventos() {
   obtenerApuntes();
+  document.getElementById("botonVer").addEventListener("click",function(){location.href="./verApuntes.php?id="+document.getElementById("idApuntes").value})
+  document.getElementById("regresarApuntes").addEventListener("click",function(){location.href="./inicioApuntes.php"})
   document.getElementById("botonGuardar").addEventListener("click",guardarApuntes);
   tinymce.init({
       selector: 'textarea#default-editor',
