@@ -21,7 +21,7 @@
             include '../html/sidebar.php'
         ?>
         <div class="content">
-            <input type="hidden" id="idApuntes">
+            <input type="hidden" id="idApuntes" <?php if(isset($_GET['id'])){echo 'value='.$_GET['id'];}?>>
             <div class="container mt-4 text-center">
                 <h1 class="text-center">
                     <button class="btn text-light text-center me-2 mt-3" id="regresarApuntes">

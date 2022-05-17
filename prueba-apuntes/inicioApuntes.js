@@ -16,7 +16,7 @@ function comprobarApuntes(){
                 var html="";
                 comprobar[1].forEach(apunte=>{
                     html +=`
-                    <p><a href='apuntes.php' class="text-light">${apunte["title"]}</a><p>
+                    <p><a href='apuntes.php?id=${apunte["id"]}' class="text-light">${apunte["title"]}</a><p>
                     `;
                 })
                 document.getElementById("content").innerHTML=html;
