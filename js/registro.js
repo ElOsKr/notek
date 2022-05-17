@@ -17,7 +17,7 @@ function cargarEventos() {
         if (arrayFallos.filter(x => x === true).length === 5) {
             e.preventDefault();
             //Con el siguiente metodo valida en Firebase si el correo introducido por el usuario ya existia
-            const resultado = crearUsuario($.trim(correo.value), $.trim(contrasena.value), $.trim(idRegistro.value), $.trim(nombre.value), $.trim(apellidos.value), correoFallo);
+            const resultado = crearUsuario($.trim(correo.value.toLowerCase()), $.trim(contrasena.value), $.trim(idRegistro.value), $.trim(nombre.value), $.trim(apellidos.value), correoFallo);
         }
     });
 }

@@ -1,6 +1,6 @@
 import { doc, db, getAuth, getDoc, onAuthStateChanged, addDoc, collection, ref, uploadBytes, getDownloadURL, getStorage } from "./firebase.js"
 document.addEventListener("readystatechange", cargarEventos, false);
-
+const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const btnCrearAnuncio = document.getElementById("btnCrearAnuncio");
 const tituloAnuncio = document.getElementById("tituloAnuncio");
 const seleccionarArchivo = document.getElementById("seleccionarArchivo");
@@ -117,6 +117,9 @@ function subirArchivo(user, contenidoTextarea) {
 function cargarTextarea() {
     tinymce.init({
         selector: 'textarea#contenidoAnuncio',
-        language: 'es'
+        language: 'es',
+        plugins: 'autoresize',
+        skin: useDarkMode ? 'oxide-dark' : 'oxide',
+        content_css: useDarkMode ? 'dark' : 'default'
     });
 }

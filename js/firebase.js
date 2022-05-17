@@ -55,7 +55,7 @@ export const iniciarSesion = (correo, contrasena) => {
             // Inició sesion
             const user = userCredential.user;
 
-            setTimeout(location.replace("../html/inicioApp.php"), 500);
+            setTimeout(location.replace("../html/tablonAnuncios.php"), 500);
             console.log("Iniciando Sesion con " + user);
         })
         .catch((error) => {

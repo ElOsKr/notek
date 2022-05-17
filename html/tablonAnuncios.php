@@ -39,9 +39,6 @@
     <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle">+</a>
     <script src="../js/sidebar.js"></script>
     <script src="../venobox/venobox.min.js"></script>
-    <script>
-        $('.venobox').venobox();
-    </script>
     <script type="module" src="../js/tablonAnuncios.js"></script>
 </body>
 

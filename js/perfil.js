@@ -59,7 +59,9 @@ function preseleccionarFoto() {
 }
 
 function cargarDatosUsuario() {
+    console.log(idUsuario)
     const usuario = onSnapshot(doc(db, "Usuarios", idUsuario), (doc) => {
+        console.log(doc.data().idUsuario)
         imagenPerfilActual.src = doc.data().imagenUsuario;
         nicknamePerfilActual.innerHTML = doc.data().idUsuario;
         campoApellidos.value = doc.data().apellidos;

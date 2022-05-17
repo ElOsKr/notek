@@ -6,15 +6,14 @@ import {
 document.addEventListener("readystatechange", cargarEventos, false);
 
 const cajaIntroducirAnuncio = document.getElementsByClassName("cajaIntroducirAnuncio")[0];
-const cajaIntroducirContenido = document.getElementsByClassName("cajaIntroducirContenido")[0];
 
 function cargarEventos() {
-    actualizaBienanuncioss();
+    actualizaBienAnuncios();
     mantenerSesionActiva();
 }
 
 //Esta funcion evita que haya repeticiones a la hora de que detecte cambios en firebase
-function actualizaBienanuncioss() {
+function actualizaBienAnuncios() {
     const referenciaAnuncios = collection(db, "Anuncios");
     const consulta = query(referenciaAnuncios, orderBy("fechaPublicado", "desc"));
     const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
@@ -38,7 +37,8 @@ function actualizaBienanuncioss() {
 
 function listaAnunciosActualizados(anuncios) {
     let html = "";
-    let htmlComentarios = "";
+    let htmlComentariosEstructura = "";
+    //Recorro los anuncios
     anuncios.forEach(anuncios => {
         let link = "";
         let fecha = new Date(anuncios.fechaPublicado);
@@ -85,7 +85,7 @@ function listaAnunciosActualizados(anuncios) {
                 </div>
                 `;
 
-        htmlComentarios += `
+        htmlComentariosEstructura += `
         <div id="${anuncios.id}" style="display:none; " class="w-100">
             <div class="container cajaTotalComentarios">
                 <div class="row">
@@ -93,48 +93,31 @@ function listaAnunciosActualizados(anuncios) {
                         <h2 class="my-3 text-center text-white">Comentarios</h2>
                     </div>
                 </div>
-                <div class="row cajaComentarios">
-                    <div class="col-12 py-2 px-2">
-                        <div data-id="" class="d-block w-100 p-3 comentario" style="display:inline-flex;">
-                            <div class="texto text-white" data-id="">
-                                <img data-id="" class="imagenPerfil" srcset="https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/ImagenesPerfilUsuario%2Fdavidmanrique15%40gmail.com%2Fdavidmanrique15%40gmail.com?alt=media&token=a3b889ea-747e-4d55-b0d7-dfe62cd42485" alt="imagenChat" />
-                                <h4 class="text-md-start" data-id="">Davman15</h4>
-                                <p class=" ultimoMensaje text-md-start" data-id="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae ipsum totam delectus explicabo possimus nihil perferendis neque atque quaerat deserunt reprehenderit, in praesentium iusto. Nam voluptatibus vero sequi quidem ut?</p>
-                                <span class="tiempo text-md-end float-end" data-id="">16/5/2022 17:25</span>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 py-2 px-2">
-                        <div data-id="" class="d-block w-100 p-3 comentario" style="display:inline-flex;">
-                            <img data-id="" class="imagenPerfil" srcset="https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/ImagenesPerfilUsuario%2Fdavidmanrique15%40gmail.com%2Fdavidmanrique15%40gmail.com?alt=media&token=a3b889ea-747e-4d55-b0d7-dfe62cd42485" alt="imagenChat" />
-                            <div class="texto text-white" data-id="">
-                                <h4 class="text-md-start" data-id="">Davman15</h4>
-                                <p class=" ultimoMensaje text-md-start" data-id="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae ipsum totam delectus explicabo possimus nihil perferendis neque atque quaerat deserunt reprehenderit, in praesentium iusto. Nam voluptatibus vero sequi quidem ut?</p>
-                                <span class="tiempo text-md-end float-end" data-id="">16/5/2022 17:25</span>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row cajaComentarios ${anuncios.id}">
+                    
                 </div>
                 <div id="formulario" class="px-0 pb-1 pt-2">
                     <input type="text" class="form-control" placeholder="Enviar comentario" id="inputChat" />
                     <div class="input-group-append">
-                        <button class="btn btn-success" type="submit">Enviar</button>
+                        <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
                     </div>
                 </div>
             </div>
         </div>
     `;
-    actualizaBienComentarios(anuncios.id);
+        actualizaBienComentarios(anuncios.id);
     });
-    cajaIntroducirAnuncio.innerHTML = html + htmlComentarios;
+    cajaIntroducirAnuncio.innerHTML = html + htmlComentariosEstructura;
+
     //Se inicializa el venobox
     $('.venobox').venobox();
+
+    const listaBotonesMandarComentario = document.querySelectorAll(".botonMandarComentario");
+    enviarComentario(listaBotonesMandarComentario)
 }
 
 function actualizaBienComentarios(id) {
-    const referenciaComentarios = collection(db, "Anuncios/"+id+"/Comentarios");
+    const referenciaComentarios = collection(db, "Anuncios/" + id + "/Comentarios");
     const consulta = query(referenciaComentarios, orderBy("fechaComentario", "desc"));
     const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
         const comentarios = [];
@@ -144,15 +127,71 @@ function actualizaBienComentarios(id) {
                 idUsuario: doc.data().idUsuario,
                 fechaComentario: doc.data().fechaComentario,
                 imagenUsuario: doc.data().imagenUsuario,
-                contenido: doc.data().contenido
-            })
+                contenido: doc.data().contenido,
+                idAnuncio: doc.data().idAnuncio
+            });
         });
-        listaComentariosActualizados(comentarios);
+        listaComentariosActualizados(comentarios, id);
     });
 }
 
-function listaComentariosActualizados(comentarios) {
+//Aqui se cargan los comentarios nada mas en cada div del venobox
+function listaComentariosActualizados(comentarios, id) {
     let htmlComentarios = "";
+    //Si no hay comentarios aparecerá este div
+    if (comentarios.length == 0) {
+        htmlComentarios += `
+            <div class="col-12 py-2 px-2">
+                <div data-id="" class="d-block w-100 p-3 comentario mt-5" style="display:inline-flex;">
+                        <div class="texto text-white " data-id="">
+                            <h4 class="text-center">No hay comentarios</h4>
+                        </div>
+                </div>
+            </div>
+            `;
+        $("." + id).html(htmlComentarios);
+    }
+    //Si hay comentarios
+    else {
+        comentarios.forEach(comentarios => {
+            let fecha = new Date(comentarios.fechaComentario);
+            let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
+
+            htmlComentarios += `
+                    <div class="col-12 py-2 px-2">
+                        <div data-id="" class="d-block w-100 p-3 comentario" style="display:inline-flex;">
+                            <div class="texto text-white" data-id="">
+                                <img data-id="" class="imagenPerfil" srcset="${comentarios.imagenUsuario}" alt="imagenChat" />
+                                <h4 class="text-md-start" data-id="">${comentarios.idUsuario}</h4>
+                                <p class=" ultimoMensaje text-md-start" data-id="">${comentarios.contenido}</p>
+                                <span class="tiempo text-md-end float-end" data-id="">${formatearFecha}</span>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            //Aqui se pone el comentario para insertarlo en una div que tiene como clase el id del Anuncio
+            $("." + id).html(htmlComentarios);
+        });
+    }
+}
+
+function enviarComentario(listaBotonesMandarComentario) {
+    console.log(listaBotonesMandarComentario);
+    listaBotonesMandarComentario.forEach(boton => {
+        console.log(boton);
+        //Saco el id que lleva cada uno
+        /*boton.addEventListener("click", (evento) => {
+            console.log(boton);
+            const id = evento.target.dataset.id;
+            let referenciaComentarios = collection(db, "Anuncios", id, "Comentarios");
+            console.log(id);
+        });*/
+        boton.addEventListener('click', function () {
+            self._showContent("hola");
+        });
+    });
 }
 
 function mantenerSesionActiva() {
