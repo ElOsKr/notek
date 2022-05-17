@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tablon de anuncios</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../venobox/venobox.min.css">
     <link rel="stylesheet" href="../css/tablonAnuncios.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <script src="../js/jquery-3.6.0.min.js"></script>
@@ -38,8 +37,9 @@
     </div>
     <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle">+</a>
     <script src="../js/sidebar.js"></script>
-    <script src="../venobox/venobox.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../js/tablonAnuncios.js"></script>
+    
 </body>
 
 </html>

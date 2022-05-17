@@ -53,9 +53,85 @@
                                     </p>
                                 </div>
                                 <br>
-                                <a class="venobox" data-overlay="#393b44" data-vbtype="inline" href="#panel">
-                                    <button class="btn btn-secondary my-2 text-white float-start " id="boton">Comentarios</button>
-                                </a>
+
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#panel">
+                                    Comentarios
+                                </button>
+
+                                <!-- Modal -->
+                                <div class="modal fade " id="panel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content" style="background-color: #222831;">
+
+                                            <div class="modal-body">
+                                                <div class="container cajaTotalComentarios">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h2 class="my-3 text-center text-white">Comentarios</h2>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row cajaComentarios">
+                                                        <div class="col-12 py-2 px-2">
+                                                            <div data-id="${chat.id}" class="d-block w-100 p-3 comentario" style="display:inline-flex;">
+                                                                <div class="texto text-white" data-id="${chat.id}">
+                                                                    <img data-id="${chat.id}" class="imagenPerfil" srcset="https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/ImagenesPerfilUsuario%2Fdavidmanrique15%40gmail.com%2Fdavidmanrique15%40gmail.com?alt=media&token=a3b889ea-747e-4d55-b0d7-dfe62cd42485" alt="imagenChat" />
+                                                                    <h4 class="text-md-start" data-id="${chat.id}">Davman15</h4>
+                                                                    <p class=" ultimoMensaje text-md-start" data-id="${chat.id}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae ipsum totam delectus explicabo possimus nihil perferendis neque atque quaerat deserunt reprehenderit, in praesentium iusto. Nam voluptatibus vero sequi quidem ut?</p>
+                                                                    <span class="tiempo text-md-end float-end" data-id="${chat.id}">16/5/2022 17:25</span>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 py-2 px-2">
+                                                            <div data-id="${chat.id}" class="d-block w-100 p-3 comentario" style="display:inline-flex;">
+                                                                <img data-id="${chat.id}" class="imagenPerfil" srcset="https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/ImagenesPerfilUsuario%2Fdavidmanrique15%40gmail.com%2Fdavidmanrique15%40gmail.com?alt=media&token=a3b889ea-747e-4d55-b0d7-dfe62cd42485" alt="imagenChat" />
+                                                                <div class="texto text-white" data-id="${chat.id}">
+                                                                    <h4 class="text-md-start" data-id="${chat.id}">Davman15</h4>
+                                                                    <p class=" ultimoMensaje text-md-start" data-id="${chat.id}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae ipsum totam delectus explicabo possimus nihil perferendis neque atque quaerat deserunt reprehenderit, in praesentium iusto. Nam voluptatibus vero sequi quidem ut?</p>
+                                                                    <span class="tiempo text-md-end float-end" data-id="${chat.id}">16/5/2022 17:25</span>
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="formulario" class="px-0 pb-1 pt-2">
+                                                        <input type="text" class="form-control" placeholder="Enviar comentario" id="inputChat" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-success botoncillo">Enviar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade " id="${anuncios.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content" style="background-color: #222831;">
+
+                                            <div class="modal-body">
+                                                <div class="container cajaTotalComentarios">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h2 class="my-3 text-center text-white">Comentarios</h2>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row cajaComentarios">
+
+                                                    </div>
+                                                    <div id="formulario" class="px-0 pb-1 pt-2">
+                                                        <input type="text" class="form-control" placeholder="Enviar comentario" id="inputChat" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <br>
                                 <br>
                                 <a href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Enlace descargar archivo auxiliar</a>
@@ -181,7 +257,7 @@
     </div>
 
     <!----------------------Panel de comentarios---------------------------------->
-    <div id="panel" style="display:none; " class="w-100">
+    <!--<div id="panel" style="display:none; " class="modal-dialog modal-xl">
         <div class="container cajaTotalComentarios">
             <div class="row">
                 <div class="col-12">
@@ -215,19 +291,25 @@
             <div id="formulario" class="px-0 pb-1 pt-2">
                 <input type="text" class="form-control" placeholder="Enviar comentario" id="inputChat" />
                 <div class="input-group-append">
-                    <button class="btn btn-success" type="submit">Enviar</button>
+                    <button class="btn btn-success botoncillo">Enviar</button>
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!----------------------------------------------------------------------------->
     <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle">+</a>
 
     <!--<script type="module" src="../js/tablonAnuncios.js"></script>-->
     <script src="../js/sidebar.js"></script>
     <script src="../venobox/venobox.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
     <script>
-        $('.venobox').venobox();
+        const boton = document.getElementsByClassName("botoncillo")[0];
+        boton.addEventListener("click", hola);
+
+        function hola() {
+            console.log("hola")
+        }
     </script>
 </body>
 

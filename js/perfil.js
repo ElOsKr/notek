@@ -17,6 +17,7 @@ const nicknamePerfilActual = document.getElementsByClassName("nicknameActual")[0
 const seleccionarImagen = document.getElementById("seleccionImagen");
 const btnResetearContra = document.getElementById("resetearContra");
 let urlImagen = localStorage.getItem("imagenPerfil");
+let urlImagenAnterior="";
 
 //Id usuario
 const idUsuario = localStorage.getItem("id");
@@ -62,6 +63,7 @@ function cargarDatosUsuario() {
     console.log(idUsuario)
     const usuario = onSnapshot(doc(db, "Usuarios", idUsuario), (doc) => {
         console.log(doc.data().idUsuario)
+        urlImagenAnterior=doc.data().imagenUsuario;
         imagenPerfilActual.src = doc.data().imagenUsuario;
         nicknamePerfilActual.innerHTML = doc.data().idUsuario;
         campoApellidos.value = doc.data().apellidos;
@@ -106,7 +108,11 @@ function guardarCambios() {
 
 //Actualizo los campos del Usuario referenciados en Firestore
 async function actualizarCampos() {
-    console.log("URL: " + urlImagen);
+    //Aqui controlo si el usuario no selecciona nada 
+    if(urlImagen==""){
+        urlImagen=urlImagenAnterior;
+    }
+
     const usuarioRef = doc(db, "Usuarios", localStorage.getItem("id"));
     return updateDoc(usuarioRef, {
         idUsuario: $.trim(campoNickname.value),

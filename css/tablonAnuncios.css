@@ -98,10 +98,6 @@ body {
 }
 
 .cajaComentarios::-webkit-scrollbar-thumb {
-    background: #222831 !important;
-    border-radius: 20px !important;
-}
-
-.vbox-figlio {
-    background: #222831 !important;
+    background: #222831 ;
+    border-radius: 20px;
 }

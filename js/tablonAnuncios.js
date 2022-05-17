@@ -1,12 +1,13 @@
 import {
     db, onSnapshot,
-    collection, query, orderBy, getAuth, onAuthStateChanged
+    collection, query, orderBy, getAuth, onAuthStateChanged, addDoc
 } from "./firebase.js"
 
 document.addEventListener("readystatechange", cargarEventos, false);
 
 const cajaIntroducirAnuncio = document.getElementsByClassName("cajaIntroducirAnuncio")[0];
-
+const inputComentario = document.getElementsByClassName("inputComentario");
+const cajaComentarios = document.getElementsByClassName("cajaComentarios");
 function cargarEventos() {
     actualizaBienAnuncios();
     mantenerSesionActiva();
@@ -40,6 +41,7 @@ function listaAnunciosActualizados(anuncios) {
     let htmlComentariosEstructura = "";
     //Recorro los anuncios
     anuncios.forEach(anuncios => {
+        let contador = 0;
         let link = "";
         let fecha = new Date(anuncios.fechaPublicado);
         let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
@@ -72,10 +74,8 @@ function listaAnunciosActualizados(anuncios) {
                                 ${anuncios.contenido}
                                 </p>
                             </div>
-                            <br>
-                            <a class="venobox" data-overlay="#393b44" data-vbtype="inline" href="#${anuncios.id}">
-                                <button class="btn btn-secondary my-2 text-white float-start " id="boton${anuncios.id}">Comentarios</button>
-                            </a>
+                            <br>      
+                                <button class="btn btn-secondary my-2 text-white float-start " data-bs-toggle="modal" data-bs-target="#boton${anuncios.id}" id="${anuncios.id}">Comentarios</button>
                             <br>
                             <br>
                             ${link}
@@ -84,41 +84,51 @@ function listaAnunciosActualizados(anuncios) {
                     </div>
                 </div>
                 `;
-
+        //Se pone en boton+id para poder linkear el modal con cada boton
+        //Se pone cajaComentarios+id para poder saber donde se meteran los comentarios mediante innerHTML
+        //Se pone data-id=id para poder identificar cada boton y asi es mas facil de introducir en Firebase
         htmlComentariosEstructura += `
-        <div id="${anuncios.id}" style="display:none; " class="w-100">
-            <div class="container cajaTotalComentarios">
-                <div class="row">
-                    <div class="col-12">
-                        <h2 class="my-3 text-center text-white">Comentarios</h2>
-                    </div>
-                </div>
-                <div class="row cajaComentarios ${anuncios.id}">
-                    
-                </div>
-                <div id="formulario" class="px-0 pb-1 pt-2">
-                    <input type="text" class="form-control" placeholder="Enviar comentario" id="inputChat" />
-                    <div class="input-group-append">
-                        <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
+            <div class="modal fade " id="boton${anuncios.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content" style="background-color: #222831;">
+                        <div class="modal-body">
+                            <div class="container cajaTotalComentarios">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h2 class="my-3 text-center text-white">Comentarios</h2>
+                                    </div>
+                                </div>
+                                <div class="row cajaComentarios cajaComentarios${anuncios.id}">
+
+                                </div>
+                                <div id="formulario" class="px-0 pb-1 pt-2">
+                                    <input type="text" class="form-control inputComentario" placeholder="Enviar comentario" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     `;
+        //Aqui recoge los comentarios de cada anuncio
         actualizaBienComentarios(anuncios.id);
+        /*Esto baja el scroll automaticamente sin que lo tenga que hacer el usuario*/
+        $(".cajaComentarios" + anuncios.id).each(function () { this.scrollTop = this.scrollHeight; });
     });
     cajaIntroducirAnuncio.innerHTML = html + htmlComentariosEstructura;
 
-    //Se inicializa el venobox
-    $('.venobox').venobox();
-
+    //Saco una lista de elementos (en este caso botones) que tengan la clase botonMandarComentario 
     const listaBotonesMandarComentario = document.querySelectorAll(".botonMandarComentario");
-    enviarComentario(listaBotonesMandarComentario)
+    enviarComentario(listaBotonesMandarComentario);
 }
 
 function actualizaBienComentarios(id) {
     const referenciaComentarios = collection(db, "Anuncios/" + id + "/Comentarios");
-    const consulta = query(referenciaComentarios, orderBy("fechaComentario", "desc"));
+    //Lo ordeno los comentarios por el campo fechaComentario y de forma ascendente
+    const consulta = query(referenciaComentarios, orderBy("fechaComentario", "asc"));
     const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
         const comentarios = [];
         querySnapshot.forEach((doc) => {
@@ -135,7 +145,7 @@ function actualizaBienComentarios(id) {
     });
 }
 
-//Aqui se cargan los comentarios nada mas en cada div del venobox
+//Aqui se cargan los comentarios nada mas en cada div del modal
 function listaComentariosActualizados(comentarios, id) {
     let htmlComentarios = "";
     //Si no hay comentarios aparecerá este div
@@ -149,7 +159,8 @@ function listaComentariosActualizados(comentarios, id) {
                 </div>
             </div>
             `;
-        $("." + id).html(htmlComentarios);
+        //Aqui se pone el comentario para insertarlo en el div correspondiente
+        $(".cajaComentarios" + id).html(htmlComentarios);
     }
     //Si hay comentarios
     else {
@@ -171,27 +182,36 @@ function listaComentariosActualizados(comentarios, id) {
                     </div>
                 `;
 
-            //Aqui se pone el comentario para insertarlo en una div que tiene como clase el id del Anuncio
-            $("." + id).html(htmlComentarios);
+            //Aqui se pone el comentario para insertarlo en el div correspondiente
+            $(".cajaComentarios" + id).html(htmlComentarios);
+            /*Esto baja el scroll automaticamente sin que lo tenga que hacer el usuario*/
+            $(".cajaComentarios" + id).each(function () { this.scrollTop = this.scrollHeight; });
         });
     }
 }
 
+//Asignar un evento a cada boton para añadir un comentario en la subcoleccion correspondiente
 function enviarComentario(listaBotonesMandarComentario) {
-    console.log(listaBotonesMandarComentario);
-    listaBotonesMandarComentario.forEach(boton => {
-        console.log(boton);
-        //Saco el id que lleva cada uno
-        /*boton.addEventListener("click", (evento) => {
-            console.log(boton);
+    //Recorro la lista de Botones 
+    for (let i = 0; i < listaBotonesMandarComentario.length; i++) {
+        //Aqui le añado un evento a cada boton
+        listaBotonesMandarComentario[i].addEventListener("click", async (evento) => {
+            //Recojo la referencia del id del Anuncio
             const id = evento.target.dataset.id;
-            let referenciaComentarios = collection(db, "Anuncios", id, "Comentarios");
-            console.log(id);
-        });*/
-        boton.addEventListener('click', function () {
-            self._showContent("hola");
+            //Si en el input correspondiente hay caracteres quitandole los espacios
+            if ($.trim(inputComentario[i].value) != "") {
+                //Hago la referencia en Firebase para situarme en la subcoleccion de Comentarios y añadirlo a Firebase
+                let referenciaComentarios = await addDoc(collection(db, "Anuncios", id, "Comentarios"), {
+                    idUsuario: localStorage.getItem("id"),
+                    fechaComentario: Date.now(),
+                    imagenUsuario: localStorage.getItem("imagenPerfil"),
+                    contenido: inputComentario[i].value
+                });
+                inputComentario[i].value = "";
+            }
         });
-    });
+
+    }
 }
 
 function mantenerSesionActiva() {
@@ -201,7 +221,7 @@ function mantenerSesionActiva() {
             localStorage.setItem("id", user.email);
             localStorage.setItem("idChat", "");
             localStorage.setItem("idChatInverso", "");
-            localStorage.setItem("imagenPerfil", "");
+            localStorage.setItem("imagenPerfil", user.photoURL);
         } else {
             // User is signed out
             location.href = "../index.html";
