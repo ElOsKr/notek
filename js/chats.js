@@ -94,7 +94,7 @@ function listaChatsActualizados(chats) {
 //Funcion que mostrará todas los chats que concidan con la busqueda
 function listaChatsBuscados() {
     listaChats.innerHTML = "";
-    const textoUsuario = input_BuscarChat.value.toLowerCase();
+    const textoUsuario = $.trim(input_BuscarChat.value).toLowerCase();
     //Se llama a una funcion que coge la subcoleccion de chats del actual usuario 
     listaChatsBuscado((chats) => {
         chats.forEach((doc) => {
@@ -217,8 +217,8 @@ function cargarMensajesChat() {
 }
 
 function enviarMensaje() {
-    if (inputEnviar.value != "") {
-        mandarMensaje(inputEnviar.value);
+    if ($.trim(inputEnviar.value) != "") {
+        mandarMensaje($.trim(inputEnviar.value));
         inputEnviar.value = "";
     }
 }
@@ -228,11 +228,11 @@ function enviarMensaje() {
 
 //Si esta vacio de ejecuta la lista de Chats que tenga ya el usuario
 function buscarChat() {
-    if (input_BuscarChat.value == "") {
+    if ($.trim(input_BuscarChat.value) == "") {
         actualizaBienChats();
     }
     //Si no esta vacio se imprimirá una lista de usuarios con los que coincida la busqueda 
-    else if (input_BuscarChat.value != "") {
+    else if ($.trim(input_BuscarChat.value) != "") {
         listaChatsBuscados();
     }
 }

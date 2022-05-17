@@ -17,32 +17,32 @@ function cargarEventos() {
         if (arrayFallos.filter(x => x === true).length === 5) {
             e.preventDefault();
             //Con el siguiente metodo valida en Firebase si el correo introducido por el usuario ya existia
-            const resultado = crearUsuario(correo.value, contrasena.value, idRegistro.value, nombre.value, apellidos.value, correoFallo);
+            const resultado = crearUsuario($.trim(correo.value), $.trim(contrasena.value), $.trim(idRegistro.value), $.trim(nombre.value), $.trim(apellidos.value), correoFallo);
         }
     });
 }
 
 function validarCampos(idRegistro, nombre, apellidos, correo, contrasena) {
     let arrayErrores = [];
-    if (idRegistro.value == "") {
+    if ($.trim(idRegistro.value) == "") {
         arrayErrores.push(false);
         mostrarErrores(0, "Introduzca un nickname");
     } else
         arrayErrores.push(true);
 
-    if (nombre.value == "") {
+    if ($.trim(nombre.value) == "") {
         arrayErrores.push(false);
         mostrarErrores(1, "Introduzca un nombre");
     } else
         arrayErrores.push(true);
 
-    if (apellidos.value == "") {
+    if ($.trim(apellidos.value) == "") {
         arrayErrores.push(false);
         mostrarErrores(2, "Introduzca unos apellidos");
     } else
         arrayErrores.push(true);
 
-    if (correo.value == "") {
+    if ($.trim(correo.value) == "") {
         arrayErrores.push(false);
         mostrarErrores(3, "Introduzca un correo");
     } else
@@ -85,7 +85,7 @@ function comprobarFallos(idRegistro, nombre, apellidos, correo, contrasena) {
 
 function validarContrasena(contrasena) {
     let activador = true;
-    if (contrasena.value == "") {
+    if ($.trim(contrasena.value) == "") {
         mostrarErrores(4, "Introduzca una contraseña");
         activador = false;
     }

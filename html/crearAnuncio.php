@@ -8,7 +8,7 @@
     <title>Crear Anuncio</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/crearAnuncio.css">
-
+    <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/bbshcv8t1k700dn3b19t3tf8gw9ktystwdazopzg96nse7fw/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
 </head>
@@ -24,10 +24,12 @@
             <div class="col p-3">
                 <h3 class="mt-4 mb-3">Título</h3>
                 <input type="text" class="form-control my-3" id="tituloAnuncio" placeholder="Introduzca un titulo">
+                <p class="errores"></p>
                 <h3 class="mt-4 mb-3">Contenido</h3>
                 <textarea class="form-control my-2" rows="7" id="contenidoAnuncio"></textarea>
+                <p class="errores"></p>
                 <h3 class="mt-4 mb-3">Archivo adicional</h3>
-                <input type="file" id="seleccionarArchivo" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf, .zip, .rar">
+                <input type="file" id="seleccionarArchivo" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf, .zip, .rar,.txt">
                 <div class="col-sm mt-3 text-center">
                     <button type="button" class="btn btn-success" id="btnCrearAnuncio">Crear anuncio</button>
                 </div>

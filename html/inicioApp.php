@@ -17,7 +17,7 @@
     <p id="nickname">Nombre Usuario: </p>
     <br>
     <button id="btn-Chat" class="btn btn-success">Chat</button>
-    <button id="btn-cerrarSesion"  class="btn btn-danger">Cerrar Sesión</button>
+    <button id="btn-cerrarSesion" class="btn btn-danger">Cerrar Sesión</button>
     <script type="module" src="../js/inicioApp.js"></script>
 </body>
 
