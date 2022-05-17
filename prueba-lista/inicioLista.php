@@ -7,17 +7,24 @@
     <title>Document</title>
     <script src="./inicioLista.js"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="./creacionApuntes.css">
+    <link rel="stylesheet" href="./inicioLista.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <script src="../js/sidebar.js"></script>
 </head>
 <body>
-    <div class="container mt-2">
-    <h1 id="titulo">Lista</h1> 
-        <div id="content"> 
+    <div class="page">
+        <?php
+            include '../html/sidebar.php';
+        ?>
+        <div class="content">
+            <div class="container mt-2">
+            <h1 id="titulo">Lista</h1> 
+                <div id="content"> 
+                    a
+                </div>       
+            </div>            
         </div>
-        <div class="d-grid gap-2">
-            <button class="mt-2 btn-dark btn-sm text-light" id="crearApuntes">+Crear Apuntes</button>
-        </div>        
     </div>
 </body>
 </html>
