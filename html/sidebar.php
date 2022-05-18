@@ -110,7 +110,7 @@
             <div class="sidebar-footer position-absolute bottom-0 w-100">
                 <div class="lista-navegacion">
                     <div class="lista-navegacion-item text-center">
-                        <a class="navegacion-link" href="../index.html">
+                        <a class="navegacion-link" href="../index.html" id="linkCerrarSesion">
                             <div class="row">
                                 <div class="col-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">

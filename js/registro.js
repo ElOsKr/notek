@@ -20,6 +20,18 @@ function cargarEventos() {
             const resultado = crearUsuario($.trim(correo.value.toLowerCase()), $.trim(contrasena.value), $.trim(idRegistro.value), $.trim(nombre.value), $.trim(apellidos.value), correoFallo);
         }
     });
+    //Si el usuario apreta la tecla enter
+    $(document).on("keypress", function (e) {
+        if (e.which == 13) {
+            let arrayFallos = comprobarFallos(idRegistro, nombre, apellidos, correo, contrasena);
+            if (arrayFallos.filter(x => x === true).length === 5) {
+                e.preventDefault();
+                //Con el siguiente metodo valida en Firebase si el correo introducido por el usuario ya existia
+                const resultado = crearUsuario($.trim(correo.value.toLowerCase()), $.trim(contrasena.value), $.trim(idRegistro.value), $.trim(nombre.value), $.trim(apellidos.value), correoFallo);
+            }
+        }
+    });
+
 }
 
 function validarCampos(idRegistro, nombre, apellidos, correo, contrasena) {

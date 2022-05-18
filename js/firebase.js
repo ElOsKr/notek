@@ -81,10 +81,28 @@ export function cerrarSesion() {
     const auth = getAuth();
     signOut(auth).then(() => {
         //Si se cierra Sesion correctamente ni hace falta cerrar la pagina y redirigir 
-        //al usuario al inicio, (de eso se encarga la function mantenerSesion())
-        console.log("Se cerro sesion correctamente");
+        //al usuario al inicio, (de eso se encarga la function mantenerSesionActiva())
+        localStorage.setItem("id", "");
+        localStorage.setItem("idChat", "");
+        localStorage.setItem("idChatInverso", "");
+        localStorage.setItem("imagenPerfil", "");
     }).catch((error) => {
         console.log("No se pudo deslogear de la pagina");
+    });
+}
+
+export function mantenerSesionActiva() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            localStorage.setItem("id", user.email);
+            localStorage.setItem("idChat", "");
+            localStorage.setItem("idChatInverso", "");
+            localStorage.setItem("imagenPerfil", user.photoURL);
+        } else {
+            // User is signed out
+            location.href = "../index.html";
+        }
     });
 }
 
@@ -203,7 +221,7 @@ export async function mandarMensaje(mensajeMandado) {
     localStorage.setItem("idChatInverso", idChatInverso[1] + " " + idChatInverso[0]);
     const referenciaChat = doc(db, "Usuarios/" + localStorage.getItem("id") + "/Chats", localStorage.getItem("idChatInverso"));
     const chat = await getDoc(referenciaChat);
-    //Si existe el chat retorna true
+    //Si existe el chat en la referencia del usuario Ajeno, se actualizarán los campos correspondientes en esa referencia
     if (chat.exists()) {
         console.log("Existe el chat");
         idChat = localStorage.getItem("idChatInverso");
@@ -221,7 +239,9 @@ export async function mandarMensaje(mensajeMandado) {
             ultimoMensaje: mensajeMandado
         });
 
-    } else {
+    } 
+    //Si no existe el chat allí, entonces se encuentra en la referencia del usuario propio, y se actualizaran los campos correspondientes
+    else {
         console.log("No Existe el chat");
         idChat = localStorage.getItem("idChat");
         const referenciaChatNoExistente = doc(db, "Usuarios/" + idChatInverso[0] + "/Chats", idChat);

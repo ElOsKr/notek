@@ -22,7 +22,7 @@ function cargarEventos() {
 
     //Cargar datos del chat seleccionado en la parte derecha
     cabeceraChat();
-    input_BuscarChat.addEventListener("keyup", buscarChat);
+    input_BuscarChat.addEventListener("keyup", actualizaBienChats);
 
     botonEnviar.addEventListener("click", enviarMensaje);
 
@@ -32,7 +32,7 @@ function cargarEventos() {
 
     atras.addEventListener("click", volverAtras);
 
-    verPerfilPropio.addEventListener("click",verPerfil);
+    verPerfilPropio.addEventListener("click", verPerfil);
 }
 
 function volverAtras() {
@@ -43,7 +43,8 @@ function verPerfil() {
     location.href = "perfil.php";
 }
 
-//Funcion que se encarga de realizar la consulta, y recoge los datos recuperados en un array
+//Funcion que se encarga de realizar la consulta, y recoge los datos recuperados en un array, esto evita los bugs que se repitan
+//los registros visualmente
 function actualizaBienChats() {
     const referenciaChats = collection(db, "Usuarios", localStorage.getItem("id"), "Chats");
     const consulta = query(referenciaChats, orderBy("fechaChat", "desc"));
@@ -59,7 +60,15 @@ function actualizaBienChats() {
                 ultimoMensaje: doc.data().ultimoMensaje
             })
         });
-        listaChatsActualizados(chats);
+
+        //Si el input esta vacio mostrará a todos
+        if ($.trim(input_BuscarChat.value) == "") {
+            listaChatsActualizados(chats)
+        }
+        //Si no esta vacio se imprimirá una lista de usuarios con los que coincida la busqueda 
+        else if ($.trim(input_BuscarChat.value) != "") {
+            listaChatsBuscados(chats);
+        }
     });
 }
 
@@ -84,7 +93,6 @@ function listaChatsActualizados(chats) {
                 </div>
                 <hr>
                 `;
-
     });
     listaChats.innerHTML = html;
     const listaDivsIniciarChat = listaChats.querySelectorAll(".divChat");
@@ -92,43 +100,40 @@ function listaChatsActualizados(chats) {
 }
 
 //Funcion que mostrará todas los chats que concidan con la busqueda
-function listaChatsBuscados() {
+function listaChatsBuscados(chats) {
     listaChats.innerHTML = "";
     const textoUsuario = $.trim(input_BuscarChat.value).toLowerCase();
     //Se llama a una funcion que coge la subcoleccion de chats del actual usuario 
-    listaChatsBuscado((chats) => {
-        chats.forEach((doc) => {
-            const chat = doc.data();
-            if (chat.idNombre.toLowerCase().indexOf(textoUsuario) !== -1) {
-                const idNombre = chat.idNombre.split(" ");
-                let fecha = new Date(chat.fechaChat)
-                let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
-                listaChats.innerHTML += `
-                <div data-id="${doc.id}" class="divChat w-100 p-3" style="display:inline-flex;">
-                        <img data-id="${doc.id}" class="imagenPerfil"
+    chats.forEach(chat => {
+        //Se filtra y busca por lo que ponga el usuario en el input
+        if (chat.idNombre.toLowerCase().indexOf(textoUsuario) !== -1) {
+            const idNombre = chat.idNombre.split(" ");
+            let fecha = new Date(chat.fechaChat)
+            let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
+            listaChats.innerHTML += `
+                <div data-id="${chat.id}" class="divChat w-100 p-3" style="display:inline-flex;">
+                        <img data-id="${chat.id}" class="imagenPerfil"
                             srcset="${chat.imagenUsuario}"
-                            alt="imagenChat" />
-                        <div class="texto" data-id="${doc.id}">
-                            <h6 class="text-md-start" data-id="${doc.id}">${idNombre}</h6>
-                            <p class="text-white ultimoMensaje text-md-start" data-id="${doc.id}">${(chat.ultimoMensaje == "" ? '' : chat.ultimoMensaje)}</p>
-                            <span class="tiempo text-white text-md-end " data-id="${doc.id}">${formatearFecha}</span>
+                            alt="imagenChat"/>
+                        <div class="texto" data-id="${chat.id}">
+                            <h6 class="text-md-start" data-id="${chat.id}">${idNombre}</h6>
+                            <p class="text-white ultimoMensaje text-md-start" data-id="${chat.id}">${chat.ultimoMensaje == "" ? '' : chat.ultimoMensaje}</p>
+                            <span class="tiempo text-white text-md-end float-end" data-id="${chat.id}">${formatearFecha}</span>
                         </div>
                 </div>
                 <hr>
-            `;
-
-            }
-        });
-        comprobarResultadosBusqueda();
-        const listaDivsIniciarChat = listaChats.querySelectorAll(".divChat");
-        seleccionarChat(listaDivsIniciarChat);
+                `;
+        }
     });
+    comprobarResultadosBusqueda();
+    const listaDivsIniciarChat = listaChats.querySelectorAll(".divChat");
+    seleccionarChat(listaDivsIniciarChat);
 }
 
 function comprobarResultadosBusqueda() {
     if (listaChats.innerHTML == '') {
         listaChats.innerHTML = `
-            <div class="divChat w-100 p-3 text-center" style="display:inline-flex;">
+            <div class="divChat w-100 p-3 text-center" style="display:inline-flex; pointer-events:none;">
                     <div class="texto">
                         <h6 class="text-md-start text-center" >No se encuentran coincidencias con ningún chat </h6>
                     </div>
@@ -206,13 +211,6 @@ function cargarMensajesChat() {
                 cajaChat.scrollTop = cajaChat.scrollHeight;
             });
         }
-        else {
-            cajaChat.innerHTML = `
-                    <div class="d-flex justify-content-center m-1">
-                            <h3 class="text-center text-white ponerMargen">No se encuentran mensajes</h3>
-                    </div>
-                `;
-        }
     });
 }
 
@@ -220,19 +218,5 @@ function enviarMensaje() {
     if ($.trim(inputEnviar.value) != "") {
         mandarMensaje($.trim(inputEnviar.value));
         inputEnviar.value = "";
-    }
-}
-
-
-
-
-//Si esta vacio de ejecuta la lista de Chats que tenga ya el usuario
-function buscarChat() {
-    if ($.trim(input_BuscarChat.value) == "") {
-        actualizaBienChats();
-    }
-    //Si no esta vacio se imprimirá una lista de usuarios con los que coincida la busqueda 
-    else if ($.trim(input_BuscarChat.value) != "") {
-        listaChatsBuscados();
     }
 }

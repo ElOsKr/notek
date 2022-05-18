@@ -101,18 +101,28 @@ async function crearChat(referenciaUsuario, usuarioActual) {
     }
 
     //Se le pasa el id del usuario y se crea la subcolleccion Chats dentro de ese documento
-    const chatAjeno = {
+    const chatAjeno = doc(db, "Usuarios/" + referenciaUsuario[0] + "/Chats", idChat);
+    await setDoc(chatAjeno, {
         idNombre: usuarioActual.displayName,
-        fechaChat: Date.now(),
+        usuarios: [referenciaUsuario[1],
+        usuarioActual.displayName],
+        imagenUsuario: usuarioActual.photoURL
+    }, {
+        merge: true
+    }
+    );
+
+    const chatPropio = doc(db, "Usuarios/" + usuarioActual.email + "/Chats", idChat);
+    await setDoc(chatPropio, {
+        idNombre: referenciaUsuario[1],
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3],
-        ultimoMensaje: ""
-    };
+        imagenUsuario: referenciaUsuario[3]
+    }, {
+        merge: true
+    }
+    );
 
-    //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos, creando una subcoleccion
-    await setDoc(doc(db, "Usuarios/" + referenciaUsuario[0] + "/Chats", idChat), chatAjeno);
-
-    const chatPropio = {
+    /*const chatPropio = {
         idNombre: referenciaUsuario[1],
         fechaChat: Date.now(),
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
@@ -121,7 +131,7 @@ async function crearChat(referenciaUsuario, usuarioActual) {
     };
 
     //Se crea una subcoleccion de Chats 
-    await setDoc(doc(db, "Usuarios/" + usuarioActual.email + "/Chats", idChat), chatPropio);
+    await setDoc(doc(db, "Usuarios/" + usuarioActual.email + "/Chats", idChat), chatPropio);*/
 
     const chatIndependiente = {
         idNombre: idChat,
@@ -134,7 +144,7 @@ async function crearChat(referenciaUsuario, usuarioActual) {
     //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos, creando una subcoleccion
     await setDoc(doc(db, "Chats/" + idChat), chatIndependiente);
     //Se le pasa el id del chat que tiene que abrir en chats.html automaticamente
-    await localStorage.setItem("idChat", idChat);
+    localStorage.setItem("idChat", idChat);
     //Y redirige al Usuario a la pestaña donde estaran los chats
     location.href = "chats.php";
 }

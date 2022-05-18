@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./creacionApuntes.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/sidebar.css">
-    <script src="../js/sidebar.js"></script>
+    <script type="module" src="../js/sidebar.js"></script>
 </head>
 <body>
 

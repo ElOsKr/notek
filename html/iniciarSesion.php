@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
     <!--Link de Bootstrap-->
+    <link rel="stylesheet" href="../css/bootstrap.min.css.map">
+	<link rel="stylesheet" href="../css/bootstrap.css.map">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!--Estilos CSS de la pagina-->
     <link rel="stylesheet" href="../css/iniciarSesion.css">
@@ -14,13 +16,14 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--Libreria de animaciones chidaas-->
     <link rel="stylesheet" href="../css/animate.css" />
+    <script src="../js/jquery-3.6.0.min.js"></script>
 </head>
 
 <body id="fondo">
     <div id="cajaPrincipal" class="row">
         <!--Esta caja es la contiene al contenido del formulario-->
         <div id="cajaInicio" class="col-7 col-sm-6 col-md-5 col-lg-4 col-xl-3">
-            <a href="../index.php"><img src="../img/Logo_Notek.png" alt="NotekLogo" class="logoImagen"></a>
+            <a href="../index.html"><img src="../img/Logo_Notek.png" alt="NotekLogo" class="logoImagen"></a>
             <div class="row bg-dark">
                 <h2 class="text-white pt-3 pb-5 col-12">Iniciar Sesión</h2>
                 <form class="col">
