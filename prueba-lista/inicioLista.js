@@ -57,6 +57,9 @@ function cargarItems(){
 
 
 function aniadir(){
+    if($('#tareas').html()=="Hay mucho por hacer SIUUUUUUU"){
+        $('#tareas').html("");
+    }
     var nombreItem=document.getElementById("listaItemNombre").value;
     if(nombreItem==""){
         $('.errorItem').show();
