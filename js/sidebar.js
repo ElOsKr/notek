@@ -16,8 +16,8 @@ function sidebar() {
         document.getElementById("flecha-ocultar").style.transform="rotate(180deg)"
         $(".logo-container-block").css("display","block");
         $(".logo-container").css("display","none");
-        $(".lista-navegacion").children().children().children().children(".col-9").css("display","none");
-        $(".lista-navegacion").children().children().children().children(".col-2").css("margin-left","80%");
+        $(".titulo-listaItem").css("display","none");
+        $(".icon-listaItem").css("margin-left","80%");
     } else {
         document.getElementById("flecha-ocultar").animate([
             {transform: 'rotate(180deg)'},
@@ -27,8 +27,8 @@ function sidebar() {
         $("#logoImagen-navbar").fadeOut(300);
         $(".logo-container").fadeIn(500);
         $(".logo-container-block").css("display","none");
-        $(".lista-navegacion").children().children().children().children(".col-9").css("display","block");
-        $(".lista-navegacion").children().children().children().children(".col-2").css("margin-left","0%");
+        $(".titulo-listaItem").css("display","block");
+        $(".icon-listaItem").css("margin-left","0%");
     }
 }
 
