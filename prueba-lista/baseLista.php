@@ -48,9 +48,9 @@
             return $q;
         }
 
-        public function eliminarFechas($id){
+        public function eliminarItem($id){
             $datos=array(':id'=>$id);
-            $sql='delete from calendario.fechas where id=:id';
+            $sql='delete from lista.items where id=:id';
             $q=$this->conn->prepare($sql);
             $q->execute($datos);
             return $q;
@@ -82,6 +82,16 @@
         if($conexion->agregarItem($datos)){
             $id=$conexion->ultimoAgregado();
             echo(json_encode($id));
+        }else{
+            echo(json_encode(0));
+        }
+    }
+
+    if(isset($_POST['b'])){
+        $conexion=new conexion3();
+        $datos=json_decode($_POST['b']);
+        if($conexion->eliminarItem($datos)){
+            echo(json_encode(1));
         }else{
             echo(json_encode(0));
         }
