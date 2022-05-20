@@ -10,6 +10,12 @@ function cargarEventos() {
     boton.addEventListener("click", (e) => {
         comprobarCampos(correo, contrasena);
     });
+    //Si el usuario apreta la tecla enter
+    $(document).on("keypress", function(e){
+        if(e.which == 13){
+            comprobarCampos(correo,contrasena);
+        }
+    });
 }
 
 //Plantilla de alerta 

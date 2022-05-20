@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tablon de anuncios</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css.map">
+	<link rel="stylesheet" href="../css/bootstrap.css.map">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../venobox/venobox.min.css">
     <link rel="stylesheet" href="../css/tablonAnuncios.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <script src="../js/jquery-3.6.0.min.js"></script>
@@ -162,9 +163,7 @@
 
                                 </div>
                                 <br>
-                                <a class="venobox" data-overlay="#393b44" data-vbtype="inline" href="#panel">
-                                    <button class="btn btn-secondary my-2 text-white float-start " id="boton">Comentarios</button>
-                                </a>
+                                
                                 <br>
                                 <br>
                                 <a href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Enlace descargar archivo auxiliar</a>
@@ -300,17 +299,8 @@
     <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle">+</a>
 
     <!--<script type="module" src="../js/tablonAnuncios.js"></script>-->
-    <script src="../js/sidebar.js"></script>
-    <script src="../venobox/venobox.min.js"></script>
+    <script type="module" src="../js/sidebar.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const boton = document.getElementsByClassName("botoncillo")[0];
-        boton.addEventListener("click", hola);
-
-        function hola() {
-            console.log("hola")
-        }
-    </script>
 </body>
 
 </html>

@@ -8,6 +8,8 @@
     <script src="https://cdn.tiny.cloud/1/erx4vmsb6lfpf3wwptirz94rd566n48b7g5sesg5qgibydg0/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="../js/creacionNotas.js"></script>
     <link rel="stylesheet" href="../css/creacionNotas.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css.map">
+	<link rel="stylesheet" href="/css/bootstrap.css.map">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
 </head>
 <body>

@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restablecer contraseña</title>
     <script src="../js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css.map">
+	<link rel="stylesheet" href="../css/bootstrap.css.map">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/passOlvidada.css">
 
@@ -19,7 +21,7 @@
     <div class="d-flex align-items-center">
         <div class="container cajaPrincipal">
             <div class="d-flex justify-content-center align-items-center mb-2">
-                <a href="../index.php"><img src="../img/Logo_Notek.png" alt="Logo_Notek" id="logo"></a>
+                <a href="../index.html"><img src="../img/Logo_Notek.png" alt="Logo_Notek" id="logo"></a>
             </div>
             <div class="row justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">

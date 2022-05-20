@@ -1,6 +1,6 @@
 import {
     db, onSnapshot,
-    collection, query, orderBy, getAuth, onAuthStateChanged, addDoc
+    collection, query, orderBy, addDoc, mantenerSesionActiva
 } from "./firebase.js"
 
 document.addEventListener("readystatechange", cargarEventos, false);
@@ -31,7 +31,6 @@ function actualizaBienAnuncios() {
                 tipoArchivo: doc.data().tipoArchivo
             })
         });
-        console.log(anuncios);
         listaAnunciosActualizados(anuncios);
     });
 }
@@ -103,7 +102,7 @@ function listaAnunciosActualizados(anuncios) {
                                 </div>
                                 <div id="formulario" class="px-0 pb-1 pt-2">
                                     <input type="text" class="form-control inputComentario" placeholder="Enviar comentario" />
-                                    <div class="input-group-append">
+                                    <div class="input-group-append px-1">
                                         <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
                                     </div>
                                 </div>
@@ -212,19 +211,4 @@ function enviarComentario(listaBotonesMandarComentario) {
         });
 
     }
-}
-
-function mantenerSesionActiva() {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            localStorage.setItem("id", user.email);
-            localStorage.setItem("idChat", "");
-            localStorage.setItem("idChatInverso", "");
-            localStorage.setItem("imagenPerfil", user.photoURL);
-        } else {
-            // User is signed out
-            location.href = "../index.html";
-        }
-    });
 }

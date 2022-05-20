@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tablon de anuncios</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css.map">
+	<link rel="stylesheet" href="../css/bootstrap.css.map">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/tablonAnuncios.css">
     <link rel="stylesheet" href="../css/sidebar.css">
@@ -36,10 +38,9 @@
         </div>
     </div>
     <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle">+</a>
-    <script src="../js/sidebar.js"></script>
+    <script type="module" src="../js/sidebar.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="../js/tablonAnuncios.js"></script>
-    
 </body>
 
 </html>
