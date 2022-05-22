@@ -28,10 +28,10 @@ function filtrar() {
                     //Condicion para que el usuario no le aparezca su propio perfil en la busqueda
                     if (idUsuario != auth.currentUser.displayName) {
                         listaUsuarios.innerHTML += `
-                            <div class="col-2 ms-3 p-3" style="display:flex; align-items:center;">
-                                <img style="width:60px; height:60px; " class="" src=" ${usuario.imagenUsuario}">
+                            <div class="col-3 ms-3 p-3" style="display:flex; align-items:center;">
+                                <img style="width:60px; height:60px; " class="rounded-circle" src=" ${usuario.imagenUsuario}">
                             </div>
-                            <div class="col-10 row pt-3">
+                            <div class="col-9 row pt-3">
                                 <div class="col-8 centrarBoton">
                                     <h4 class="text-white"> ${idUsuario}</h4>
                                     <h5 class=" mb-0">${usuario.nombre + " " + usuario.apellidos} </h5>
