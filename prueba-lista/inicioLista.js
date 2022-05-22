@@ -52,7 +52,7 @@ function cargarItems(){
                                 </svg>
                             </button>
                         </div>
-                        <div class="oculto input-group mb-3 ${item.id} me-auto w-75">
+                        <div class="oculto input-group mt-2 ${item.id} me-auto w-75">
                             <input type="text" class="form-control bg-transparent text-light" value="${item.title}">
                             <button class="btn btnGuardarEditar text-light" data-id="${item.id}">
                                 <span class="material-symbols-outlined">
@@ -145,7 +145,7 @@ function aniadir(){
                             </svg>
                         </button>
                     </div>
-                    <div class="oculto input-group mb-3 ${comprobar} w-75">
+                    <div class="oculto input-group mt-2 ${comprobar} w-75">
                         <input type="text" class="form-control bg-transparent text-light" value="${nombreItem}">
                         <button class="btn btnGuardarEditar text-light" data-id="${comprobar}">
                             <span class="material-symbols-outlined">
@@ -242,7 +242,7 @@ function guardarEdit(){
     for (let i = 0; i < listaBotonesGuardarEditar.length; i++) {
         listaBotonesGuardarEditar[i].addEventListener("click", (evento) => {
             const id = evento.currentTarget.dataset.id;
-            var cajaTitulo=$("."+id)[1];
+            var cajaTitulo=$("."+id)[2];
             var titulo=cajaTitulo.childNodes[1].value;
             var datos=[id,titulo];
             var cadenaDatos=JSON.stringify(datos);
