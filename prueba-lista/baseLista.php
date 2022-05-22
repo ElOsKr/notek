@@ -32,9 +32,33 @@
         }
 
 
-        public function modificarApuntes($titulo,$contenido,$id){
-            $datos=array(':titulo'=>$titulo,':contenido'=>$contenido,':id'=>$id);
-            $sql='update apuntes.apuntes set title=:titulo, content=:contenido where id=:id';
+        public function modificarItem($id,$titulo){
+            $datos=array(':titulo'=>$titulo,':id'=>$id);
+            $sql='update lista.items set title=:titulo where id=:id';
+            $q=$this->conn->prepare($sql);
+            $q->execute($datos);
+            return $q;
+        }
+
+        public function enProceso($id){
+            $datos=array(':id'=>$id);
+            $sql='update lista.items set status="enProceso" where id=:id';
+            $q=$this->conn->prepare($sql);
+            $q->execute($datos);
+            return $q;
+        }
+
+        public function enPausa($id){
+            $datos=array(':id'=>$id);
+            $sql='update lista.items set status="enPausa" where id=:id';
+            $q=$this->conn->prepare($sql);
+            $q->execute($datos);
+            return $q;
+        }
+
+        public function completado($id){
+            $datos=array(':id'=>$id);
+            $sql='update lista.items set status="completado" where id=:id';
             $q=$this->conn->prepare($sql);
             $q->execute($datos);
             return $q;
@@ -91,6 +115,46 @@
         $conexion=new conexion3();
         $datos=json_decode($_POST['b']);
         if($conexion->eliminarItem($datos)){
+            echo(json_encode(1));
+        }else{
+            echo(json_encode(0));
+        }
+    }
+
+    if(isset($_POST['e'])){
+        $conexion=new conexion3();
+        $datos=json_decode($_POST['e']);
+        if($conexion->modificarItem($datos[0],$datos[1])){
+            echo(json_encode(1));
+        }else{
+            echo(json_encode(0));
+        }
+    }
+
+    if(isset($_POST['p'])){
+        $conexion=new conexion3();
+        $datos=json_decode($_POST['p']);
+        if($conexion->enProceso($datos)){
+            echo(json_encode(1));
+        }else{
+            echo(json_encode(0));
+        }
+    }
+
+    if(isset($_POST['s'])){
+        $conexion=new conexion3();
+        $datos=json_decode($_POST['s']);
+        if($conexion->enPausa($datos)){
+            echo(json_encode(1));
+        }else{
+            echo(json_encode(0));
+        }
+    }
+
+    if(isset($_POST['c'])){
+        $conexion=new conexion3();
+        $datos=json_decode($_POST['c']);
+        if($conexion->completado($datos)){
             echo(json_encode(1));
         }else{
             echo(json_encode(0));
