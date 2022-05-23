@@ -336,7 +336,7 @@ function mostrarAcabados(){
 
 function buscador(){
     var texto=$("#filtroNombre").val();
-    if(texto==""){
+    if(texto.trim()==""){
         cargarItems()
     }else{
         var cadenaDatos=JSON.stringify(texto);
