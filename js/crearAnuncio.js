@@ -9,9 +9,13 @@ const storage = getStorage();
 function cargarEventos() {
     cargarTextarea();
     btnCrearAnuncio.addEventListener("click", validarCampos);
+    let paginaAnterior = document.referrer;
+    let url=paginaAnterior.split("/");
+    console.log(url[url.length-1]);
 }
 
 function validarCampos() {
+    
     let contenidoAnuncio = tinymce.get("contenidoAnuncio").getContent({ format: "text" });
 
     if ($.trim(tituloAnuncio.value) == "") {

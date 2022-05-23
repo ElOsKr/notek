@@ -2,10 +2,10 @@ import { db, getAuth, onSnapshot, collection, query, orderBy, doc, getDoc, setDo
 document.addEventListener("readystatechange", cargarEventos, false);
 const inputTituloGrupo = document.getElementById("tituloGrupo");
 const usuarioGrupo = document.getElementById("usuarioGrupo");
-const listaGrupos = document.querySelectorAll(".grupoLista");
 const cajaListaGrupo = document.getElementById("cajaListaGrupo");
 const miembrosGrupo = document.getElementsByClassName("miembrosGrupo")[0];
 const listaUsuarios = document.getElementsByClassName("listaUsuarios")[0];
+const cajaTotal = document.getElementsByClassName("cajaTotal")[1];
 let arrayUsuarios = [];
 let ordenacion = "asc";
 let campo = "tituloBusqueda";
@@ -20,6 +20,7 @@ function cargarEventos() {
     $("#fechaAscendente").click(cambiarOrdenFechaAscendente);
     $("#tituloAscendente").click(cambiarOrdenTituloAscendente);
     $("#tituloDescendente").click(cambiarOrdenTituloDescendente);
+
 }
 
 function cambiarOrdenFechaDescendente() {
@@ -73,7 +74,7 @@ function listaGruposActualizados(grupos) {
         let fecha = new Date(grupo.fechaCreacionGrupo);
         let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
         html += `
-            <a href="#${grupo.titulo}" class="list-group-item list-group-item-action grupoLista" aria-current="true">
+            <a href="#${grupo.titulo}"  data-id="${grupo.id}" class="list-group-item list-group-item-action grupoLista" aria-current="true">
             ${grupo.titulo}
             <span class="float-end">${formatearFecha}</span>
             </a>
@@ -81,6 +82,9 @@ function listaGruposActualizados(grupos) {
         `;
     });
     cajaListaGrupo.innerHTML = html;
+    //Selecciono todos los elementos del html que tengan esa clase
+    const listaGrupos = document.querySelectorAll(".grupoLista");
+    seleccionarGrupo(listaGrupos);
 }
 
 
@@ -303,3 +307,155 @@ function quitarErrores(indice) {
     error.innerText = "";
     error.style.display = "none";
 }
+
+function seleccionarGrupo(listaGrupos) {
+    //Recorro todos los botones seleccionados
+    listaGrupos.forEach(grupo => {
+        //Saco el id que lleva cada uno
+        grupo.addEventListener("click", (evento) => {
+            mostrarTituloGrupo(evento.target.dataset.id);
+        });
+    });
+}
+
+//De primeras pongo el titulo en el html
+function mostrarTituloGrupo(idGrupo) {
+    $("#cajaAnuncios").removeAttr("style");
+    let datosGrupo = idGrupo.split(" ");
+    let cadenaTitulo = "";
+    //Si el titulo esta con espacios aqui formateo el titulo
+    formatearTitulo();
+    cajaTotal.innerHTML = "";
+    cajaTotal.innerHTML += `
+        <div class="row">
+            <div class="col p-4">
+                <h1 class="text-center text-white tituloGrupo" data-id="${idGrupo}" id="${$.trim(cadenaTitulo)}">${$.trim(cadenaTitulo)}</h1>
+            </div>
+        </div>
+        <div class="row text-white cajaIntroducirAnuncio">
+        </div>
+    `;
+
+    function formatearTitulo() {
+        if (datosGrupo.length > 2) {
+            for (let i = 1; i < datosGrupo.length; i++) {
+                cadenaTitulo += datosGrupo[i] + " ";
+            }
+        }
+        if (cadenaTitulo == "") {
+            cadenaTitulo = datosGrupo[1];
+        }
+    }
+
+    cargarAnuncios(idGrupo);
+}
+
+function cargarAnuncios(idGrupo) {
+    const referenciaGruposAnuncios = collection(db, "Grupos/" + idGrupo + "/Anuncios");
+    const consulta = query(referenciaGruposAnuncios, orderBy("fechaPublicado", "desc"));
+    const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
+        const anuncios = [];
+        querySnapshot.forEach((doc) => {
+            anuncios.push({
+                id: doc.id,
+                idUsuario: doc.data().idUsuario,
+                fechaPublicado: doc.data().fechaPublicado,
+                imagenUsuario: doc.data().imagenUsuario,
+                titulo: doc.data().titulo,
+                contenido: doc.data().contenido,
+                archivoSeleccionado: doc.data().archivoSeleccionado,
+                tipoArchivo: doc.data().tipoArchivo
+            })
+        });
+        listaAnunciosActualizados(anuncios);
+    });
+}
+
+function listaAnunciosActualizados(anuncios) {
+    const cajaIntroducirAnuncio = document.getElementsByClassName("cajaIntroducirAnuncio")[0];
+    let htmlComentariosEstructura = "";
+    cajaIntroducirAnuncio.innerHTML = "";
+    if (anuncios.length > 0) {
+        anuncios.forEach(anuncios => {
+            let link = "";
+            let fecha = new Date(anuncios.fechaPublicado);
+            let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
+            //Si el anuncio tiene un archivo subido se mostrará el link
+            if (anuncios.archivoSeleccionado != "") {
+                //Si el archivo subido es de extension txt o pdf
+                if (anuncios.tipoArchivo == "txt" || anuncios.tipoArchivo == "pdf") {
+                    link = `<a  href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Visualizar archivo aportado</a>`;
+                }
+                else {
+                    link = `<a  href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Enlace descargar archivo auxiliar</a>`;
+                }
+            }
+
+            cajaIntroducirAnuncio.innerHTML += `
+            <div class="col-md-6 my-3">
+                <div class="card cajasContenido">
+                    <div class="card-body ">
+                        <div class="w-100 text-center">
+                            <img class="rounded-circle imagenAutor"
+                                src="${anuncios.imagenUsuario}"
+                                alt="imagenAutor">
+                            <h3 class="text-center py-3 mt-1 w-100">${anuncios.idUsuario}</h3>
+                        </div>
+                        <h4 class="card-title  float-start ">${anuncios.titulo}</h4>
+                        <br>
+                        <br>
+                        <div class="cajaIntroducirContenido p-1 bg-white text-black">
+                            <p class="card-text">
+                            ${anuncios.contenido}
+                            </p>
+                        </div>
+                        <br>      
+                            <button class="btn btn-secondary my-2 text-white float-start " data-bs-toggle="modal" data-bs-target="#boton${anuncios.id}" id="${anuncios.id}">Comentarios</button>
+                        <br>
+                        <br>
+                        ${link}
+                        <h6 class="mt-3 text-white float-end">${formatearFecha}</h6>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            htmlComentariosEstructura += `
+            <div class="modal fade " id="boton${anuncios.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content" style="background-color: #222831;">
+                        <div class="modal-body">
+                            <div class="container cajaTotalComentarios">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h2 class="my-3 text-center text-white">Comentarios</h2>
+                                    </div>
+                                </div>
+                                <div class="row cajaComentarios cajaComentarios${anuncios.id}">
+
+                                </div>
+                                <div id="formulario" class="px-0 pb-1 pt-2">
+                                    <input type="text" class="form-control inputComentario" placeholder="Enviar comentario" />
+                                    <div class="input-group-append px-1">
+                                        <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        });
+    }
+    else {
+        cajaIntroducirAnuncio.innerHTML += `
+                <div class="col p-4">
+                    <h1 class="text-center text-white">No hay anuncios disponibles</h1>
+                </div>
+        `;
+    }
+}
+
+
+

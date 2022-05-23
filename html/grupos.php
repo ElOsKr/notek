@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-        <div class="content">
+        <div class="content" id="cajaAnuncios" style="display: none;">
             <div class="container cajaTotal mt-5">
                 <div class="row">
                     <div class="col p-4">
@@ -183,11 +183,11 @@
             </div>
         </div>
     </div>
+    <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle">+</a>
     <script type="module" src="../js/grupos.js"></script>
     <script type="module" src="../js/sidebar.js"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
