@@ -1,4 +1,7 @@
-import { db, getAuth, onSnapshot, collection, query, orderBy, doc, getDoc, setDoc, listaUsuariosActualizado, where } from "./firebase.js"
+import {
+    db, getAuth, onSnapshot, collection, query, orderBy, doc, getDoc, setDoc, listaUsuariosActualizado,
+    where, enviarComentario, actualizaBienComentarios
+} from "./firebase.js"
 document.addEventListener("readystatechange", cargarEventos, false);
 const inputTituloGrupo = document.getElementById("tituloGrupo");
 const usuarioGrupo = document.getElementById("usuarioGrupo");
@@ -6,9 +9,11 @@ const cajaListaGrupo = document.getElementById("cajaListaGrupo");
 const miembrosGrupo = document.getElementsByClassName("miembrosGrupo")[0];
 const listaUsuarios = document.getElementsByClassName("listaUsuarios")[0];
 const cajaTotal = document.getElementsByClassName("cajaTotal")[1];
+const inputComentario = document.getElementsByClassName("inputComentario");
 let arrayUsuarios = [];
 let ordenacion = "asc";
 let campo = "tituloBusqueda";
+let idGrupoSeleccionado = localStorage.getItem("idGrupo");
 
 function cargarEventos() {
     $("#crearGrupo").click(validarGrupo);
@@ -20,7 +25,6 @@ function cargarEventos() {
     $("#fechaAscendente").click(cambiarOrdenFechaAscendente);
     $("#tituloAscendente").click(cambiarOrdenTituloAscendente);
     $("#tituloDescendente").click(cambiarOrdenTituloDescendente);
-
 }
 
 function cambiarOrdenFechaDescendente() {
@@ -288,7 +292,7 @@ function comprobarResultadosBusqueda() {
         <div class="container">
             <div class="row">
                 <div class="col-12 row pt-3">
-                        <h4 class="text-white text-center">No hay resultados</h4>
+                    <h4 class="text-white text-center">No hay resultados</h4>
                 </div>
             </div>
         </div>
@@ -320,7 +324,10 @@ function seleccionarGrupo(listaGrupos) {
 
 //De primeras pongo el titulo en el html
 function mostrarTituloGrupo(idGrupo) {
+    //Guardo el id en el localStorage por si el usuario quiere crear un anuncio
+    localStorage.setItem("idGrupo", idGrupo);
     $("#cajaAnuncios").removeAttr("style");
+    $("#btn-flotante").removeAttr("style");
     let datosGrupo = idGrupo.split(" ");
     let cadenaTitulo = "";
     //Si el titulo esta con espacios aqui formateo el titulo
@@ -328,11 +335,11 @@ function mostrarTituloGrupo(idGrupo) {
     cajaTotal.innerHTML = "";
     cajaTotal.innerHTML += `
         <div class="row">
-            <div class="col p-4">
-                <h1 class="text-center text-white tituloGrupo" data-id="${idGrupo}" id="${$.trim(cadenaTitulo)}">${$.trim(cadenaTitulo)}</h1>
+            <div class="col px-4 py-5 tituloGrupo">
+                <h1 class="text-center text-white" data-id="${idGrupo}">${$.trim(cadenaTitulo)}</h1>
             </div>
         </div>
-        <div class="row text-white cajaIntroducirAnuncio">
+        <div class="row text-white cajaIntroducirAnuncio" id="${$.trim(cadenaTitulo)}">
         </div>
     `;
 
@@ -350,6 +357,7 @@ function mostrarTituloGrupo(idGrupo) {
     cargarAnuncios(idGrupo);
 }
 
+//Funcion para evitar que cuando se actualice se bugee visualmente
 function cargarAnuncios(idGrupo) {
     const referenciaGruposAnuncios = collection(db, "Grupos/" + idGrupo + "/Anuncios");
     const consulta = query(referenciaGruposAnuncios, orderBy("fechaPublicado", "desc"));
@@ -371,10 +379,12 @@ function cargarAnuncios(idGrupo) {
     });
 }
 
+//Funcion que se encarga de actualizarlo a tiempo real
 function listaAnunciosActualizados(anuncios) {
     const cajaIntroducirAnuncio = document.getElementsByClassName("cajaIntroducirAnuncio")[0];
     let htmlComentariosEstructura = "";
     cajaIntroducirAnuncio.innerHTML = "";
+    //Si hay anuncios en la subcoleccion
     if (anuncios.length > 0) {
         anuncios.forEach(anuncios => {
             let link = "";
@@ -446,16 +456,24 @@ function listaAnunciosActualizados(anuncios) {
                 </div>
             </div>
             `;
+            //Aqui recoge los comentarios de cada anuncio
+            actualizaBienComentarios(anuncios.id);
+            /*Esto baja el scroll automaticamente sin que lo tenga que hacer el usuario*/
+            $(".cajaComentarios" + anuncios.id).each(function () { this.scrollTop = this.scrollHeight; });
         });
+        cajaIntroducirAnuncio.innerHTML += htmlComentariosEstructura;
     }
     else {
         cajaIntroducirAnuncio.innerHTML += `
-                <div class="col p-4">
-                    <h1 class="text-center text-white">No hay anuncios disponibles</h1>
-                </div>
+        <div class="col px-4 py-5" id>
+            <h2 class="text-center text-white">No hay anuncios disponibles</h2>
+        </div>
         `;
     }
+    const listaBotonesMandarComentario = document.querySelectorAll(".botonMandarComentario");
+    enviarComentario(listaBotonesMandarComentario, inputComentario);
 }
+
 
 
 

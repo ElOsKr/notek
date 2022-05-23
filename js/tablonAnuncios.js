@@ -1,6 +1,6 @@
 import {
     db, onSnapshot,
-    collection, query, orderBy, addDoc, mantenerSesionActiva
+    collection, query, orderBy, addDoc, mantenerSesionActiva, listaComentariosActualizados
 } from "./firebase.js"
 
 document.addEventListener("readystatechange", cargarEventos, false);
@@ -144,51 +144,6 @@ function actualizaBienComentarios(id) {
     });
 }
 
-//Aqui se cargan los comentarios nada mas en cada div del modal
-function listaComentariosActualizados(comentarios, id) {
-    let htmlComentarios = "";
-    //Si no hay comentarios aparecerá este div
-    if (comentarios.length == 0) {
-        htmlComentarios += `
-            <div class="col-12 py-2 px-2">
-                <div data-id="" class="d-block w-100 p-3 comentario mt-5" style="display:inline-flex;">
-                        <div class="texto text-white " data-id="">
-                            <h4 class="text-center">No hay comentarios</h4>
-                        </div>
-                </div>
-            </div>
-            `;
-        //Aqui se pone el comentario para insertarlo en el div correspondiente
-        $(".cajaComentarios" + id).html(htmlComentarios);
-    }
-    //Si hay comentarios
-    else {
-        comentarios.forEach(comentarios => {
-            let fecha = new Date(comentarios.fechaComentario);
-            let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
-
-            htmlComentarios += `
-                    <div class="col-12 py-2 px-2">
-                        <div data-id="" class="d-block w-100 p-3 comentario" style="display:inline-flex;">
-                            <div class="texto text-white" data-id="">
-                                <img data-id="" class="imagenPerfil" srcset="${comentarios.imagenUsuario}" alt="imagenChat" />
-                                <h4 class="text-md-start" data-id="">${comentarios.idUsuario}</h4>
-                                <p class=" ultimoMensaje text-md-start" data-id="">${comentarios.contenido}</p>
-                                <span class="tiempo text-md-end float-end" data-id="">${formatearFecha}</span>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-            //Aqui se pone el comentario para insertarlo en el div correspondiente
-            $(".cajaComentarios" + id).html(htmlComentarios);
-            /*Esto baja el scroll automaticamente sin que lo tenga que hacer el usuario*/
-            $(".cajaComentarios" + id).each(function () { this.scrollTop = this.scrollHeight; });
-        });
-    }
-}
-
 //Asignar un evento a cada boton para añadir un comentario en la subcoleccion correspondiente
 function enviarComentario(listaBotonesMandarComentario) {
     //Recorro la lista de Botones 
@@ -209,6 +164,5 @@ function enviarComentario(listaBotonesMandarComentario) {
                 inputComentario[i].value = "";
             }
         });
-
     }
 }

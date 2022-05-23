@@ -5,26 +5,23 @@ const btnCrearAnuncio = document.getElementById("btnCrearAnuncio");
 const tituloAnuncio = document.getElementById("tituloAnuncio");
 const seleccionarArchivo = document.getElementById("seleccionarArchivo");
 const storage = getStorage();
+let idGrupo = localStorage.getItem("idGrupo");
 
 function cargarEventos() {
     cargarTextarea();
     btnCrearAnuncio.addEventListener("click", validarCampos);
-    let paginaAnterior = document.referrer;
-    let url=paginaAnterior.split("/");
-    console.log(url[url.length-1]);
 }
 
 function validarCampos() {
-    
     let contenidoAnuncio = tinymce.get("contenidoAnuncio").getContent({ format: "text" });
 
     if ($.trim(tituloAnuncio.value) == "") {
         mostrarErrores(0, "Introduzca algún título");
     }
-    else if($.trim(tituloAnuncio.value).length > 30) {
+    else if ($.trim(tituloAnuncio.value).length > 30) {
         mostrarErrores(0, "No introduzca más de 30 caracteres")
     }
-    else{
+    else {
         quitarErrores(0);
     }
 
@@ -55,7 +52,6 @@ function mostrarErrores(indice, advertencia) {
 
 function subirAnuncio() {
     let contenidoTextarea = tinymce.get("contenidoAnuncio").getContent();
-    console.log(contenidoTextarea);
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
         if (user) {
@@ -65,7 +61,15 @@ function subirAnuncio() {
             }
             //Sino solo se crea el anuncio sin el archivo
             else {
-                const anuncio = await addDoc(collection(db, "Anuncios"), {
+                let referencia = "";
+                if (idGrupo == "") {
+                    referencia = "Anuncios";
+                }
+                else {
+                    referencia = "Grupos/" + idGrupo + "/Anuncios";
+                }
+
+                const anuncio = await addDoc(collection(db, referencia), {
                     idUsuario: user.displayName,
                     imagenUsuario: user.photoURL,
                     titulo: $.trim(tituloAnuncio.value),
@@ -76,8 +80,14 @@ function subirAnuncio() {
                 });
                 //Si se creo todo correctamente te redirige
                 if (anuncio != null) {
-                    console.log(anuncio);
-                    location.href = "../html/tablonAnuncios.php";
+                    //Si el usuario lo publica al tablon de anuncios general
+                    if (idGrupo == "") {
+                        location.href = "../html/tablonAnuncios.php";
+                    }
+                    //Si el usuario lo publica al tablon de anuncios de su grupo
+                    else {
+                        location.href = "../html/grupos.php";
+                    }
                 }
             }
         }
@@ -96,7 +106,14 @@ function subirArchivo(user, contenidoTextarea) {
         //Si se subio correctamente se coge la url de la imagen subida y se la pone a la imagen
         getDownloadURL(storageRef)
             .then(async (url) => {
-                const anuncio = await addDoc(collection(db, "Anuncios"), {
+                let referencia = "";
+                if (idGrupo == "") {
+                    referencia = "Anuncios";
+                }
+                else {
+                    referencia = "Grupos/" + idGrupo + "/Anuncios";
+                }
+                const anuncio = await addDoc(collection(db, referencia), {
                     idUsuario: user.displayName,
                     imagenUsuario: user.photoURL,
                     titulo: $.trim(tituloAnuncio.value),
@@ -107,8 +124,14 @@ function subirArchivo(user, contenidoTextarea) {
                 });
                 //Cuando se cargue el anuncio redirigira al usuario al inicio
                 if (anuncio != null) {
-                    console.log(anuncio);
-                    location.href = "../html/tablonAnuncios.php";
+                    //Si el usuario lo publica al tablon de anuncios general
+                    if (idGrupo == "") {
+                        location.href = "../html/tablonAnuncios.php";
+                    }
+                    //Si el usuario lo publica al tablon de anuncios de su grupo
+                    else {
+                        location.href = "../html/grupos.php";
+                    }
                 }
             })
             .catch((error) => {

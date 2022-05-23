@@ -16,6 +16,10 @@ body {
     height: 70px;
 }
 
+.tituloGrupo {
+    background: #393E46;
+}
+
 .cajasContenido {
     background-color: #00ADB5;
 }

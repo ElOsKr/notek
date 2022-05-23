@@ -183,7 +183,7 @@
             </div>
         </div>
     </div>
-    <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle">+</a>
+    <a href="crearAnuncio.php" class="btn-flotante text-white rounded-circle" id="btn-flotante" style="display: none;">+</a>
     <script type="module" src="../js/grupos.js"></script>
     <script type="module" src="../js/sidebar.js"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
