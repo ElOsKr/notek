@@ -87,6 +87,7 @@ export function cerrarSesion() {
         localStorage.setItem("idChat", "");
         localStorage.setItem("idChatInverso", "");
         localStorage.setItem("imagenPerfil", "");
+        localStorage.setItem("idGrupo", "");
     }).catch((error) => {
         console.log("No se pudo deslogear de la pagina");
     });
@@ -100,6 +101,7 @@ export function mantenerSesionActiva() {
             localStorage.setItem("idChat", "");
             localStorage.setItem("idChatInverso", "");
             localStorage.setItem("imagenPerfil", user.photoURL);
+            localStorage.setItem("idGrupo", "");
         } else {
             // User is signed out
             location.href = "../index.html";
@@ -240,7 +242,7 @@ export async function mandarMensaje(mensajeMandado) {
             ultimoMensaje: mensajeMandado
         });
 
-    } 
+    }
     //Si no existe el chat allí, entonces se encuentra en la referencia del usuario propio, y se actualizaran los campos correspondientes
     else {
         console.log("No Existe el chat");
@@ -266,3 +268,94 @@ export async function mandarMensaje(mensajeMandado) {
 
 /*-----------------------------------------ANUNCIOS------------------------------------------------*/
 export const listaAnunciosActualizado = (funcion) => onSnapshot(collection(db, "Anuncios"), funcion);
+
+//Aqui se cargan los comentarios nada mas en cada div del modal
+export function listaComentariosActualizados(comentarios, id) {
+    let htmlComentarios = "";
+    //Si no hay comentarios aparecerá este div
+    if (comentarios.length == 0) {
+        htmlComentarios += `
+            <div class="col-12 py-2 px-2">
+                <div data-id="" class="d-block w-100 p-3 comentario mt-5" style="display:inline-flex;">
+                        <div class="texto text-white " data-id="">
+                            <h4 class="text-center">No hay comentarios</h4>
+                        </div>
+                </div>
+            </div>
+            `;
+        //Aqui se pone el comentario para insertarlo en el div correspondiente
+        $(".cajaComentarios" + id).html(htmlComentarios);
+    }
+    //Si hay comentarios
+    else {
+        comentarios.forEach(comentarios => {
+            let fecha = new Date(comentarios.fechaComentario);
+            let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
+
+            htmlComentarios += `
+                    <div class="col-12 py-2 px-2">
+                        <div data-id="" class="d-block w-100 p-3 comentario" style="display:inline-flex;">
+                            <div class="texto text-white" data-id="">
+                                <img data-id="" class="imagenPerfil" srcset="${comentarios.imagenUsuario}" alt="imagenChat" />
+                                <h4 class="text-md-start" data-id="">${comentarios.idUsuario}</h4>
+                                <p class=" ultimoMensaje text-md-start" data-id="">${comentarios.contenido}</p>
+                                <span class="tiempo text-md-end float-end" data-id="">${formatearFecha}</span>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            //Aqui se pone el comentario para insertarlo en el div correspondiente
+            $(".cajaComentarios" + id).html(htmlComentarios);
+            /*Esto baja el scroll automaticamente sin que lo tenga que hacer el usuario*/
+            $(".cajaComentarios" + id).each(function () { this.scrollTop = this.scrollHeight; });
+        });
+    }
+}
+
+/**------------------------------------------------GRUPOS------------------------------------------ */
+//Asignar un evento a cada boton para añadir un comentario en la subcoleccion correspondiente
+export function enviarComentario(listaBotonesMandarComentario, inputComentario) {
+    //Recorro la lista de Botones 
+    for (let i = 0; i < listaBotonesMandarComentario.length; i++) {
+        //Aqui le añado un evento a cada boton
+        listaBotonesMandarComentario[i].addEventListener("click", async (evento) => {
+            //Recojo la referencia del id del Anuncio
+            const id = evento.target.dataset.id;
+            //Si en el input correspondiente hay caracteres quitandole los espacios
+            if ($.trim(inputComentario[i].value) != "") {
+                //Hago la referencia en Firebase para situarme en la subcoleccion de Anuncios y justo en el anuncio seleccionado
+                let comentarios = "Grupos/" + localStorage.getItem("idGrupo") + "/Anuncios/" + id;
+                let referenciaComentarios = await addDoc(collection(db, comentarios, "Comentarios"), {
+                    idUsuario: localStorage.getItem("id"),
+                    fechaComentario: Date.now(),
+                    imagenUsuario: localStorage.getItem("imagenPerfil"),
+                    contenido: inputComentario[i].value
+                });
+                inputComentario[i].value = "";
+            }
+        });
+
+    }
+}
+
+export function actualizaBienComentarios(id) {
+    const referenciaComentarios = collection(db, "Grupos/" + localStorage.getItem("idGrupo") + "/Anuncios/" + id + "/Comentarios");
+    //Lo ordeno los comentarios por el campo fechaComentario y de forma ascendente
+    const consulta = query(referenciaComentarios, orderBy("fechaComentario", "asc"));
+    const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
+        const comentarios = [];
+        querySnapshot.forEach((doc) => {
+            comentarios.push({
+                id: doc.id,
+                idUsuario: doc.data().idUsuario,
+                fechaComentario: doc.data().fechaComentario,
+                imagenUsuario: doc.data().imagenUsuario,
+                contenido: doc.data().contenido,
+                idAnuncio: doc.data().idAnuncio
+            });
+        });
+        listaComentariosActualizados(comentarios, id);
+    });
+}

@@ -55,7 +55,7 @@
                                 </div>
                                 <br>
 
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#panel">
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#panel">
                                     Comentarios
                                 </button>
 
@@ -106,33 +106,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="modal fade " id="${anuncios.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
-                                        <div class="modal-content" style="background-color: #222831;">
-
-                                            <div class="modal-body">
-                                                <div class="container cajaTotalComentarios">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <h2 class="my-3 text-center text-white">Comentarios</h2>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row cajaComentarios">
-
-                                                    </div>
-                                                    <div id="formulario" class="px-0 pb-1 pt-2">
-                                                        <input type="text" class="form-control" placeholder="Enviar comentario" id="inputChat" />
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <br>
                                 <br>
                                 <a href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Enlace descargar archivo auxiliar</a>
