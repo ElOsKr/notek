@@ -82,7 +82,17 @@
 
         public function listarApuntes(){
             $array=[];
-            $sentencia=$this->conn->prepare("select * from lista.items");
+            $sentencia=$this->conn->prepare("select * from lista.items order by id desc");
+            $sentencia->execute();
+            while($result = $sentencia->fetch(PDO::FETCH_ASSOC)){
+                array_push($array,$result);
+            }
+            return $array;
+        }
+
+        public function buscarApuntes($filtro){
+            $array=[];
+            $sentencia=$this->conn->prepare("select * from lista.items where title like '%{$filtro}%' order by id desc");
             $sentencia->execute();
             while($result = $sentencia->fetch(PDO::FETCH_ASSOC)){
                 array_push($array,$result);
@@ -159,6 +169,13 @@
         }else{
             echo(json_encode(0));
         }
+    }
+
+    if(isset($_POST['f'])){
+        $conexion=new conexion3();
+        $datos=json_decode($_POST['f']);
+        $filtrados=$conexion->buscarApuntes($datos);
+        echo(json_encode($filtrados));
     }
 
 ?>
