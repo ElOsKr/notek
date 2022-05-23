@@ -149,7 +149,6 @@
                                 </div>
                                 <h4 class="card-title  float-start ">Un buen titulo</h4>
                                 <br>
-
                                 <div class="cajaIntroducirContenido p-1 bg-white text-black">
                                     <p class="card-text">
                                         Lorem, ipsum dolor sit amet consectetur adipisicing elit.

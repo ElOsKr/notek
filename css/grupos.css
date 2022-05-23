@@ -1,0 +1,92 @@
+body {
+    background-color: #222831;
+}
+
+.page {
+    position: relative;
+}
+
+.grupoLista {
+    background: #393E46;
+    color: #00FFF5;
+}
+
+.imagenAutor {
+    width: 70px;
+    height: 70px;
+}
+
+.cajasContenido {
+    background-color: #00ADB5;
+}
+
+.cajaTotal {
+    background: #59616e;
+}
+
+#preCrearGrupo {
+    width: 120px;
+}
+
+/*Aqui estilos para los comentarios*/
+.cajaTotalComentarios {
+    background-color: #222831;
+}
+
+.imagenPerfil {
+    width: 50px;
+    height: 50px;
+    border-radius: 35px;
+}
+
+#formulario {
+    display: inline-flex;
+    width: 100%;
+    max-width: 100%;
+}
+
+.cajaComentarios {
+    height: 53.2vh;
+    overflow-y: scroll;
+}
+
+.comentario {
+    background: #59616e;
+}
+
+/*Estilos por defecto de los mensajes de error*/
+.errores {
+    color: red;
+    display: none;
+    margin: 5px 0px 0px;
+}
+
+/*Buscador Usuarios*/
+.caja_ListaUsuarios {
+    background-color: #222831;
+    border: 1px solid #00ADB5;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+
+.dropdown-menu li {
+    position: relative;
+}
+
+.dropdown-menu .dropdown-submenu {
+    display: none;
+    position: absolute;
+    right: 100%;
+    top: -7px;
+}
+
+.dropdown-menu .dropdown-submenu-left {
+    right: 100%;
+    right: auto;
+}
+
+.dropdown-menu>li:hover>.dropdown-submenu {
+    display: block;
+}
