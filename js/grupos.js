@@ -80,9 +80,8 @@ function listaGruposActualizados(grupos) {
         html += `
             <a href="#${grupo.titulo}"  data-id="${grupo.id}" class="list-group-item list-group-item-action grupoLista" aria-current="true">
             ${grupo.titulo}
-            <span class="float-end">${formatearFecha}</span>
+            <span class="float-end pb-1 fechaGrupo">${formatearFecha}</span>
             </a>
-            
         `;
     });
     cajaListaGrupo.innerHTML = html;

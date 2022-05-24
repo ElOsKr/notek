@@ -24,7 +24,7 @@
                 <div class="row">
                     <div class="col p-4">
                         <h1 class="text-center">Lista de Grupos</h1>
-                        <div class="dropdown float-end">
+                        <div class="dropdown float-end p-2">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Ordenar por
                             </button>
