@@ -1,6 +1,6 @@
 import { collection, query, where, onSnapshot, db, setDoc, doc, updateDoc, deleteDoc } from "./firebase.js";
 const myModal = new bootstrap.Modal(document.getElementById('modalCalendario'));
-let id = 1;
+var id=0;
 document.addEventListener('DOMContentLoaded', function () {
   mostrarFirebaseCalendario();
   document.getElementById("checkInicio").addEventListener("click", checkInicioE);
@@ -114,7 +114,7 @@ function mostrarFirebaseCalendario() {
       });
     });
     console.log(calendario);
-    id = calendario.length+1;
+    id = calendario.length;
     devolverDatoCalendario(calendario);
   });
 }
@@ -232,7 +232,6 @@ function devolverDatoCalendario(calendarioArray) {
         }
         //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
         await setDoc(doc(db, "Calendario", localStorage.getItem("id") + " " + id), docRef);
-        id++;
         myModal.hide();
       }
       else {
