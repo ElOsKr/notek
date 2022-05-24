@@ -99,7 +99,42 @@
             }
             return $array;
         }
+
+        public function enProcesoListar(){
+            $array=[];
+            $sentencia=$this->conn->prepare("select * from lista.items where status='enProceso' order by id desc");
+            $sentencia->execute();
+            while($result = $sentencia->fetch(PDO::FETCH_ASSOC)){
+                array_push($array,$result);
+            }
+            return $array;
+        }
+
+        public function enPausaListar(){
+            $array=[];
+            $sentencia=$this->conn->prepare("select * from lista.items where status='enPausa' order by id desc");
+            $sentencia->execute();
+            while($result = $sentencia->fetch(PDO::FETCH_ASSOC)){
+                array_push($array,$result);
+            }
+            return $array;
+        }
+        
+        public function acabadosListar(){
+            $array=[];
+            $sentencia=$this->conn->prepare("select * from lista.items where status='completado' order by id desc");
+            $sentencia->execute();
+            while($result = $sentencia->fetch(PDO::FETCH_ASSOC)){
+                array_push($array,$result);
+            }
+            return $array;
+        }
+
+
+
     }
+
+    
 
     if(isset($_POST['x'])){
         $cone=new conexion3();
@@ -178,4 +213,21 @@
         echo(json_encode($filtrados));
     }
 
+    if(isset($_POST['enP'])){
+        $conexion=new conexion3();
+        $filtrados=$conexion->enProcesoListar();
+        echo(json_encode($filtrados));
+    }
+
+    if(isset($_POST['enS'])){
+        $conexion=new conexion3();
+        $filtrados=$conexion->enPausaListar();
+        echo(json_encode($filtrados));
+    }
+
+    if(isset($_POST['enA'])){
+        $conexion=new conexion3();
+        $filtrados=$conexion->acabadosListar();
+        echo(json_encode($filtrados));
+    }
 ?>

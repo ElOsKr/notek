@@ -290,48 +290,63 @@ function itemAcabado(){
 }
 
 function mostrarEnProceso(){
-    var listaItems=document.getElementById("tareas").childNodes;
-    for (let i = 0; i < listaItems.length; i++) {
-        if(listaItems[i].nodeName=="DIV"){
-            if(listaItems[i].dataset.status!="enProceso"){
-                $(listaItems[i]).removeClass("d-flex");
-                $(listaItems[i]).css("display","none");
-            }else{
-                $(listaItems[i]).addClass("d-flex");
-                $(listaItems[i]).css("display","block");
-            }            
+    var cadena='enP=1';
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        if(this.readyState==4 && this.status==200){
+            var comprobar=JSON.parse(this.responseText);
+            $('#tareas').html("");
+            var html="";
+            for (let i = 0; i < comprobar.length; i++) {
+                html +=estructuraHTML(comprobar[i]['id'],comprobar[i]['title'],"text-primary",comprobar[i]['status']); 
+
+            }
+            document.getElementById("tareas").innerHTML=html;
         }
     }
+    xhttp.open("POST", "baseLista.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(cadena);
 }
 
 function mostrarEnPausa(){
-    var listaItems=document.getElementById("tareas").childNodes;
-    for (let i = 0; i < listaItems.length; i++) {
-        if(listaItems[i].nodeName=="DIV"){
-            if(listaItems[i].dataset.status!="enPausa"){
-                $(listaItems[i]).removeClass("d-flex");
-                $(listaItems[i]).css("display","none");
-            }else{
-                $(listaItems[i]).addClass("d-flex");
-                $(listaItems[i]).css("display","block");
-            }            
+    var cadena='enS=1';
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        if(this.readyState==4 && this.status==200){
+            var comprobar=JSON.parse(this.responseText);
+            $('#tareas').html("");
+            var html="";
+            for (let i = 0; i < comprobar.length; i++) {
+                html +=estructuraHTML(comprobar[i]['id'],comprobar[i]['title'],"text-warning",comprobar[i]['status']); 
+
+            }
+            document.getElementById("tareas").innerHTML=html;
         }
     }
+    xhttp.open("POST", "baseLista.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(cadena);
 }
 
 function mostrarAcabados(){
-    var listaItems=document.getElementById("tareas").childNodes;
-    for (let i = 0; i < listaItems.length; i++) {
-        if(listaItems[i].nodeName=="DIV"){
-            if(listaItems[i].dataset.status!="completado"){
-                $(listaItems[i]).removeClass("d-flex");
-                $(listaItems[i]).css("display","none");
-            }else{
-                $(listaItems[i]).addClass("d-flex");
-                $(listaItems[i]).css("display","block");
-            }            
+    var cadena='enA=1';
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        if(this.readyState==4 && this.status==200){
+            var comprobar=JSON.parse(this.responseText);
+            $('#tareas').html("");
+            var html="";
+            for (let i = 0; i < comprobar.length; i++) {
+                html +=estructuraHTML(comprobar[i]['id'],comprobar[i]['title'],"text-success",comprobar[i]['status']); 
+
+            }
+            document.getElementById("tareas").innerHTML=html;
         }
     }
+    xhttp.open("POST", "baseLista.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(cadena);
 }
 
 function buscador(){
