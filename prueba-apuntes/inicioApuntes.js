@@ -5,7 +5,7 @@ function cargarEventos() {
     document.getElementById("crearApuntes").addEventListener("click",function(){location.href="./apuntes.php"});
 }
 
-function comprobarApuntes(){
+/*function comprobarApuntes(){
     var cadena='x=1';
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function() {
@@ -31,4 +31,4 @@ function comprobarApuntes(){
     xhttp.open("POST", "comprobarApuntes.php");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(cadena);    
-}
+}*/

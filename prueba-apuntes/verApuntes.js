@@ -23,10 +23,10 @@ function cargarEventos() {
             location.href="./inicioApuntes.php";
           }
         }
+        xhttp.open("POST", "comprobarApuntes.php");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(cadena); 
       }
-      xhttp.open("POST", "comprobarApuntes.php");
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send(cadena); 
     }else{
       location.href="./inicioApuntes.php";
     }
