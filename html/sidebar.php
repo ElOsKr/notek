@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li class="lista-navegacion-item">
-                        <a class="navegacion-link" href="#">
+                        <a class="navegacion-link" href="inicioApuntes.php">
                             <div class="row">
                                 <div class="col-2 icon-listaItem">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text mb-1" viewBox="0 0 16 16">
@@ -100,7 +100,7 @@
                                     </svg>
                                 </div>
                                 <div class="col-9 titulo-listaItem">
-                                    Apuntes
+                                    Listas
                                 </div>
                             </div>
                         </a>

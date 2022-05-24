@@ -140,7 +140,6 @@ function subirArchivo(user, contenidoTextarea) {
     });
 }
 
-
 function cargarTextarea() {
     tinymce.init({
         selector: 'textarea#contenidoAnuncio',

@@ -1,7 +1,7 @@
 import {
     db, getAuth, onSnapshot, collection, query, orderBy, doc, getDoc, setDoc, listaUsuariosActualizado,
     where, enviarComentario, actualizaBienComentarios
-} from "./firebase.js"
+} from "./firebase.js";
 document.addEventListener("readystatechange", cargarEventos, false);
 const inputTituloGrupo = document.getElementById("tituloGrupo");
 const usuarioGrupo = document.getElementById("usuarioGrupo");

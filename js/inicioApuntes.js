@@ -1,4 +1,4 @@
-import { doc, db, onSnapshot, collection, query, where, orderBy } from "../js/firebase.js";
+import { doc, db, onSnapshot, collection, query, where, orderBy } from "./firebase.js";
 
 document.addEventListener("readystatechange", cargarEventos, false);
 const cajaApuntes = document.getElementById("cajaApuntes");
@@ -32,7 +32,6 @@ function actualizaBienApuntes() {
     });
     actualizarApuntes(apuntes);
   });
-
 }
 
 function actualizarApuntes(apuntes) {
@@ -44,7 +43,7 @@ function actualizarApuntes(apuntes) {
     html += `
             <div data-id="${apunte.id}" class="list-group-item list-group-item-action apuntesLista pt-3" aria-current="true">
             ${apunte.titulo}
-            <span class="float-end pb-1 fechaGrupo d-flex"><button type="button" class="btn btn-outline-info me-5 btn-sm px-3 apuntesVistaVer" data-id="${apunte.id}" >Ver</button>${formatearFecha} </span>
+            <span class="float-end pb-1 fechaGrupo d-flex"><button type="button" class="btn btn-outline-info me-5 btn-sm px-3 apuntesVistaVer" data-id="${apunte.id}">Ver</button>${formatearFecha}</span>
             </div>
         `;
   });
@@ -55,26 +54,23 @@ function actualizarApuntes(apuntes) {
   seleccionarGrupo(listaApuntes, listaApuntesVer);
 }
 
-function comprobarApuntes() {
-  cajaApuntes.innerHTML = "";
-}
-
 function seleccionarGrupo(listaApuntes, listaApuntesVer) {
   //Recorro todos los botones seleccionados
   listaApuntes.forEach(apunte => {
-    //Saco el id que lleva cada uno
-    apunte.addEventListener("click", (evento) => {
+    //Lista de botones para solo editar el apunte
+    apunte.addEventListener("click", async (evento) => {
       console.log(evento.target.dataset.id);
       localStorage.setItem("idApunte", evento.target.dataset.id);
       location.href = "apuntes.php";
-    });
+    }, true);
   });
+  //Lista de botones para solo ver el apunte
   listaApuntesVer.forEach(apunte => {
     //Saco el id que lleva cada uno
-    apunte.addEventListener("click", (evento) => {
+    apunte.addEventListener("click", async (evento) => {
       console.log(evento.target.dataset.id);
       localStorage.setItem("idApunte", evento.target.dataset.id);
-      //location.href = "verApuntes.php";
-    });
+      location.href = "verApuntes.php";
+    }, true);
   });
 }
