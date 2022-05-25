@@ -76,7 +76,8 @@ function subirAnuncio() {
                     contenido: contenidoTextarea,
                     fechaPublicado: Date.now(),
                     archivoSeleccionado: "",
-                    tipoArchivo: ""
+                    tipoArchivo: "",
+                    correoUsuario: localStorage.getItem("id")
                 });
                 //Si se creo todo correctamente te redirige
                 if (anuncio != null) {
@@ -120,7 +121,8 @@ function subirArchivo(user, contenidoTextarea) {
                     contenido: contenidoTextarea,
                     fechaPublicado: Date.now(),
                     archivoSeleccionado: url,
-                    tipoArchivo: archivo.name.substring(archivo.name.length - 3)
+                    tipoArchivo: archivo.name.substring(archivo.name.length - 3),
+                    correoUsuario: localStorage.getItem("id")
                 });
                 //Cuando se cargue el anuncio redirigira al usuario al inicio
                 if (anuncio != null) {

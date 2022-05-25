@@ -89,6 +89,7 @@ export function cerrarSesion() {
         localStorage.setItem("idChatInverso", "");
         localStorage.setItem("imagenPerfil", "");
         localStorage.setItem("idGrupo", "");
+        localStorage.setItem("IdNickname",);
     }).catch((error) => {
         console.log("No se pudo deslogear de la pagina");
     });
@@ -103,6 +104,7 @@ export function mantenerSesionActiva() {
             localStorage.setItem("idChatInverso", "");
             localStorage.setItem("imagenPerfil", user.photoURL);
             localStorage.setItem("idGrupo", "");
+            localStorage.setItem("idNickname",user.displayName);
         } else {
             // User is signed out
             location.href = "../index.html";
@@ -297,7 +299,7 @@ export function listaComentariosActualizados(comentarios, id) {
                     <div class="col-12 py-2 px-2">
                         <div data-id="" class="d-block w-100 p-3 comentario" style="display:inline-flex;">
                             <div class="texto text-white" data-id="">
-                                <img data-id="" class="imagenPerfil" srcset="${comentarios.imagenUsuario}" alt="imagenChat" />
+                                <img data-id="" class="imagenPerfil my-2" srcset="${comentarios.imagenUsuario}" alt="imagenChat" />
                                 <h4 class="text-md-start" data-id="">${comentarios.idUsuario}</h4>
                                 <p class=" ultimoMensaje text-md-start" data-id="">${comentarios.contenido}</p>
                                 <span class="tiempo text-md-end float-end" data-id="">${formatearFecha}</span>
@@ -318,6 +320,7 @@ export function listaComentariosActualizados(comentarios, id) {
 /**------------------------------------------------GRUPOS------------------------------------------ */
 //Asignar un evento a cada boton para añadir un comentario en la subcoleccion correspondiente
 export function enviarComentario(listaBotonesMandarComentario, inputComentario) {
+    console.log(localStorage.getItem("idNickname"));
     //Recorro la lista de Botones 
     for (let i = 0; i < listaBotonesMandarComentario.length; i++) {
         //Aqui le añado un evento a cada boton
@@ -329,7 +332,8 @@ export function enviarComentario(listaBotonesMandarComentario, inputComentario) 
                 //Hago la referencia en Firebase para situarme en la subcoleccion de Anuncios y justo en el anuncio seleccionado
                 let comentarios = "Grupos/" + localStorage.getItem("idGrupo") + "/Anuncios/" + id;
                 let referenciaComentarios = await addDoc(collection(db, comentarios, "Comentarios"), {
-                    idUsuario: localStorage.getItem("id"),
+                    idUsuario: localStorage.getItem("idNickname"),
+                    correoUsuario:localStorage.getItem("id"),
                     fechaComentario: Date.now(),
                     imagenUsuario: localStorage.getItem("imagenPerfil"),
                     contenido: inputComentario[i].value

@@ -25,7 +25,7 @@
                     <input type="text" id="listaItemNombre" class="form-control">
                     <button class="btn btn-outline-secondary text-light" id="botonAniadir">Añadir</button>
                 </div>
-                <p class="errorItem oculto text-danger">No puede estar vacio este campo</p> 
+                <p class="errorItem text-danger" style="display: none;">No puede estar vacio este campo</p> 
                 <div class="btnEleccionEstado mt-3 row">
                   <div class="botonesEstado row">
                     <p class="text-info">Filtrar lista por:</p>

@@ -1,6 +1,6 @@
 import {
     db, doc, onSnapshot, getStorage, ref, getDownloadURL, uploadBytes, resetContrasena, updateDoc,
-    getAuth, updateProfile, onAuthStateChanged
+    getAuth, updateProfile, onAuthStateChanged, collection, query, where, getDocs
 } from "./firebase.js";
 
 document.addEventListener("readystatechange", cargarEventos, false);
@@ -17,7 +17,7 @@ const nicknamePerfilActual = document.getElementsByClassName("nicknameActual")[0
 const seleccionarImagen = document.getElementById("seleccionImagen");
 const btnResetearContra = document.getElementById("resetearContra");
 let urlImagen = localStorage.getItem("imagenPerfil");
-let urlImagenAnterior="";
+let urlImagenAnterior = "";
 
 //Id usuario
 const idUsuario = localStorage.getItem("id");
@@ -32,7 +32,6 @@ function cargarEventos() {
         //Si no hay algun campo que falla, que esta vacio
         if (arrayFallos.filter(x => x === true).length === 3) {
             e.preventDefault();
-            console.log("datos enviados");
             guardarCambios();
             actualizarPerfil();
         }
@@ -45,7 +44,6 @@ function cargarEventos() {
     btnResetearContra.addEventListener("click", (e) => {
         resetContrasena(localStorage.getItem("id"));
     });
-
 
     seleccionarImagen.addEventListener("change", preseleccionarFoto);
 
@@ -60,10 +58,8 @@ function preseleccionarFoto() {
 }
 
 function cargarDatosUsuario() {
-    console.log(idUsuario)
     const usuario = onSnapshot(doc(db, "Usuarios", idUsuario), (doc) => {
-        console.log(doc.data().idUsuario)
-        urlImagenAnterior=doc.data().imagenUsuario;
+        urlImagenAnterior = doc.data().imagenUsuario;
         imagenPerfilActual.src = doc.data().imagenUsuario;
         nicknamePerfilActual.innerHTML = doc.data().idUsuario;
         campoApellidos.value = doc.data().apellidos;
@@ -109,10 +105,16 @@ function guardarCambios() {
 //Actualizo los campos del Usuario referenciados en Firestore
 async function actualizarCampos() {
     //Aqui controlo si el usuario no selecciona nada 
-    if(urlImagen==""){
-        urlImagen=urlImagenAnterior;
+    console.log("iMAGEN 1=> "+urlImagenAnterior)
+    console.log("iMAGEN 2=> "+urlImagen)
+    if (urlImagen == "") {
+        urlImagen = urlImagenAnterior;
     }
-
+    actualizarAnuncios();
+    actualizarComentarios();
+    actualizarAnunciosGrupos();
+    actualizarAnunciosGruposComentarios();
+    actualizarDatosChat();
     const usuarioRef = doc(db, "Usuarios", localStorage.getItem("id"));
     return updateDoc(usuarioRef, {
         idUsuario: $.trim(campoNickname.value),
@@ -179,10 +181,111 @@ function actualizar(auth) {
             }).then(async () => {
                 //Actualizo los campos de Firebase Firestore
                 await actualizarCampos(user.photoURL);
+                localStorage.setItem("idNickname", $.trim(campoNickname.value))
             });
         }
     });
 }
+
+function actualizarAnuncios() {
+    //Actualiza todas las referencias del usuario en los anuncios
+    const consultaAnuncios = query(collection(db, "Anuncios"), where("correoUsuario", "==", localStorage.getItem("id")));
+    const unsubscribe = onSnapshot(consultaAnuncios, (querySnapshot) => {
+        querySnapshot.forEach((docu) => {
+            let refAnuncio = doc(db, "Anuncios", docu.id);
+            updateDoc(refAnuncio, {
+                idUsuario: $.trim(campoNickname.value),
+                imagenUsuario: urlImagen
+            });
+        });
+    });
+}
+
+//Actualizo todas las referencias de los comentarios de los usuarios
+function actualizarComentarios() {
+    const consultaAnuncios = query(collection(db, "Anuncios"));
+    const unsubscribe = onSnapshot(consultaAnuncios, (querySnapshot) => {
+        querySnapshot.forEach((docu) => {
+            let consultaComentarios = query(collection(db, "Anuncios/" + docu.id + "/Comentarios"), where("correoUsuario", "==", localStorage.getItem("id")));
+            let idAnuncio = docu.id;
+            const unsubscribe2 = onSnapshot(consultaComentarios, (querySnapshot) => {
+                querySnapshot.forEach((docu) => {
+                    let refComentario = doc(db, "Anuncios/" + idAnuncio + "/Comentarios", docu.id);
+                    updateDoc(refComentario, {
+                        idUsuario: $.trim(campoNickname.value),
+                        imagenUsuario: urlImagen
+                    });
+                });
+            });
+        });
+    });
+}
+
+//Actualizar todas las referencias que hay del usuario actual en cada anuncio hecho por el en cada grupo de la base de datos
+function actualizarAnunciosGrupos() {
+    const consultaGrupos = query(collection(db, "Grupos"));
+    const unsubscribe = onSnapshot(consultaGrupos, (querySnapshot) => {
+        querySnapshot.forEach((docu) => {
+            let consultaAnunciosGrupos = query(collection(db, "Grupos/" + docu.id + "/Anuncios"), where("correoUsuario", "==", localStorage.getItem("id")));
+            let idGrupo = docu.id;
+            const unsubscribe2 = onSnapshot(consultaAnunciosGrupos, (querySnapshot) => {
+                querySnapshot.forEach((docu) => {
+                    let refAnuncio = doc(db, "Grupos/" + idGrupo + "/Anuncios", docu.id);
+                    updateDoc(refAnuncio, {
+                        idUsuario: $.trim(campoNickname.value),
+                        imagenUsuario: urlImagen
+                    });
+                });
+            });
+        });
+    });
+}
+
+function actualizarAnunciosGruposComentarios() {
+    const consultaGrupos = query(collection(db, "Grupos"));
+    const unsubscribe = onSnapshot(consultaGrupos, (querySnapshot) => {
+        querySnapshot.forEach((docu) => {
+            let consultaAnunciosGrupos = query(collection(db, "Grupos/" + docu.id + "/Anuncios"));
+            let idGrupo = docu.id;
+            const unsubscribe2 = onSnapshot(consultaAnunciosGrupos, (querySnapshot) => {
+                querySnapshot.forEach((docu) => {
+                    let idAnuncio = docu.id;
+                    let consultaComentariosGrupos = query(collection(db, "Grupos/" + idGrupo + "/Anuncios/" + idAnuncio + "/Comentarios"), where("correoUsuario", "==", localStorage.getItem("id")));
+                    const unsubscribe3 = onSnapshot(consultaComentariosGrupos, (querySnapshot) => {
+                        querySnapshot.forEach((docum) => {
+                            let refComentario = doc(db, "Grupos/" + idGrupo + "/Anuncios/" + idAnuncio + "/Comentarios/", docum.id);
+                            updateDoc(refComentario, {
+                                idUsuario: $.trim(campoNickname.value),
+                                imagenUsuario: urlImagen
+                            });
+                        });
+                    });
+
+                });
+            });
+        });
+    });
+}
+
+function actualizarDatosChat() {
+    let consultaUsuarios = query(collection(db, "Usuarios"));
+    const unsubscribe = onSnapshot(consultaUsuarios, (querySnapshot) => {
+        querySnapshot.forEach((docu) => {
+            let consultaChats = query(collection(db, "Usuarios/" + docu.id + "/Chats"), where("correoUsuario", "==", localStorage.getItem("id")));
+            let idUsuario = docu.id;
+            const unsubscribe2 = onSnapshot(consultaChats, (querySnapshot) => {
+                querySnapshot.forEach((docu) => {
+                    let refChat = doc(db, "Usuarios/" + idUsuario + "/Chats", docu.id);
+                    updateDoc(refChat, {
+                        idNombre: $.trim(campoNickname.value),
+                        imagenUsuario: urlImagen
+                    });
+                });
+            });
+        });
+    });
+}
+
 
 function validarCampos() {
     let arrayErrores = [];
@@ -212,12 +315,10 @@ function validarCampos() {
 
 function comprobarFallos() {
     let arrayErrores = validarCampos();
-    console.log(arrayErrores);
     for (let i = 0; i < arrayErrores.length; i++) {
         //Si el elemento es true se quitan los errores
         if (arrayErrores[i] == true) {
             quitarErrores(i);
-            console.log("Correcto " + i + " " + arrayErrores[i]);
         } else {
             console.log("Fallo " + i + " " + arrayErrores[i]);
         }

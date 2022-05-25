@@ -156,7 +156,8 @@ function enviarComentario(listaBotonesMandarComentario) {
             if ($.trim(inputComentario[i].value) != "") {
                 //Hago la referencia en Firebase para situarme en la subcoleccion de Comentarios y añadirlo a Firebase
                 let referenciaComentarios = await addDoc(collection(db, "Anuncios", id, "Comentarios"), {
-                    idUsuario: localStorage.getItem("id"),
+                    idUsuario: localStorage.getItem("idNickname"),
+                    correoUsuario:localStorage.getItem("id"),
                     fechaComentario: Date.now(),
                     imagenUsuario: localStorage.getItem("imagenPerfil"),
                     contenido: inputComentario[i].value

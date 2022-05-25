@@ -106,7 +106,8 @@ async function crearChat(referenciaUsuario, usuarioActual) {
         idNombre: usuarioActual.displayName,
         usuarios: [referenciaUsuario[1],
         usuarioActual.displayName],
-        imagenUsuario: usuarioActual.photoURL
+        imagenUsuario: usuarioActual.photoURL,
+        correoUsuario: usuarioActual.email
     }, {
         merge: true
     }
@@ -116,7 +117,8 @@ async function crearChat(referenciaUsuario, usuarioActual) {
     await setDoc(chatPropio, {
         idNombre: referenciaUsuario[1],
         usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3]
+        imagenUsuario: referenciaUsuario[3],
+        correoUsuario: referenciaUsuario[0]
     }, {
         merge: true
     }
