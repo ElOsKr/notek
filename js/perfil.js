@@ -105,11 +105,6 @@ function guardarCambios() {
 //Actualizo los campos del Usuario referenciados en Firestore
 async function actualizarCampos() {
     //Aqui controlo si el usuario no selecciona nada 
-    console.log("iMAGEN 1=> "+urlImagenAnterior)
-    console.log("iMAGEN 2=> "+urlImagen)
-    if (urlImagen == "") {
-        urlImagen = urlImagenAnterior;
-    }
     actualizarAnuncios();
     actualizarComentarios();
     actualizarAnunciosGrupos();
@@ -174,6 +169,10 @@ function actualizar(auth) {
                     popup: 'animate__animated animate__fadeOut'
                 }
             });
+            //Aqui controlo si el usuario no a seleccionado nada que la imagen sea la anterior que tuvo el usuario
+            if (urlImagen == "") {
+                urlImagen = urlImagenAnterior;
+            }
             //Actualizo la foto actual
             await updateProfile(auth.currentUser, {
                 displayName: $.trim(campoNickname.value),
