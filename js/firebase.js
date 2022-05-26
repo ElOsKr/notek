@@ -89,7 +89,8 @@ export function cerrarSesion() {
         localStorage.setItem("idChatInverso", "");
         localStorage.setItem("imagenPerfil", "");
         localStorage.setItem("idGrupo", "");
-        localStorage.setItem("IdNickname",);
+        localStorage.setItem("idNickname","");
+        localStorage.setItem("idApunte","");
     }).catch((error) => {
         console.log("No se pudo deslogear de la pagina");
     });

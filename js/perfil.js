@@ -126,7 +126,7 @@ async function actualizarPerfil() {
     //Se coge la imagen seleccionada del usuario
     let foto = seleccionarImagen.files[0];
     //Si el usuario no ha seleccionado nada, se le pone la imagen de Perfil que tenia
-    if (foto == null) {
+    if (foto === undefined) {
         actualizar(auth);
     }
     else {
@@ -137,19 +137,45 @@ async function actualizarPerfil() {
 
 }
 //Funcion para subir la imagen a Firebase Storage
-function cambiarImagenDatos(storageRef, foto, auth) {
+async function cambiarImagenDatos(storageRef, foto, auth) {
     //Se sube a Firebase 
-    return uploadBytes(storageRef, foto).then(() => {
+    await uploadBytes(storageRef, foto).then(() => {
         //Si se subio correctamente se coge la url de la imagen subida y se la pone a la imagen
         getDownloadURL(storageRef)
             .then((url) => {
                 urlImagen = url;
                 imagenPerfilActual.setAttribute('src', urlImagen);
-                actualizar(auth);
             })
             .catch((error) => {
                 console.log(error);
             });
+    });
+    //Cuando se sube la imagen se le avisa al usuario que fue todo actualizado correctamente
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            Swal.fire({
+                icon: "success",
+                title: "Cambios Guardados",
+                text: "Los datos se actualizaron correctamente",
+                showClass: {
+                    popup: 'animate__animated animate__backInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOut'
+                }
+            });
+            //Actualizo la foto actual y el nickname
+            await updateProfile(auth.currentUser, {
+                displayName: $.trim(campoNickname.value),
+                photoURL: urlImagen
+            }).then(async () => {
+                localStorage.setItem("idNickname", $.trim(campoNickname.value));
+                localStorage.setItem("imagenPerfil",user.photoURL);
+                //Actualizo los campos de Firebase Firestore
+                await actualizarCampos(user.photoURL);
+                
+            });
+        }
     });
 }
 
@@ -169,18 +195,16 @@ function actualizar(auth) {
                     popup: 'animate__animated animate__fadeOut'
                 }
             });
-            //Aqui controlo si el usuario no a seleccionado nada que la imagen sea la anterior que tuvo el usuario
-            if (urlImagen == "") {
-                urlImagen = urlImagenAnterior;
-            }
+
             //Actualizo la foto actual
             await updateProfile(auth.currentUser, {
                 displayName: $.trim(campoNickname.value),
-                photoURL: urlImagen
+                photoURL: urlImagenAnterior
             }).then(async () => {
+                localStorage.setItem("idNickname", $.trim(campoNickname.value));
+                localStorage.setItem("imagenPerfil",user.photoURL);
                 //Actualizo los campos de Firebase Firestore
                 await actualizarCampos(user.photoURL);
-                localStorage.setItem("idNickname", $.trim(campoNickname.value))
             });
         }
     });
