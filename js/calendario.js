@@ -98,7 +98,7 @@ function checkDesc() {
 }
 
 function mostrarFirebaseCalendario() {
-  const referenciaCalendario = collection(db, "Calendario");
+  const referenciaCalendario = collection(db, "Usuarios",localStorage.getItem("id"),"Calendario");
   const consulta = query(referenciaCalendario, where("usuario", "==", localStorage.getItem("id")));
   const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
     const calendario = [];
@@ -180,7 +180,7 @@ function devolverDatoCalendario(calendarioArray) {
       var fechaInicio = datos.event.startStr.split("+", 1).toString()
       var fechaFin = datos.event.endStr.split("+", 1).toString();
 
-      const referenciaCalendario = doc(db, "Calendario", idEvento);
+      const referenciaCalendario = doc(db, "Usuarios",localStorage.getItem("id"),"Calendario", idEvento.toString());
       await updateDoc(referenciaCalendario, {
         start: fechaInicio,
         end: fechaFin
@@ -193,7 +193,7 @@ function devolverDatoCalendario(calendarioArray) {
       var fechaInicio = datos.event.startStr.split("+", 1).toString()
       var fechaFin = datos.event.endStr.split("+", 1).toString();
 
-      const referenciaCalendario = doc(db, "Calendario", idEvento);
+      const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Calendario",idEvento.toString());
       await updateDoc(referenciaCalendario, {
         start: fechaInicio,
         end: fechaFin
@@ -231,11 +231,11 @@ function devolverDatoCalendario(calendarioArray) {
           usuario: localStorage.getItem("id")
         }
         //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
-        await setDoc(doc(db, "Calendario", localStorage.getItem("id") + " " + id), docRef);
+        await setDoc(doc(db, "Usuarios", localStorage.getItem("id"),"Calendario",id.toString()), docRef);
         myModal.hide();
       }
       else {
-        const referenciaCalendario = doc(db, "Calendario", idEvento);
+        const referenciaCalendario = doc(db, "Usuarios",localStorage.getItem("id"),"Calendario", idEvento.toString());
         await updateDoc(referenciaCalendario, {
           title: tituloEvento,
           start: fechaInicio,

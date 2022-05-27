@@ -53,11 +53,11 @@ async function obtenerApuntes() {
   //Pero la cosa es que como creo a su vez otro documento enseguida pues el usuario no ve el error 
   let idApunte = localStorage.getItem("idApunte");
   if (idApunte != "") {
-    const referenciaApunte = doc(db, "Apuntes", localStorage.getItem("idApunte"));
+    const referenciaApunte = doc(db, "Usuario", localStorage.getItem("id"),'Apuntes',localStorage.getItem("idApunte"));
     await updateDoc(referenciaApunte, {
       fechaApunte: Date.now()
     });
-    const unsub = onSnapshot(doc(db, "Apuntes", idApunte), (doc) => {
+    const unsub = onSnapshot(doc(db, "Usuario",localStorage.getItem("id"),'Apuntes', idApunte), (doc) => {
       inputTituloApunte.value = doc.data().titulo;
       tinymce.get("default-editor").setContent(doc.data().contenido);
     });
@@ -68,14 +68,13 @@ async function guardarApuntes() {
   let id = localStorage.getItem("idApunte");
   let titulo = inputTituloApunte.value;
   let contenido = tinymce.get("default-editor").getContent();
-  let cadenaId = id.split(" ");
+
   if (id == "") {
-    localStorage.setItem("idApunte", localStorage.getItem("id") + " " + titulo);
+    localStorage.setItem("idApunte", titulo);
     id = localStorage.getItem("idApunte");
   }
-  if (cadenaId[1] != titulo) {
-    await deleteDoc(doc(db, "Apuntes", id));
-    localStorage.setItem("idApunte", localStorage.getItem("id") + " " + titulo);
+  if (id != titulo) {
+    await deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Apuntes', id));
     id = localStorage.getItem("idApunte");
   }
   const apunte = {
@@ -86,6 +85,6 @@ async function guardarApuntes() {
     usuario: localStorage.getItem("id")
   }
   //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
-  await setDoc(doc(db, "Apuntes", id), apunte);
+  await setDoc(doc(db, "Usuarios",localStorage.getItem("id"),"Apuntes", id), apunte);
   $("#botonVer").prop("disabled", false);
 }
