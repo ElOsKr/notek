@@ -119,6 +119,58 @@ function mostrarFirebaseCalendario() {
   });
 }
 
+document.getElementById("borrarFechas").addEventListener("click", async function () {
+  var idEvento = $('#idEvento').val();
+  if (idEvento == "") {
+    $('#errorEvento').css('display', 'block');
+    $('#errorEvento').html("No existe ningun evento");
+  } else {
+    await deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Calendario', idEvento.toString()));
+    const referenciaCalendario = collection(db, "Usuarios",localStorage.getItem("id"),"Calendario");
+    const consulta = query(referenciaCalendario, where("usuario", "==", localStorage.getItem("id")));
+    const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
+      const calendario = [];
+      querySnapshot.forEach((docM) => function(){
+
+        var idM=docM.id
+
+        if(idM>idEvento){
+          idM--;
+          deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Calendario', docM.id.toString()));
+          const docRef = {
+            id: idM,
+            title: docM.data().title,
+            start: docM.data().start,
+            end: docM.data().end,
+            color: docM.data().color,
+            description: docM.data().description,
+            usuario: docM.data().usuario
+          }
+          //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
+          setDoc(doc(db, "Usuarios", localStorage.getItem("id"),"Calendario",idM.toString()), docRef);
+        }
+
+
+        calendario.push({
+          id: docM.id,
+          title: docM.data().title,
+          start: docM.data().start,
+          end: docM.data().end,
+          color: docM.data().color,
+          description: docM.data().description,
+          usuario: docM.data().usuario
+        });
+      });
+      console.log(calendario);
+      id = calendario.length;
+      devolverDatoCalendario(calendario);
+    });
+    myModal.hide();
+  }
+})
+
+
+
 function devolverDatoCalendario(calendarioArray) {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -247,14 +299,4 @@ function devolverDatoCalendario(calendarioArray) {
       }
     }
   });
-  document.getElementById("borrarFechas").addEventListener("click", async function () {
-    var idEvento = $('#idEvento').val();
-    if (idEvento == "") {
-      $('#errorEvento').css('display', 'block');
-      $('#errorEvento').html("No existe ningun evento");
-    } else {
-      await deleteDoc(doc(db, "Calendario", idEvento));
-      myModal.hide();
-    }
-  })
 }
