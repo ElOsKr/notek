@@ -1,6 +1,5 @@
 import { collection, query, where, onSnapshot, db, setDoc, doc, updateDoc, deleteDoc } from "./firebase.js";
 const myModal = new bootstrap.Modal(document.getElementById('modalCalendario'));
-var id=0;
 document.addEventListener('DOMContentLoaded', function () {
   mostrarFirebaseCalendario();
   document.getElementById("checkInicio").addEventListener("click", checkInicioE);
@@ -114,62 +113,9 @@ function mostrarFirebaseCalendario() {
       });
     });
     console.log(calendario);
-    id = calendario.length;
     devolverDatoCalendario(calendario);
   });
 }
-
-document.getElementById("borrarFechas").addEventListener("click", async function () {
-  var idEvento = $('#idEvento').val();
-  if (idEvento == "") {
-    $('#errorEvento').css('display', 'block');
-    $('#errorEvento').html("No existe ningun evento");
-  } else {
-    await deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Calendario', idEvento.toString()));
-    const referenciaCalendario = collection(db, "Usuarios",localStorage.getItem("id"),"Calendario");
-    const consulta = query(referenciaCalendario, where("usuario", "==", localStorage.getItem("id")));
-    const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
-      const calendario = [];
-      querySnapshot.forEach((docM) => function(){
-
-        var idM=docM.id
-
-        if(idM>idEvento){
-          idM--;
-          deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Calendario', docM.id.toString()));
-          const docRef = {
-            id: idM,
-            title: docM.data().title,
-            start: docM.data().start,
-            end: docM.data().end,
-            color: docM.data().color,
-            description: docM.data().description,
-            usuario: docM.data().usuario
-          }
-          //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
-          setDoc(doc(db, "Usuarios", localStorage.getItem("id"),"Calendario",idM.toString()), docRef);
-        }
-
-
-        calendario.push({
-          id: docM.id,
-          title: docM.data().title,
-          start: docM.data().start,
-          end: docM.data().end,
-          color: docM.data().color,
-          description: docM.data().description,
-          usuario: docM.data().usuario
-        });
-      });
-      console.log(calendario);
-      id = calendario.length;
-      devolverDatoCalendario(calendario);
-    });
-    myModal.hide();
-  }
-})
-
-
 
 function devolverDatoCalendario(calendarioArray) {
   var calendarEl = document.getElementById('calendar');
@@ -273,6 +219,12 @@ function devolverDatoCalendario(calendarioArray) {
     var bandera = validarEvento();
     if (bandera == true) {
       if (idEvento == "") {
+        var id=parseInt(localStorage.getItem("lastEventCalendarId"))
+        if(isNaN(id)){
+          id=1;
+        }else{
+          id++;
+        }
         const docRef = {
           id: id,
           title: tituloEvento,
@@ -284,6 +236,7 @@ function devolverDatoCalendario(calendarioArray) {
         }
         //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
         await setDoc(doc(db, "Usuarios", localStorage.getItem("id"),"Calendario",id.toString()), docRef);
+        localStorage.setItem("lastEventCalendarId",id)
         myModal.hide();
       }
       else {
@@ -299,4 +252,15 @@ function devolverDatoCalendario(calendarioArray) {
       }
     }
   });
+
+  document.getElementById("borrarFechas").addEventListener("click", async function () {
+    var idEvento = $('#idEvento').val();
+    if (idEvento == "") {
+      $('#errorEvento').css('display', 'block');
+      $('#errorEvento').html("No existe ningun evento");
+    } else {
+      await deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Calendario', idEvento.toString()));
+      myModal.hide();
+    }
+  })
 }
