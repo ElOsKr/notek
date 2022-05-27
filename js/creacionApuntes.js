@@ -53,11 +53,11 @@ async function obtenerApuntes() {
   //Pero la cosa es que como creo a su vez otro documento enseguida pues el usuario no ve el error 
   let idApunte = localStorage.getItem("idApunte");
   if (idApunte != "") {
-    const referenciaApunte = doc(db, "Usuario", localStorage.getItem("id"),'Apuntes',localStorage.getItem("idApunte"));
+    const referenciaApunte = doc(db, "Usuarios", localStorage.getItem("id"),'Apuntes',localStorage.getItem("idApunte"));
     await updateDoc(referenciaApunte, {
       fechaApunte: Date.now()
     });
-    const unsub = onSnapshot(doc(db, "Usuario",localStorage.getItem("id"),'Apuntes', idApunte), (doc) => {
+    const unsub = onSnapshot(doc(db, "Usuarios",localStorage.getItem("id"),'Apuntes', idApunte), (doc) => {
       inputTituloApunte.value = doc.data().titulo;
       tinymce.get("default-editor").setContent(doc.data().contenido);
     });
