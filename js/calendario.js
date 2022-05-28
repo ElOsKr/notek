@@ -101,6 +101,7 @@ function mostrarFirebaseCalendario() {
   const consulta = query(referenciaCalendario, where("usuario", "==", localStorage.getItem("id")));
   const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
     const calendario = [];
+    var lastId=0;
     querySnapshot.forEach((doc) => {
       calendario.push({
         id: doc.id,
@@ -111,7 +112,9 @@ function mostrarFirebaseCalendario() {
         description: doc.data().description,
         usuario: doc.data().usuario
       });
+      lastId=doc.id
     });
+    localStorage.setItem("lastEventCalendarId",lastId);
     console.log(calendario);
     devolverDatoCalendario(calendario);
   });
@@ -220,11 +223,7 @@ function devolverDatoCalendario(calendarioArray) {
     if (bandera == true) {
       if (idEvento == "") {
         var id=parseInt(localStorage.getItem("lastEventCalendarId"))
-        if(isNaN(id)){
-          id=1;
-        }else{
-          id++;
-        }
+        id++;
         const docRef = {
           id: id,
           title: tituloEvento,
