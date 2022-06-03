@@ -32,7 +32,10 @@
                     <input type="text" id="tituloApuntes" class="bg-transparent text-light border-0 border-bottom border-light" placeholder="Escriba el Título">
                 </h1>
                 <h3 class="errores"></h3>
-                <div class="text-center mt-4">
+                <div class="mt-4">
+                    <div class="alert alert-info oculto me-3" role="alert" id="alertaGuardado" style="margin-bottom: 0!important;">
+                        Guardado con <strong>exito</strong>
+                    </div>
                     <button class="btn text-light text-center" id="botonGuardar">
                         <span class="material-symbols-outlined">
                             save
@@ -52,6 +55,6 @@
             </div>
         </div>
     </div>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

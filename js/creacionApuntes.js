@@ -44,7 +44,7 @@ async function validarApuntes() {
   if (inputTituloApunte.value == "") {
     mostrarErrores(0, "Introduzca un título");
   }
-  else if(apunte.exists()) {
+  else if(apunte.exists() && localStorage.getItem("idApunte")=="") {
     mostrarErrores(0, "Este título de apunte introducido ya existe");
   }
   else {
@@ -107,4 +107,7 @@ async function guardarApuntes() {
   //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
   await setDoc(doc(db, "Usuarios/", localStorage.getItem("id"), "/Apuntes", id), apunte);
   $("#botonVer").prop("disabled", false);
+  var alerta=document.getElementById("alertaGuardado")
+  $(alerta).css("display","inline-block");
+  $(alerta).fadeOut(2000);
 }
