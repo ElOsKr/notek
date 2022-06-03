@@ -124,17 +124,6 @@ async function crearChat(referenciaUsuario, usuarioActual) {
     }
     );
 
-    /*const chatPropio = {
-        idNombre: referenciaUsuario[1],
-        fechaChat: Date.now(),
-        usuarios: [referenciaUsuario[1], usuarioActual.displayName],
-        imagenUsuario: referenciaUsuario[3],
-        ultimoMensaje: ""
-    };
-
-    //Se crea una subcoleccion de Chats 
-    await setDoc(doc(db, "Usuarios/" + usuarioActual.email + "/Chats", idChat), chatPropio);*/
-
     const chatIndependiente = {
         idNombre: idChat,
         fechaChat: Date.now(),

@@ -61,7 +61,6 @@ function estructuraHTML(id,nombre,color="text-light",status="null"){
 }
 
 
-
 function cargarItems(){
     const referenciaLista = collection(db, "Usuarios",localStorage.getItem("id"),"Lista");
     const consulta = query(referenciaLista, where("usuario", "==", localStorage.getItem("id")));
@@ -95,7 +94,7 @@ function cargarItems(){
             $(".btnEleccionEstado").css("display","block");
         }else{
             $(".btnEleccionEstado").css("display","none");
-            $('#tareas').html("Hay mucho por hacer SIUUUUUUU");        
+            $('#tareas').html("No hay aún nada en la lista");        
         }
       localStorage.setItem("lastItemListaId",lastId);
     });
@@ -103,7 +102,7 @@ function cargarItems(){
 
 
 async function aniadir(){
-    if($('#tareas').html()=="Hay mucho por hacer SIUUUUUUU"){
+    if($('#tareas').html()=="No hay aún nada en la lista"){
         $('#tareas').html("");
     }
     var nombreItem=document.getElementById("listaItemNombre").value;

@@ -17,7 +17,6 @@ const nicknamePerfilActual = document.getElementsByClassName("nicknameActual")[0
 const seleccionarImagen = document.getElementById("seleccionImagen");
 const btnResetearContra = document.getElementById("resetearContra");
 let urlImagen = localStorage.getItem("imagenPerfil");
-let urlImagenAnterior = "";
 
 //Id usuario
 const idUsuario = localStorage.getItem("id");
@@ -59,7 +58,6 @@ function preseleccionarFoto() {
 
 function cargarDatosUsuario() {
     const usuario = onSnapshot(doc(db, "Usuarios", idUsuario), (doc) => {
-        urlImagenAnterior = doc.data().imagenUsuario;
         imagenPerfilActual.src = doc.data().imagenUsuario;
         nicknamePerfilActual.innerHTML = doc.data().idUsuario;
         campoApellidos.value = doc.data().apellidos;
@@ -126,7 +124,8 @@ async function actualizarPerfil() {
     //Se coge la imagen seleccionada del usuario
     let foto = seleccionarImagen.files[0];
     //Si el usuario no ha seleccionado nada, se le pone la imagen de Perfil que tenia
-    if (foto === undefined) {
+    if (foto === undefined || $('#seleccionImagen').get(0).files.length === 0) {
+        imagenPerfilActual.setAttribute('src', urlImagen);
         actualizar(auth);
     }
     else {
@@ -170,17 +169,17 @@ async function cambiarImagenDatos(storageRef, foto, auth) {
                 photoURL: urlImagen
             }).then(async () => {
                 localStorage.setItem("idNickname", $.trim(campoNickname.value));
-                localStorage.setItem("imagenPerfil",user.photoURL);
+                localStorage.setItem("imagenPerfil", user.photoURL);
                 //Actualizo los campos de Firebase Firestore
                 await actualizarCampos(user.photoURL);
-                
+
             });
         }
     });
 }
 
 //Funcion para que cuando se haya subido la imagen se pueda luego actualizar
-function actualizar(auth) {
+async function actualizar(auth) {
     //Pongo el onAuthStateChanged para por asi decirlo recordar a Firebase los datos del actual usuario conectado sino sale null
     onAuthStateChanged(auth, async (user) => {
         if (user) {
@@ -199,10 +198,10 @@ function actualizar(auth) {
             //Actualizo la foto actual
             await updateProfile(auth.currentUser, {
                 displayName: $.trim(campoNickname.value),
-                photoURL: urlImagenAnterior
+                photoURL: localStorage.getItem("imagenPerfil")
             }).then(async () => {
                 localStorage.setItem("idNickname", $.trim(campoNickname.value));
-                localStorage.setItem("imagenPerfil",user.photoURL);
+                localStorage.setItem("imagenPerfil", user.photoURL);
                 //Actualizo los campos de Firebase Firestore
                 await actualizarCampos(user.photoURL);
             });
