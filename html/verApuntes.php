@@ -8,12 +8,11 @@
     <title>Document</title>
     <script type="module" src="../js/verApuntes.js"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="../css/creacionApuntes.css">
+    <link rel="stylesheet" href="../css/apuntes.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <script type="module" src="../js/sidebar.js"></script>
 </head>
-
 <body>
     <div class="page">
         <?php
@@ -44,5 +43,4 @@
         </div>
     </div>
 </body>
-
 </html>
