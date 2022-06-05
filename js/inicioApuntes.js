@@ -43,8 +43,10 @@ function actualizarApuntes(apuntes) {
     html += `
             <div data-id="${apunte.id}" class="list-group-item list-group-item-action apuntesLista pt-3" aria-current="true">
             ${apunte.titulo}
-            <span class="float-end pb-1 fechaGrupo d-flex"><button type="button" class="btn btn-outline-info me-5 btn-sm px-3 apuntesVistaVer" data-id="${apunte.id}">Ver</button>${formatearFecha}</span>
-            <span class="float-end pb-1 fechaGrupo d-flex"><button type="button" class="btn btn-outline-danger me-5 btn-sm px-3 apuntesBorrar" data-id="${apunte.id}">Borrar</button></span>
+            <span class="float-end pb-1 fechaGrupo d-flex">
+            <button type="button" class="btn btn-outline-info me-5 btn-sm px-3 apuntesVistaVer" data-id="${apunte.id}">Ver</button>
+            <button type="button" class="btn btn-outline-danger me-5 btn-sm px-3 apuntesBorrar" data-id="${apunte.id}">Borrar</button>
+            ${formatearFecha}</span>
             </div>
         `;
   });
