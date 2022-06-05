@@ -162,12 +162,12 @@ function devolverDatoCalendario(calendarioArray) {
       $("#fechaInicio").val(datos.event.startStr.split("T", 1));
       if (datos.event.endStr == "") {
         $("#fechaFin").val(datos.event.startStr.split("T", 1));
-        $("#fechaFinT").val(datos.event.startStr.split("+", 1));
+        $("#fechaFinT").val(datos.event.startStr);
       } else {
         $("#fechaFin").val(datos.event.endStr.split("T", 1));
-        $("#fechaFinT").val(datos.event.endStr.split("+", 1));
+        $("#fechaFinT").val(datos.event.endStr);
       }
-      $("#fechaInicioT").val(datos.event.startStr.split("+", 1));
+      $("#fechaInicioT").val(datos.event.startStr);
       $("#colorEvento").val(datos.event.backgroundColor);
       $("#descripcion").val(datos.event.extendedProps.description);
       $('#errorEvento').css('display', 'none');
@@ -178,8 +178,8 @@ function devolverDatoCalendario(calendarioArray) {
     },
     eventDrop: async function (datos) {
       var idEvento = datos.event.id;
-      var fechaInicio = datos.event.startStr.split("+", 1).toString()
-      var fechaFin = datos.event.endStr.split("+", 1).toString();
+      var fechaInicio = datos.event.startStr.toString()
+      var fechaFin = datos.event.endStr.toString();
 
       const referenciaCalendario = doc(db, "Usuarios",localStorage.getItem("id"),"Calendario", idEvento.toString());
       await updateDoc(referenciaCalendario, {
@@ -191,8 +191,8 @@ function devolverDatoCalendario(calendarioArray) {
     },
     eventResize: async function (datos) {
       var idEvento = datos.event.id;
-      var fechaInicio = datos.event.startStr.split("+", 1).toString()
-      var fechaFin = datos.event.endStr.split("+", 1).toString();
+      var fechaInicio = datos.event.startStr.toString()
+      var fechaFin = datos.event.endStr.toString();
 
       const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Calendario",idEvento.toString());
       await updateDoc(referenciaCalendario, {
