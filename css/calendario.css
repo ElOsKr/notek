@@ -6,6 +6,18 @@
     height: 80vh;
 }
 
+.fc-timegrid-axis{
+    background-color: white;
+}
+
+.fc-list-event{
+    background-color: white;
+}
+
+.fc-scroller{
+    background-color: white;
+}
+
 .page {
     position: relative;
 }

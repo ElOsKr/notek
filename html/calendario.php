@@ -11,8 +11,6 @@
     <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
     <link rel="stylesheet" href="../css/main.min.css">
     <link rel="stylesheet" href="../css/sidebar.css">
-    <script src="../js/bootstrap.bundle.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/main.min.js"></script>
     <script type="module" src="../js/calendario.js"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
@@ -27,7 +25,9 @@
                 <div id="calendar">
                 </div>
             </div>
-            <div class="modal fade" id="modalCalendario" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalCalendarioLabel" aria-hidden="true">
+        </div>
+    </div>
+    <div class="modal fade" id="modalCalendario" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalCalendarioLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -59,8 +59,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
     <script type="module" src="../js/sidebar.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
