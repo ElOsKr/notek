@@ -27,7 +27,7 @@
                     <button class="btn btn-outline-secondary text-light" id="botonAniadir">Añadir</button>
                 </div>
                 <p class="errorItem text-danger" style="display: none;"></p> 
-                <div class="btnEleccionEstado mt-3 row">
+                <div class="btnEleccionEstado mt-3 row" style="display: none;">
                   <div class="botonesEstado row">
                     <p class="text-info">Filtrar lista por:</p>
                     <button class="btn btn-dark me-2 col-12 col-md-2 mb-1" id="btnTodos">

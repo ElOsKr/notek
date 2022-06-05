@@ -4,9 +4,6 @@ document.addEventListener("readystatechange", cargarEventos, false);
 function cargarEventos() {
     cargarItems();
     document.getElementById("botonAniadir").addEventListener("click",aniadir);
-    document.getElementById("btnVerEnProceso").addEventListener("click",mostrarEnProceso);
-    document.getElementById("btnVerEnPausa").addEventListener("click",mostrarEnPausa);
-    document.getElementById("btnVerCompletados").addEventListener("click",mostrarAcabados);
     document.getElementById("btnTodos").addEventListener("click",cargarItems);
     document.getElementById("filtroNombre").addEventListener("keyup",buscador);
 }
@@ -88,10 +85,13 @@ function cargarItems(){
             borrarItem();
             editarItem();
             guardarEdit();
-            itemEnProceso();
-            itemEnPausa();
-            itemAcabado();
+            itemsEstado(".btnEnProceso","enProceso")
+            itemsEstado(".btnPausa","enPausa")
+            itemsEstado(".btnAcabado","completado")
             $(".btnEleccionEstado").css("display","block");
+            verItemsEstado("btnVerEnProceso","enProceso","text-primary")
+            verItemsEstado("btnVerEnPausa","enPausa","text-warning")
+            verItemsEstado("btnVerCompletados","completado","text-success")
         }else{
             $(".btnEleccionEstado").css("display","none");
             $('#tareas').html("No hay aún nada en la lista");        
@@ -171,98 +171,41 @@ function guardarEdit(){
             const id = evento.currentTarget.dataset.id;
             var cajaTitulo=$("."+id)[2];
             var titulo=cajaTitulo.childNodes[1].value;
-            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
-            await updateDoc(referenciaCalendario, {
+            const referenciaLista = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
+            await updateDoc(referenciaLista, {
               title: titulo
             });
         });
     }
 }
-
-function itemEnProceso(){
-    var listaBotonesEnProceso=document.querySelectorAll(".btnEnProceso");
-    for (let i = 0; i < listaBotonesEnProceso.length; i++) {
-        listaBotonesEnProceso[i].addEventListener("click", async (evento) => {
+function itemsEstado(botones,estado){
+    var listaBotones=document.querySelectorAll(botones);
+    for (let i = 0; i < listaBotones.length; i++) {
+        listaBotones[i].addEventListener("click", async (evento) => {
             const id = evento.currentTarget.dataset.id;
-            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
-            await updateDoc(referenciaCalendario, {
-              status: "enProceso"
+            const referenciaLista = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
+            await updateDoc(referenciaLista, {
+              status: estado
             });
             cargarEventos();
         });
     }
 }
-
-function itemEnPausa(){
-    var listaBotonesEnProceso=document.querySelectorAll(".btnPausa");
-    for (let i = 0; i < listaBotonesEnProceso.length; i++) {
-        listaBotonesEnProceso[i].addEventListener("click", async (evento) => {
-            const id = evento.currentTarget.dataset.id;
-            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
-            await updateDoc(referenciaCalendario, {
-              status: "enPausa"
-            });
-            cargarEventos();
-        });
-    }
-}
-
-function itemAcabado(){
-    var listaBotonesEnProceso=document.querySelectorAll(".btnAcabado");
-    for (let i = 0; i < listaBotonesEnProceso.length; i++) {
-        listaBotonesEnProceso[i].addEventListener("click", async (evento) => {
-            const id = evento.currentTarget.dataset.id;
-            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
-            await updateDoc(referenciaCalendario, {
-              status: "completado"
-            });
-            cargarEventos();
-        });
-    }
-}
-
-function mostrarEnProceso(){
-    $('#tareas').html("");
-    const referenciaLista = collection(db, "Usuarios",localStorage.getItem("id"),"Lista");
-    const consulta = query(referenciaLista, where("status", "==", "enProceso"));
-    const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
-      var html="";
-      var color="text-primary";
-      querySnapshot.forEach((doc) => {
-        html+=estructuraHTML(doc.id,doc.data().title,color,doc.data().status);
-      });
-      document.getElementById("tareas").innerHTML=html;
+function verItemsEstado(boton,estado,colorT){
+    document.getElementById(boton).addEventListener("click",function(){
+        $('#tareas').html("");
+        const referenciaLista = collection(db, "Usuarios",localStorage.getItem("id"),"Lista");
+        const consulta = query(referenciaLista, where("status", "==", estado));
+        const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
+          var html="";
+          var color=colorT;
+          querySnapshot.forEach((doc) => {
+            html+=estructuraHTML(doc.id,doc.data().title,color,doc.data().status);
+          });
+          document.getElementById("tareas").innerHTML=html;
+        })
     })
 }
-
-function mostrarEnPausa(){
-    $('#tareas').html("");
-    const referenciaLista = collection(db, "Usuarios",localStorage.getItem("id"),"Lista");
-    const consulta = query(referenciaLista, where("status", "==", "enPausa"));
-    const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
-      var html="";
-      var color="text-warning";
-      querySnapshot.forEach((doc) => {
-        html+=estructuraHTML(doc.id,doc.data().title,color,doc.data().status);
-      });
-      document.getElementById("tareas").innerHTML=html;
-    })
-}
-
-function mostrarAcabados(){
-    $('#tareas').html("");
-    const referenciaLista = collection(db, "Usuarios",localStorage.getItem("id"),"Lista");
-    const consulta = query(referenciaLista, where("status", "==", "completado"));
-    const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
-      var html="";
-      var color="text-success";
-      querySnapshot.forEach((doc) => {
-        html+=estructuraHTML(doc.id,doc.data().title,color,doc.data().status);
-      });
-      document.getElementById("tareas").innerHTML=html;
-    })
-}
-
 function buscador(){
     var texto=$("#filtroNombre").val();
     if(texto.trim()==""){
