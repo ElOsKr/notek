@@ -1,4 +1,4 @@
-import { collection, query, where, onSnapshot, db, setDoc, doc, updateDoc, deleteDoc ,startAt,endAt,orderBy} from "./firebase.js";
+import { collection, query, where, onSnapshot, db, setDoc,getDoc, doc, updateDoc, deleteDoc ,startAt,endAt,orderBy} from "./firebase.js";
 document.addEventListener("readystatechange", cargarEventos, false);
 
 function cargarEventos() {
@@ -96,7 +96,6 @@ function cargarItems(){
             $(".btnEleccionEstado").css("display","none");
             $('#tareas').html("No hay aún nada en la lista");        
         }
-      localStorage.setItem("lastItemListaId",lastId);
     });
 }
 
@@ -107,24 +106,27 @@ async function aniadir(){
     }
     var nombreItem=document.getElementById("listaItemNombre").value;
     if(nombreItem==""){
+        $('.errorItem').html("No puede estar vacio este campo");
         $('.errorItem').show();
     }else{
-        var id=parseInt(localStorage.getItem("lastItemListaId"))
-        id++;
-        const docRef = {
-          id: id,
-          title: nombreItem,
-          usuario: localStorage.getItem("id")
+        const apunte = await getDoc( doc(db, "Usuarios/" + localStorage.getItem("id") + "/Lista", nombreItem));
+        if(apunte.exists()){
+            $('.errorItem').html("Item ya existente en la lista");
+            $('.errorItem').show();
+        }else{
+            const docRef = {
+            title: nombreItem,
+            usuario: localStorage.getItem("id")
+            }
+            //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
+            await setDoc(doc(db, "Usuarios", localStorage.getItem("id"),"Lista",nombreItem), docRef);
+            var html=estructuraHTML(id,nombreItem);
+            document.getElementById("tareas").innerHTML+=html;
+            cargarItems();
+            $("#listaItemNombre").val("");
+            $('.errorItem').hide();            
         }
-        //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
-        await setDoc(doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id.toString()), docRef);
-        localStorage.setItem("lastItemListaId",id)  
-        var html=estructuraHTML(id,nombreItem);
-        document.getElementById("tareas").innerHTML+=html;
-        cargarItems();
-        $("#listaItemNombre").val("");     
     }
-
 }
 
 function borrarItem(){
@@ -132,7 +134,7 @@ function borrarItem(){
     for (let i = 0; i < listaBotonesBorrar.length; i++) {
         listaBotonesBorrar[i].addEventListener("click", async (evento) => {
         const id = evento.currentTarget.dataset.id;
-        await deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Lista', id.toString()));
+        await deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Lista', id));
         cargarItems();
         });
 
@@ -169,7 +171,7 @@ function guardarEdit(){
             const id = evento.currentTarget.dataset.id;
             var cajaTitulo=$("."+id)[2];
             var titulo=cajaTitulo.childNodes[1].value;
-            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id.toString());
+            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
             await updateDoc(referenciaCalendario, {
               title: titulo
             });
@@ -182,7 +184,7 @@ function itemEnProceso(){
     for (let i = 0; i < listaBotonesEnProceso.length; i++) {
         listaBotonesEnProceso[i].addEventListener("click", async (evento) => {
             const id = evento.currentTarget.dataset.id;
-            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id.toString());
+            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
             await updateDoc(referenciaCalendario, {
               status: "enProceso"
             });
@@ -196,7 +198,7 @@ function itemEnPausa(){
     for (let i = 0; i < listaBotonesEnProceso.length; i++) {
         listaBotonesEnProceso[i].addEventListener("click", async (evento) => {
             const id = evento.currentTarget.dataset.id;
-            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id.toString());
+            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
             await updateDoc(referenciaCalendario, {
               status: "enPausa"
             });
@@ -210,7 +212,7 @@ function itemAcabado(){
     for (let i = 0; i < listaBotonesEnProceso.length; i++) {
         listaBotonesEnProceso[i].addEventListener("click", async (evento) => {
             const id = evento.currentTarget.dataset.id;
-            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id.toString());
+            const referenciaCalendario = doc(db, "Usuarios", localStorage.getItem("id"),"Lista",id);
             await updateDoc(referenciaCalendario, {
               status: "completado"
             });
