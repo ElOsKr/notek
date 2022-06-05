@@ -75,6 +75,7 @@ async function obtenerApuntes() {
     const unsub = onSnapshot(doc(db, "Usuarios", localStorage.getItem("id"), 'Apuntes', idApunte), (doc) => {
       inputTituloApunte.value = doc.data().titulo;
       tinymce.get("default-editor").setContent(doc.data().contenido);
+      document.title=idApunte;
     });
   }
 }

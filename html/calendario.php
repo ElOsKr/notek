@@ -5,44 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Calendario</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/calendario.css">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../css/main.min.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/main.min.js"></script>
     <script type="module" src="../js/calendario.js"></script>
-    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../css/main.min.css">
-    <link rel="stylesheet" href="../css/sidebar.css">
     <script src="../js/jquery-3.6.0.min.js"></script>
-    <style>
-        .oculto {
-            display: none;
-        }
-
-        #calendar {
-            height: 80vh;
-        }
-
-        .page {
-            position: relative;
-        }
-
-        .fc-day {
-            background-color: white;
-        }
-
-        .fc-toolbar-title {
-            color: white;
-        }
-
-        .fc-day-today {
-            background-color: #f9ff75 !important;
-        }
-    </style>
 </head>
-
 <body>
     <div class="page">
         <?php
@@ -88,7 +62,5 @@
         </div>
     </div>
     <script type="module" src="../js/sidebar.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

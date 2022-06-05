@@ -1,0 +1,23 @@
+.oculto {
+    display: none;
+}
+
+#calendar {
+    height: 80vh;
+}
+
+.page {
+    position: relative;
+}
+
+.fc-day {
+    background-color: white;
+}
+
+.fc-toolbar-title {
+    color: white;
+}
+
+.fc-day-today {
+    background-color: #f9ff75 !important;
+}

@@ -26,6 +26,7 @@ async function obtenerApunte() {
   const unsub = onSnapshot(doc(db, "Usuarios",localStorage.getItem("id"),'Apuntes', idApunte), (doc) => {
     inputTituloApunte.innerHTML = doc.data().titulo;
     document.getElementById('contenidoApuntes').innerHTML = doc.data().contenido;
+    document.title=idApunte;
   });
 
 }
