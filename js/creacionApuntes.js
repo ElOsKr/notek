@@ -9,6 +9,7 @@ function cargarEventos() {
   obtenerApuntes();
   verApunte();
   document.getElementById("botonVer").addEventListener("click", function () { location.href = "./verApuntes.php" });
+  document.getElementById("botonVer").addEventListener("click",validarApuntes);
   document.getElementById("botonGuardar").addEventListener("click", validarApuntes);
   cargarTextarea();
 }

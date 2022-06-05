@@ -15,9 +15,6 @@ function crearApunte() {
 
 function actualizaBienApuntes() {
   const referenciaApuntes = collection(db, "Usuarios",localStorage.getItem("id"),"Apuntes");
-  //Consulta que se encarga de saber en cuantos grupos se encuentra el actual usuario
-  //Se fija esta consulta en el campo miembrosGrupo que es un array con los id de los miembros que pertenecen a ese grupo
-  //Para realizar esta doble consulta se deben crear indices en firebase
   const consulta = query(referenciaApuntes, where("usuario", "==", localStorage.getItem("id")), orderBy("fechaApunte", "desc"));
   const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
     const apuntes = [];
