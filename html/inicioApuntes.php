@@ -29,10 +29,10 @@
         <div class="content">
             <div class="container mt-2">
                 <h1 id="titulo" class="text-center py-3">Apuntes</h1>
-                <div id="cajaApuntes" class="list-group pe-0 mt-4">
-                </div>
                 <div class="d-grid gap-2">
                     <button class="mt-2 btn-dark btn-sm text-light" id="crearApuntes">+Crear Apuntes</button>
+                </div>
+                <div id="cajaApuntes" class="list-group pe-0 mt-4">
                 </div>
             </div>
         </div>
