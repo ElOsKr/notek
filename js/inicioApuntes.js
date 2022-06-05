@@ -44,6 +44,7 @@ function actualizarApuntes(apuntes) {
             <div data-id="${apunte.id}" class="list-group-item list-group-item-action apuntesLista pt-3" aria-current="true">
             ${apunte.titulo}
             <span class="float-end pb-1 fechaGrupo d-flex"><button type="button" class="btn btn-outline-info me-5 btn-sm px-3 apuntesVistaVer" data-id="${apunte.id}">Ver</button>${formatearFecha}</span>
+            <span class="float-end pb-1 fechaGrupo d-flex"><button type="button" class="btn btn-outline-danger me-5 btn-sm px-3 apuntesBorrar" data-id="${apunte.id}">Borrar</button></span>
             </div>
         `;
   });
@@ -51,10 +52,11 @@ function actualizarApuntes(apuntes) {
   //Selecciono todos los elementos del html que tengan esa clase
   const listaApuntes = document.querySelectorAll(".apuntesLista");
   const listaApuntesVer = document.querySelectorAll(".apuntesVistaVer");
-  seleccionarGrupo(listaApuntes, listaApuntesVer);
+  const listaBorrar = document.querySelectorAll(".apuntesBorrar");
+  seleccionarGrupo(listaApuntes, listaApuntesVer,listaBorrar);
 }
 
-function seleccionarGrupo(listaApuntes, listaApuntesVer) {
+function seleccionarGrupo(listaApuntes, listaApuntesVer,listaBorrar) {
   //Recorro todos los botones seleccionados
   listaApuntes.forEach(apunte => {
     //Lista de botones para solo editar el apunte
@@ -71,6 +73,13 @@ function seleccionarGrupo(listaApuntes, listaApuntesVer) {
       console.log(evento.target.dataset.id);
       localStorage.setItem("idApunte", evento.target.dataset.id);
       location.href = "verApuntes.php";
+    }, true);
+  });
+  listaBorrar.forEach(apunte => {
+    //Saco el id que lleva cada uno
+    apunte.addEventListener("click", async (evento) => {
+      console.log(evento.target.dataset.id);
+      await deleteDoc(doc(db, "Usuarios",localStorage.getItem("id"),'Apuntes', evento.target.dataset.id));
     }, true);
   });
 }
