@@ -9,7 +9,6 @@ function cargarEventos() {
   obtenerApuntes();
   verApunte();
   document.getElementById("botonVer").addEventListener("click", function () { location.href = "./verApuntes.php" });
-  document.getElementById("regresarApuntes").addEventListener("click", function () { location.href = "./inicioApuntes.php" })
   document.getElementById("botonGuardar").addEventListener("click", validarApuntes);
   cargarTextarea();
 }
@@ -36,21 +35,18 @@ async function verApunte() {
 }
 
 //Estaba en validar el titulo de los apuntes
-async function validarApuntes() {
-  const referenciaApunte = doc(db, "Usuarios/" + localStorage.getItem("id") + "/Apuntes", inputTituloApunte.value);
-  const apunte = await getDoc(referenciaApunte);
-  
-  
+async function validarApuntes() {  
   if (inputTituloApunte.value == "") {
     mostrarErrores(0, "Introduzca un título");
-  }
-  else if(apunte.exists() && localStorage.getItem("idApunte")=="") {
-    mostrarErrores(0, "Este título de apunte introducido ya existe");
-  }
-  else {
-    quitarErrores(0);
-    guardarApuntes();
-    //location.href = "./verApuntes.php";
+  }else{
+    const referenciaApunte = doc(db, "Usuarios/" + localStorage.getItem("id") + "/Apuntes", inputTituloApunte.value);
+    const apunte = await getDoc(referenciaApunte);
+    if(apunte.exists() && localStorage.getItem("idApunte")=="") {
+        mostrarErrores(0, "Este título de apunte introducido ya existe");
+    }else {
+        quitarErrores(0);
+        guardarApuntes();
+      }    
   }
 
 }
