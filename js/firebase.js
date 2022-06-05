@@ -93,6 +93,8 @@ export function cerrarSesion() {
         localStorage.setItem("idGrupo", "");
         localStorage.setItem("idNickname","");
         localStorage.setItem("idApunte","");
+        localStorage.setItem("lastItemListaId","");
+        localStorage.setItem("lastEventCalendarId","");
     }).catch((error) => {
         console.log("No se pudo deslogear de la pagina");
     });

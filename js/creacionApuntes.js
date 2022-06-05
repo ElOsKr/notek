@@ -16,8 +16,9 @@ function cargarEventos() {
 function cargarTextarea() {
   tinymce.init({
     selector: 'textarea#default-editor',
-    plugins: 'autoresize',
+    height: 500,
     language: 'es',
+    toolbar: 'undo redo | styleselect | bold italic | outdent indent ',
     skin: useDarkMode ? 'oxide-dark' : 'oxide',
     content_css: useDarkMode ? 'dark' : 'default',
   });
