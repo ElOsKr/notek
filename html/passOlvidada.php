@@ -6,15 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restablecer contraseña</title>
-    <script src="../js/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.min.css.map">
 	<link rel="stylesheet" href="../css/bootstrap.css.map">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/passOlvidada.css">
-
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="icon" href="../img/Icono_Notek.png">
     <link rel="stylesheet" href="../css/animate.css">
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>

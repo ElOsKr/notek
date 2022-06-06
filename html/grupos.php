@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/grupos.css">
-
+    <link rel="icon" href="../img/Icono_Notek.png">
 </head>
 
 <body>

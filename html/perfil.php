@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/perfil.css">
     <link rel="stylesheet" href="../css/animate.css">
-
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" href="../img/Icono_Notek.png">
     <link rel="stylesheet" href="../css/sidebar.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
     <style>
         .page {

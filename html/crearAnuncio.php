@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Anuncio</title>
+    <link rel="icon" href="../img/Icono_Notek.png">
     <link rel="stylesheet" href="../css/bootstrap.min.css.map">
 	<link rel="stylesheet" href="../css/bootstrap.css.map">
     <link rel="stylesheet" href="../css/bootstrap.min.css">

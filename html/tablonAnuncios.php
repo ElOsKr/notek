@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/tablonAnuncios.css">
     <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="icon" href="../img/Icono_Notek.png">
     <script src="../js/jquery-3.6.0.min.js"></script>
     <style>
         .page {
