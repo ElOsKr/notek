@@ -45,90 +45,95 @@ function actualizaBienAnuncios(filtro="todos") {
 function listaAnunciosActualizados(anuncios) {
     let html = "";
     let htmlComentariosEstructura = "";
-    //Recorro los anuncios
-    anuncios.forEach(anuncios => {
-        let contador = 0;
-        let link = "";
-        let fecha = new Date(anuncios.fechaPublicado);
-        let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
-        //Si el anuncio tiene un archivo subido se mostrará el link
-        if (anuncios.archivoSeleccionado != "") {
-            //Si el archivo subido es de extension txt o pdf
-            if (anuncios.tipoArchivo == "txt" || anuncios.tipoArchivo == "pdf") {
-                link = `<a  href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Visualizar archivo aportado</a>`;
+    if(anuncios.length==0){
+        html="<h2 class='text-center'>No hay anuncios</h2>";
+        cajaIntroducirAnuncio.innerHTML=html
+    }else{
+        anuncios.forEach(anuncios => {
+            let contador = 0;
+            let link = "";
+            let fecha = new Date(anuncios.fechaPublicado);
+            let formatearFecha = fecha.toLocaleDateString() + " " + fecha.getHours() + ":" + (fecha.getMinutes() < 10 ? '0' : '') + fecha.getMinutes();
+            //Si el anuncio tiene un archivo subido se mostrará el link
+            if (anuncios.archivoSeleccionado != "") {
+                //Si el archivo subido es de extension txt o pdf
+                if (anuncios.tipoArchivo == "txt" || anuncios.tipoArchivo == "pdf") {
+                    link = `<a  href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Visualizar archivo aportado</a>`;
+                }
+                else {
+                    link = `<a  href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Enlace descargar archivo auxiliar</a>`;
+                }
             }
-            else {
-                link = `<a  href="${anuncios.archivoSeleccionado}" download target="_blank" class="float-start mt-3 text-white me-3">Enlace descargar archivo auxiliar</a>`;
-            }
-        }
 
-        html += `
-                <div class="col-md-6 my-3">
-                    <div class="card cajasContenido">
-                        <div class="card-body ">
-                            <div class="w-100 text-center">
-                                <img class="rounded-circle imagenAutor"
-                                    src="${anuncios.imagenUsuario}"
-                                    alt="imagenAutor">
-                                <h3 class="text-center py-3 mt-1 w-100">${anuncios.idUsuario}</h3>
-                            </div>
-                            <h4 class="card-title  float-start ">${anuncios.titulo}</h4>
-                            <br>
-                            <br>
-                            <div class="cajaIntroducirContenido p-1 bg-white text-black">
-                                <p class="card-text">
-                                ${anuncios.contenido}
-                                </p>
-                            </div>
-                            <br>      
-                                <button class="btn btn-secondary my-2 text-white float-start " data-bs-toggle="modal" data-bs-target="#boton${anuncios.id}" id="${anuncios.id}">Comentarios</button>
-                            <br>
-                            <br>
-                            ${link}
-                            <h6 class="mt-3 text-white float-end">${formatearFecha}</h6>
-                        </div>
-                    </div>
-                </div>
-                `;
-        //Se pone en boton+id para poder linkear el modal con cada boton
-        //Se pone cajaComentarios+id para poder saber donde se meteran los comentarios mediante innerHTML
-        //Se pone data-id=id para poder identificar cada boton y asi es mas facil de introducir en Firebase
-        htmlComentariosEstructura += `
-            <div class="modal fade " id="boton${anuncios.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content" style="background-color: #222831;">
-                        <div class="modal-body">
-                            <div class="container cajaTotalComentarios">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h2 class="my-3 text-center text-white">Comentarios</h2>
-                                    </div>
+            html += `
+                    <div class="col-md-6 my-3">
+                        <div class="card cajasContenido">
+                            <div class="card-body ">
+                                <div class="w-100 text-center">
+                                    <img class="rounded-circle imagenAutor"
+                                        src="${anuncios.imagenUsuario}"
+                                        alt="imagenAutor">
+                                    <h3 class="text-center py-3 mt-1 w-100">${anuncios.idUsuario}</h3>
                                 </div>
-                                <div class="row cajaComentarios cajaComentarios${anuncios.id}">
-
+                                <h4 class="card-title  float-start ">${anuncios.titulo}</h4>
+                                <br>
+                                <br>
+                                <div class="cajaIntroducirContenido p-1 bg-white text-black">
+                                    <p class="card-text">
+                                    ${anuncios.contenido}
+                                    </p>
                                 </div>
-                                <div id="formulario" class="px-0 pb-1 pt-2">
-                                    <input type="text" class="form-control inputComentario" placeholder="Enviar comentario" />
-                                    <div class="input-group-append px-1">
-                                        <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
-                                    </div>
-                                </div>
+                                <br>      
+                                    <button class="btn btn-secondary my-2 text-white float-start " data-bs-toggle="modal" data-bs-target="#boton${anuncios.id}" id="${anuncios.id}">Comentarios</button>
+                                <br>
+                                <br>
+                                ${link}
+                                <h6 class="mt-3 text-white float-end">${formatearFecha}</h6>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-    `;
-        //Aqui recoge los comentarios de cada anuncio
-        actualizaBienComentarios(anuncios.id);
-        /*Esto baja el scroll automaticamente sin que lo tenga que hacer el usuario*/
-        $(".cajaComentarios" + anuncios.id).each(function () { this.scrollTop = this.scrollHeight; });
-    });
-    cajaIntroducirAnuncio.innerHTML = html + htmlComentariosEstructura;
+                    `;
+            //Se pone en boton+id para poder linkear el modal con cada boton
+            //Se pone cajaComentarios+id para poder saber donde se meteran los comentarios mediante innerHTML
+            //Se pone data-id=id para poder identificar cada boton y asi es mas facil de introducir en Firebase
+            htmlComentariosEstructura += `
+                <div class="modal fade " id="boton${anuncios.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content" style="background-color: #222831;">
+                            <div class="modal-body">
+                                <div class="container cajaTotalComentarios">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h2 class="my-3 text-center text-white">Comentarios</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row cajaComentarios cajaComentarios${anuncios.id}">
 
-    //Saco una lista de elementos (en este caso botones) que tengan la clase botonMandarComentario 
-    const listaBotonesMandarComentario = document.querySelectorAll(".botonMandarComentario");
-    enviarComentario(listaBotonesMandarComentario);
+                                    </div>
+                                    <div id="formulario" class="px-0 pb-1 pt-2">
+                                        <input type="text" class="form-control inputComentario" placeholder="Enviar comentario" />
+                                        <div class="input-group-append px-1">
+                                            <button class="btn btn-success botonMandarComentario" data-id="${anuncios.id}">Enviar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        `;
+            //Aqui recoge los comentarios de cada anuncio
+            actualizaBienComentarios(anuncios.id);
+            /*Esto baja el scroll automaticamente sin que lo tenga que hacer el usuario*/
+            $(".cajaComentarios" + anuncios.id).each(function () { this.scrollTop = this.scrollHeight; });
+                //Recorro los anuncios
+
+            cajaIntroducirAnuncio.innerHTML = html + htmlComentariosEstructura;
+            //Saco una lista de elementos (en este caso botones) que tengan la clase botonMandarComentario 
+            const listaBotonesMandarComentario = document.querySelectorAll(".botonMandarComentario");
+            enviarComentario(listaBotonesMandarComentario);
+        });        
+    }
 }
 
 function actualizaBienComentarios(id) {

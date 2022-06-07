@@ -1,6 +1,6 @@
 import {
-    db, getAuth, onSnapshot, collection, query, orderBy, doc, getDoc, setDoc, listaUsuariosActualizado,
-    where, enviarComentario, actualizaBienComentarios
+    db, getAuth, onSnapshot, collection, query, orderBy, doc, getDoc, setDoc, listaUsuariosActualizado, arrayUnion,
+    where, enviarComentario, actualizaBienComentarios, updateDoc
 } from "./firebase.js";
 document.addEventListener("readystatechange", cargarEventos, false);
 const inputTituloGrupo = document.getElementById("tituloGrupo");
@@ -10,6 +10,7 @@ const miembrosGrupo = document.getElementsByClassName("miembrosGrupo")[0];
 const listaUsuarios = document.getElementsByClassName("listaUsuarios")[0];
 const cajaTotal = document.getElementsByClassName("cajaTotal")[1];
 const inputComentario = document.getElementsByClassName("inputComentario");
+var modal = new bootstrap.Modal(document.getElementById('panelCrearGrupo'));
 let arrayUsuarios = [];
 let ordenacion = "asc";
 let campo = "tituloBusqueda";
@@ -17,10 +18,12 @@ let idGrupoSeleccionado = localStorage.getItem("idGrupo");
 
 function cargarEventos() {
     $("#crearGrupo").click(validarGrupo);
-
+    document.getElementById("preCrearGrupo").addEventListener("click",function(){
+        restablecerInterfaz();
+        modal.show();
+    })
     usuarioGrupo.addEventListener("keyup", buscarUsuarios);
     actualizaBienGrupos();
-
     $("#fechaDescendente").click(cambiarOrdenFechaDescendente);
     $("#fechaAscendente").click(cambiarOrdenFechaAscendente);
     $("#tituloAscendente").click(cambiarOrdenTituloAscendente);
@@ -100,37 +103,55 @@ async function validarGrupo() {
     //Si el usuario introduce algun contenido
     if ($.trim(inputTituloGrupo.value) != "") {
         //Si ya existe algun grupo con ese nombre 
-        if (grupo.exists()) {
-            mostrarErrores(0, "El titulo introducido ya existe");
-        }
-        else {
-            quitarErrores(0);
+        if(document.getElementById("tituloGrupo").disabled==true){
             let arrayMiembroSeleccionados = [];
             //Primero siempre inserto un usuario
             arrayMiembroSeleccionados.push(localStorage.getItem("id"));
-
             for (let i = 0; i < arrayUsuarios.length; i++) {
                 const usuarioSeleccionado = arrayUsuarios[i].split(" ");
                 //Selecciono solo el correo que funciona como id del usuario
                 arrayMiembroSeleccionados.push(usuarioSeleccionado[0]);
             }
-
             if (arrayMiembroSeleccionados.length > 1) {
-                //Si no hay fallos se crea el grupo correctamente
-                const grupoPropio = {
-                    titulo: $.trim(inputTituloGrupo.value),
-                    tituloBusqueda: $.trim(inputTituloGrupo.value.toLowerCase()),
-                    fechaCreacionGrupo: Date.now(),
-                    miembrosGrupo: arrayMiembroSeleccionados
-                };
-
-                //Se crea una subcoleccion de Grupos 
-                await setDoc(doc(db, "/Grupos", tituloIdGrupo), grupoPropio);
-
-                restablecerInterfaz();
+                for (let i = 0; i < arrayMiembroSeleccionados.length; i++) {
+                    await updateDoc(doc(db, "/Grupos", tituloIdGrupo),{miembrosGrupo:arrayUnion(arrayMiembroSeleccionados[i])},{merge:true})
+                }
+                restablecerInterfaz(); 
+            }else{
+                mostrarErrores(1, "Tiene que añadir algún usuario al grupo");
+            }
+        }else{
+            if (grupo.exists()) {
+                mostrarErrores(0, "El titulo introducido ya existe");
             }
             else {
-                mostrarErrores(1, "Tiene que añadir algún usuario al grupo");
+                quitarErrores(0);
+                let arrayMiembroSeleccionados = [];
+                //Primero siempre inserto un usuario
+                arrayMiembroSeleccionados.push(localStorage.getItem("id"));
+
+                for (let i = 0; i < arrayUsuarios.length; i++) {
+                    const usuarioSeleccionado = arrayUsuarios[i].split(" ");
+                    //Selecciono solo el correo que funciona como id del usuario
+                    arrayMiembroSeleccionados.push(usuarioSeleccionado[0]);
+                }
+
+                if (arrayMiembroSeleccionados.length > 1) {
+                    //Si no hay fallos se crea el grupo correctamente
+                    const grupoPropio = {
+                        titulo: $.trim(inputTituloGrupo.value),
+                        tituloBusqueda: $.trim(inputTituloGrupo.value.toLowerCase()),
+                        fechaCreacionGrupo: Date.now(),
+                        miembrosGrupo: arrayMiembroSeleccionados
+                    };
+                    //Se crea una subcoleccion de Grupos 
+                    await setDoc(doc(db, "/Grupos", tituloIdGrupo), grupoPropio);                   
+                    
+                    restablecerInterfaz(); 
+                }
+                else {
+                    mostrarErrores(1, "Tiene que añadir algún usuario al grupo");
+                }
             }
         }
     }
@@ -140,12 +161,16 @@ async function validarGrupo() {
 }
 
 function restablecerInterfaz() {
+    arrayUsuarios=[];
+    $("#tituloGrupo").prop("disabled",false);
+    $(".listaUsuarios").html("");
+    $(".listaUsuarios").css("border","none");
+    $(".miembrosGrupo").html("");
+    quitarErrores(0);
     quitarErrores(1);
     usuarioGrupo.value = "";
     inputTituloGrupo.value = "";
     //Oculto el modal de bootstrap
-    const modalSeleccionado = document.querySelector('#panelCrearGrupo');
-    const modal = bootstrap.Modal.getInstance(modalSeleccionado);
     modal.hide();
 }
 
@@ -215,6 +240,8 @@ function aniadirMiembro(listaBotonesAniadirMiembro) {
             }
 
             recorrerArrayUsuariosAniadidos();
+            $(".listaUsuarios").css("border","solid");
+            $(".listaUsuarios").css("border-color","#00ADB5");
         });
     });
 }
@@ -338,6 +365,14 @@ function mostrarTituloGrupo(idGrupo) {
                 <h1 class="text-center text-white" data-id="${idGrupo}">${$.trim(cadenaTitulo)}</h1>
             </div>
         </div>
+        <div class="col mt-1">
+            <p class="text-light">Seleccionar:</p>
+            <button class="btn btn-primary" id="btn-selectTodos">Todos</button>
+            <button class="btn btn-secondary" id="btn-selectMio">Mío</button>
+        </div>  
+        <div class="col mt-1">
+            <button class="btn btn-info" id="btn-aniadirUsers">Añadir usuarios</button>
+        </div>
         <div class="row text-white cajaIntroducirAnuncio" id="${$.trim(cadenaTitulo)}">
         </div>
     `;
@@ -354,12 +389,27 @@ function mostrarTituloGrupo(idGrupo) {
     }
 
     cargarAnuncios(idGrupo);
+    document.getElementById("btn-selectMio").addEventListener("click",function(){cargarAnuncios(idGrupo,"mio")});
+    document.getElementById("btn-selectTodos").addEventListener("click",function(){cargarAnuncios(idGrupo)});
+    document.getElementById("btn-aniadirUsers").addEventListener("click",function(){aniadirUsers($.trim(cadenaTitulo))})
+}
+
+function aniadirUsers(idGrupo){
+    restablecerInterfaz();
+    modal.toggle();
+    $("#tituloGrupo").val(idGrupo);
+    $("#tituloGrupo").prop("disabled",true);
 }
 
 //Funcion para evitar que cuando se actualice se bugee visualmente
-function cargarAnuncios(idGrupo) {
+function cargarAnuncios(idGrupo,filtro="todos") {
+    var consulta
     const referenciaGruposAnuncios = collection(db, "Grupos/" + idGrupo + "/Anuncios");
-    const consulta = query(referenciaGruposAnuncios, orderBy("fechaPublicado", "desc"));
+    if(filtro=="todos"){
+        consulta = query(referenciaGruposAnuncios, orderBy("fechaPublicado", "desc"));
+    }else{
+        consulta = query(referenciaGruposAnuncios, where("correoUsuario", "==", localStorage.getItem("id")));
+    }
     const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
         const anuncios = [];
         querySnapshot.forEach((doc) => {
