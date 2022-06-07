@@ -10,18 +10,18 @@ import { getStorage, ref, getDownloadURL, uploadBytes } from "https://www.gstati
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCdfDNkqHudgSySJipyKCIORWUamoYVI2I",
-    authDomain: "proyectonotek.firebaseapp.com",
-    projectId: "proyectonotek",
-    storageBucket: "proyectonotek.appspot.com",
-    messagingSenderId: "785351888693",
-    appId: "1:785351888693:web:e779b9d7b71b07011ac67c",
-    measurementId: "G-R1GN2M8GPM"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+    apiKey: "AIzaSyAAl2zSChTxNLSnhFXNQcrQlSfEwSYL0zU",
+    authDomain: "proyectonotek2.firebaseapp.com",
+    projectId: "proyectonotek2",
+    storageBucket: "proyectonotek2.appspot.com",
+    messagingSenderId: "210495056389",
+    appId: "1:210495056389:web:1db7edb0d951ac9c638a6c",
+    measurementId: "G-E4RP5ECDFM"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 //Conexion a Firestore
 const db = getFirestore();
 
@@ -179,7 +179,7 @@ export function crearUsuario(correo, contrasena, nickname, nombre, apellidos, er
 function actualizarUsuario(auth, nickname, nombre, apellidos, correo) {
     return updateProfile(auth.currentUser, {
         displayName: nickname,
-        photoURL: "https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0"
+        photoURL: "https://firebasestorage.googleapis.com/v0/b/proyectonotek2.appspot.com/o/sinperfil.png?alt=media&token=b8d5cf1c-7a0e-4a3d-8ae1-722f8c8ef03a"
     }).then(async () => {
         //Se pone async y await para que espere la funcion a que se realice la funcion si no se pone esto no furula
         //Aqui se añade los datos recibidos del Formualrio de Registro al Cloud Firestore, para crear la coleccion de Datos
@@ -188,7 +188,7 @@ function actualizarUsuario(auth, nickname, nombre, apellidos, correo) {
             nombre: nombre,
             apellidos: apellidos,
             correo: correo,
-            imagenUsuario: "https://firebasestorage.googleapis.com/v0/b/proyectonotek.appspot.com/o/fotoSinPerfil%2Fsinperfil.png?alt=media&token=8aa1c14a-30df-4c5a-a739-d283a3fb52c0"
+            imagenUsuario: "https://firebasestorage.googleapis.com/v0/b/proyectonotek2.appspot.com/o/sinperfil.png?alt=media&token=b8d5cf1c-7a0e-4a3d-8ae1-722f8c8ef03a"
         }
         //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
         await setDoc(doc(db, "Usuarios", correo), docRef);
