@@ -174,4 +174,8 @@ body.active .page .content {
     .sidebar-footer{
         position: relative!important;
     }
+
+    .sidebar-body .lista-navegacion, .sidebar-footer .lista-navegacion{
+        margin-top: 0!important;
+    }
 }
