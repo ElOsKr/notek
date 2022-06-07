@@ -32,6 +32,13 @@
                         <h1 class="text-center text-white">Tablon de Anuncios</h1>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="text-light">Seleccionar:</p>
+                        <button class="btn btn-primary" id="btn-selectTodos">Todos</button>
+                        <button class="btn btn-secondary" id="btn-selectMio">Mío</button>
+                    </div>    
+                </div>
                 <div class="row text-white cajaIntroducirAnuncio">
 
                 </div>

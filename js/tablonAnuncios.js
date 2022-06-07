@@ -1,6 +1,6 @@
 import {
     db, onSnapshot,
-    collection, query, orderBy, addDoc, mantenerSesionActiva, listaComentariosActualizados
+    collection, query,where, orderBy, addDoc, mantenerSesionActiva, listaComentariosActualizados
 } from "./firebase.js"
 
 document.addEventListener("readystatechange", cargarEventos, false);
@@ -9,14 +9,21 @@ const cajaIntroducirAnuncio = document.getElementsByClassName("cajaIntroducirAnu
 const inputComentario = document.getElementsByClassName("inputComentario");
 const cajaComentarios = document.getElementsByClassName("cajaComentarios");
 function cargarEventos() {
+    document.getElementById("btn-selectMio").addEventListener("click",function(){actualizaBienAnuncios("mio")});
+    document.getElementById("btn-selectTodos").addEventListener("click",function(){actualizaBienAnuncios()});
     actualizaBienAnuncios();
     mantenerSesionActiva();
 }
 
 //Esta funcion evita que haya repeticiones a la hora de que detecte cambios en firebase
-function actualizaBienAnuncios() {
+function actualizaBienAnuncios(filtro="todos") {
+    var consulta;
     const referenciaAnuncios = collection(db, "Anuncios");
-    const consulta = query(referenciaAnuncios, orderBy("fechaPublicado", "desc"));
+    if(filtro=="todos"){
+        consulta = query(referenciaAnuncios, orderBy("fechaPublicado", "desc"));
+    }else{
+        consulta = query(referenciaAnuncios, where("correoUsuario", "==", localStorage.getItem("id")));
+    }
     const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
         const anuncios = [];
         querySnapshot.forEach((doc) => {
