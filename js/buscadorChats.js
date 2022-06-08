@@ -15,7 +15,7 @@ function cargarEventos() {
 function cargarChatsRecientes(){
     const auth = getAuth();
     const referenciaChats = collection(db, "Usuarios",localStorage.getItem("id"),"Chats");
-    const consulta = query(referenciaChats, orderBy("fechaChat", "desc"),limit(3));
+    const consulta = query(referenciaChats, orderBy("fechaChat", "desc"),limit(4));
     const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
       var html="";
       querySnapshot.forEach((doc) => {
@@ -25,11 +25,11 @@ function cargarChatsRecientes(){
         </div>
         <div class="col-9 row pt-3">
             <div class="col-8 centrarBoton">
-                <h5 class=" mb-0">${doc.data().idNombre} </h5>
-                <span class="text-info">${doc.data().ultimoMensaje}</span>
+                <h4 class="text-info mb-0">${doc.data().idNombre} </h4>
+                <span class="text-light">${doc.data().ultimoMensaje}</span>
             </div>
             <div class="col-4 centrarBoton">
-                <button class="btn btn-success mt-3 botonAbrirChar" data-id="${doc.correoUsuario + " " + doc.data().idNombre + " " + doc.data().idNombre + " " + doc.data().imagenUsuario}">Abrir Chat</button>
+                <button class="btn btn-success mt-3 botonAbrirChat" data-id="${doc.data().correoUsuario + " " + doc.data().idNombre + " " + doc.data().idNombre + " " + doc.data().imagenUsuario}">Abrir Chat</button>
             </div>
         </div>
         <div class="col-12">
@@ -37,8 +37,14 @@ function cargarChatsRecientes(){
         </div>
 `
       });
-      listaUsuarios.innerHTML=html;
-      listaUsuarios.querySelectorAll(".botonAbrirChar").forEach(boton => {
+      if(html==""){
+        listaUsuarios.innerHTML="<h3 class='text-light'>No hay chats recientes</h3>";
+        listaUsuarios.innerHTML+=html;
+      }else{
+        listaUsuarios.innerHTML="<h3 class='text-light'>Chats recientes (4)</h3>";
+        listaUsuarios.innerHTML+=html; 
+      }
+      listaUsuarios.querySelectorAll(".botonAbrirChat").forEach(boton => {
             boton.addEventListener("click", (evento) => {
                 const idBoton = evento.target.dataset.id;
                 const referenciaUsuario = idBoton.split(" ");
