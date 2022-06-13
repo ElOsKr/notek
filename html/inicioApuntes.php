@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio Apuntes</title>
     <link rel="icon" href="../img/Icono_Notek.png">
-    <link rel="stylesheet" href="../css/apuntes.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/apuntes.css">
     <script src="https://cdn.tiny.cloud/1/erx4vmsb6lfpf3wwptirz94rd566n48b7g5sesg5qgibydg0/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="module" src="../js/inicioApuntes.js"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
