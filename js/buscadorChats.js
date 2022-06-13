@@ -41,7 +41,7 @@ function cargarChatsRecientes(){
         listaUsuarios.innerHTML="<h3 class='text-light'>No hay chats recientes</h3>";
         listaUsuarios.innerHTML+=html;
       }else{
-        listaUsuarios.innerHTML="<h3 class='text-light'>Chats recientes (4)</h3>";
+        listaUsuarios.innerHTML="<h3 class='text-light'>Chats recientes</h3>";
         listaUsuarios.innerHTML+=html; 
       }
       listaUsuarios.querySelectorAll(".botonAbrirChat").forEach(boton => {
