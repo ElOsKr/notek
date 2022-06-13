@@ -15,7 +15,7 @@ function cargarEventos() {
 function cargarChatsRecientes(){
     const auth = getAuth();
     const referenciaChats = collection(db, "Usuarios",localStorage.getItem("id"),"Chats");
-    const consulta = query(referenciaChats, orderBy("fechaChat", "desc"),limit(4));
+    const consulta = query(referenciaChats, orderBy("fechaChat", "desc"));
     const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
       var html="";
       querySnapshot.forEach((doc) => {
