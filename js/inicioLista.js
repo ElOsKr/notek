@@ -9,10 +9,10 @@ function cargarEventos() {
 }
 
 function estructuraHTML(nombre,color,status){
-    
+    var nombreUnido=nombre.replace(/ /g, "");
     return` <div class="d-flex" data-status="${status}">
-                <p class="me-2 mt-3 ${nombre} ${color}">${nombre}</p>
-                <div class="${nombre} me-auto mt-2">
+                <p class="me-2 mt-3 ${nombreUnido} ${color}">${nombre}</p>
+                <div class="${nombreUnido} me-auto mt-2">
                     <button class="btn btnEnProceso text-primary" data-id="${nombre}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                         <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
@@ -32,7 +32,7 @@ function estructuraHTML(nombre,color,status){
                         </svg>
                     </button>
                 </div>
-                <div class="oculto input-group mt-2 ${nombre} me-auto w-75">
+                <div class="oculto input-group mt-2 ${nombreUnido} me-auto w-75">
                     <input type="text" class="form-control bg-transparent text-light" value="${nombre}">
                     <button class="btn btnGuardarEditar text-light" data-id="${nombre}" data-status="${status}" data-color="${color}">
                         <span class="material-symbols-outlined">
@@ -147,9 +147,9 @@ function editarItem(){
     for (let i = 0; i < listaBotonesEditar.length; i++) {
         listaBotonesEditar[i].addEventListener("click", (evento) => {
             const id = evento.currentTarget.dataset.id;
-            var titulo=$("."+id)[0];
-            var editar=$("."+id)[1];
-            var boton=$("."+id)[2];
+            var titulo=$("."+id.replace(/ /g, ""))[0];
+            var editar=$("."+id.replace(/ /g, ""))[1];
+            var boton=$("."+id.replace(/ /g, ""))[2];
             if($(boton).hasClass("oculto")==true){
                 $(titulo).css("display","none")
                 $(editar).css("display","none")
@@ -169,7 +169,7 @@ async function guardarEdit(){
     for (let i = 0; i < listaBotonesGuardarEditar.length; i++) {
         listaBotonesGuardarEditar[i].addEventListener("click", async (evento) => {
             const id = evento.currentTarget.dataset.id;
-            var cajaTitulo=$("."+id)[2];
+            var cajaTitulo=$("."+id.replace(/ /g, ""))[2];
             var titulo=cajaTitulo.childNodes[1].value;
             var status=evento.currentTarget.dataset.status;
             var color=evento.currentTarget.dataset.color;
