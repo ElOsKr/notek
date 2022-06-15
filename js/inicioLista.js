@@ -120,7 +120,7 @@ async function aniadir(){
             }
             //Se le pone como id Personalizado el correo y se le pasa el objeto con los datos
             await setDoc(doc(db, "Usuarios", localStorage.getItem("id"),"Lista",nombreItem), docRef);
-            var html=estructuraHTML(id,nombreItem);
+            var html=estructuraHTML(nombreItem,nombreItem);
             document.getElementById("tareas").innerHTML+=html;
             cargarItems();
             $("#listaItemNombre").val("");
