@@ -8,3 +8,6 @@ html body {
 .oculto{
     display: none!important;
 }
+.page{
+    position: relative;
+}

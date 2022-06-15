@@ -33,3 +33,6 @@ html body {
   line-height:30px;
   padding:0px 15px;
 }
+.page{
+    position: relative;
+}

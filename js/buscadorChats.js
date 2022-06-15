@@ -15,7 +15,7 @@ function cargarEventos() {
 function cargarChatsRecientes(){
     const auth = getAuth();
     const referenciaChats = collection(db, "Usuarios",localStorage.getItem("id"),"Chats");
-    const consulta = query(referenciaChats, orderBy("fechaChat", "desc"),limit(4));
+    const consulta = query(referenciaChats, orderBy("fechaChat", "desc"));
     const unsubscribe = onSnapshot(consulta, (querySnapshot) => {
       var html="";
       querySnapshot.forEach((doc) => {
@@ -41,7 +41,7 @@ function cargarChatsRecientes(){
         listaUsuarios.innerHTML="<h3 class='text-light'>No hay chats recientes</h3>";
         listaUsuarios.innerHTML+=html;
       }else{
-        listaUsuarios.innerHTML="<h3 class='text-light'>Chats recientes (4)</h3>";
+        listaUsuarios.innerHTML="<h3 class='text-light'>Chats recientes</h3>";
         listaUsuarios.innerHTML+=html; 
       }
       listaUsuarios.querySelectorAll(".botonAbrirChat").forEach(boton => {
