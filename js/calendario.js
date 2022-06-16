@@ -123,8 +123,8 @@ function mostrarFirebaseCalendario() {
 function devolverDatoCalendario(calendarioArray) {
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
+    locale: 'es',
     initialView: 'dayGridMonth',
-    locales: 'es',
     headerToolbar: {
       left: "prev,next,today",
       center: "title",
@@ -134,13 +134,6 @@ function devolverDatoCalendario(calendarioArray) {
     events: calendarioArray,
     editable: true,
     eventResizableFromStart: true,
-    buttonText: {
-      today: 'Hoy',
-      month: 'Mes',
-      week: 'Semana',
-      day: 'Dia',
-      list: 'Lista'
-    },
     dateClick: function (datos) {
       $('#idEvento').val("");
       $('#nombreEvento').val("");
@@ -159,15 +152,28 @@ function devolverDatoCalendario(calendarioArray) {
     eventClick: function (datos) {
       $('#idEvento').val(datos.event.id)
       $('#nombreEvento').val(datos.event.title);
-      $("#fechaInicio").val(datos.event.startStr.split("T", 1));
-      if (datos.event.endStr == "") {
-        $("#fechaFin").val(datos.event.startStr.split("T", 1));
-        $("#fechaFinT").val(datos.event.startStr);
-      } else {
-        $("#fechaFin").val(datos.event.endStr.split("T", 1));
-        $("#fechaFinT").val(datos.event.endStr);
+      if(datos.event.startStr.includes("T")){
+        $("#fechaInicio").val(datos.event.startStr.split("T", 1));
+        if (datos.event.endStr == "") {
+          $("#fechaFin").val(datos.event.startStr.split("T", 1));
+          $("#fechaFinT").val(datos.event.startStr);
+        } else {
+          $("#fechaFin").val(datos.event.endStr.split("T", 1));
+          $("#fechaFinT").val(datos.event.endStr.split("+", 1));
+        }
+        $("#fechaInicioT").val(datos.event.startStr.split("+", 1));        
+      }else{
+        $("#fechaInicio").val(datos.event.startStr);
+        if (datos.event.endStr == "") {
+          $("#fechaFin").val(datos.event.startStr);
+          $("#fechaFinT").val(datos.event.startStr+"T00:00:00");
+        } else {
+          $("#fechaFin").val(datos.event.endStr);
+          $("#fechaFinT").val(datos.event.endStr+"T00:00:00");
+        }
+        $("#fechaInicioT").val(datos.event.startStr+"T00:00:00"); 
       }
-      $("#fechaInicioT").val(datos.event.startStr);
+
       $("#colorEvento").val(datos.event.backgroundColor);
       $("#descripcion").val(datos.event.extendedProps.description);
       $('#errorEvento').css('display', 'none');
